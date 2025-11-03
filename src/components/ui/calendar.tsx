@@ -29,10 +29,7 @@ function Calendar({
     <DayPicker
       showOutsideDays={showOutsideDays}
       className={cn(
-        "bg-background group/calendar p-3 [<!-- CORRECTED usage in your component file -->
-        < !--Assuming you mean 8 times the value of--spacing-- >
-      <div class="[--cell-size:calc(var(--spacing)*8)] ...">
-        'in-data-slot=card-content]:bg-transparent 'in-data-slot=popover-content]_&]:bg-transparent",
+        "bg-background group/calendar p-3 [--cell-size:calc(var(--spacing)*8)]",
         String.raw`rtl:**:[.rdp-button\_next>svg]:rotate-180`,
         String.raw`rtl:**:[.rdp-button\_previous>svg]:rotate-180`,
         className
