@@ -4,15 +4,24 @@
 import { Client } from '@/app/client';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { makeQueryClient } from '@/trpc/query-client';
-import { Suspense } from 'react';
+import { useEffect, useState } from 'react';
 
 export const dynamic = 'force-dynamic';
 
-const Page = async () => {
+const Page = () => {
+  const [isClient, setIsClient] = useState(false);
   const queryClient = makeQueryClient();
 
-  // Prefetch the users query
-  await queryClient.prefetchQuery({
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null; // or a loading spinner
+  }
+
+  // Client-side data fetching
+  queryClient.prefetchQuery({
     queryKey: ['users'],
     queryFn: async () => {
       const response = await fetch('/api/trpc/getUsers');
@@ -24,9 +33,7 @@ const Page = async () => {
   return (
     <div className="min-h-screen min-w-screen flex items-center justify-center p-4">
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Client />
-        </Suspense>
+        <Client />
       </HydrationBoundary>
     </div>
   );
