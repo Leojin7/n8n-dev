@@ -1,9 +1,12 @@
 module.exports = {
-  plugins: [
-    require('tailwindcss'),
-    require('postcss-functions')({
+  plugins: {
+    'postcss-import': {},
+    'tailwindcss/nesting': 'postcss-nesting',
+    'tailwindcss': {},
+    'autoprefixer': {},
+    'postcss-functions': {
       functions: {
-        spacing: function(value) {
+        spacing: function (value) {
           // Map spacing values to their corresponding CSS variables
           const spacingMap = {
             '1': '0.25rem',
@@ -24,13 +27,13 @@ module.exports = {
             '56': '14rem',
             '64': '16rem',
           };
-          
+
           // Remove any non-digit characters and get the spacing value
           const spacingValue = value.replace(/[^0-9]/g, '');
           return spacingMap[spacingValue] || '1rem';
-        }
-      }
-    }),
-    require('autoprefixer'),
-  ],
+        },
+      },
+    },
+    'autoprefixer': {},
+  },
 };

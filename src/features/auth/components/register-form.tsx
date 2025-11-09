@@ -93,9 +93,11 @@ export function RegisterForm() {
                 <div className='flex flex-col gap-4'>
 
                   <Button variant='outline' className='w-full' disabled={isPending} type='button'>
+                    <Image src='logos/google.svg' alt='google' width={24} height={24} />
                     Continue with Google
                   </Button>
                   <Button variant='outline' className='w-full' disabled={isPending} type='button'>
+                    <Image src='logos/github.svg' alt='github' width={24} height={24} />
                     Continue with Github
                   </Button>
                 </div>
@@ -108,7 +110,7 @@ export function RegisterForm() {
                       <FormControl>
                         <Input type='email' placeholder='Enter your email' {...field} />
                       </FormControl>
-                      <FormMessage className="text-destructive [&>p]:!text-destructive" />
+                      <FormMessage className="text-destructive [&>p]:text-destructive!" />
                     </FormItem>;
 
                   }} />
