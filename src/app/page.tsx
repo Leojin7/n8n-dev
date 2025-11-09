@@ -1,35 +1,21 @@
-// src/app/page.tsx
-'use client';
 
-import { Client } from '@/app/client';
-import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { makeQueryClient } from '@/trpc/query-client';
-import { Suspense } from 'react';
-
-export const dynamic = 'force-dynamic';
-
+import { requireAuth } from '@/lib/auth-utils';
+import { caller } from '@/trpc/server';
+import Logout from './logout';
 const Page = async () => {
-  const queryClient = makeQueryClient();
+  await requireAuth();
 
-  // Prefetch the users query
-  await queryClient.prefetchQuery({
-    queryKey: ['users'],
-    queryFn: async () => {
-      const response = await fetch('/api/trpc/getUsers');
-      const data = await response.json();
-      return data;
-    },
-  });
-
+  const data = await caller.getUsers();
   return (
-    <div className="min-h-screen min-w-screen flex items-center justify-center p-4">
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Client />
-        </Suspense>
-      </HydrationBoundary>
+    <div className="min-h-screen min-w-screen flex items-center justify-center p-4 flex-col gap-4">
+      protected server component
+      <div className="flex flex-col gap-4">
+        {JSON.stringify(data)}
+      </div>
+      <Logout />
     </div>
   );
 };
 
+// Add the export default statement
 export default Page;

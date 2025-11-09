@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { TRPCReactProvider } from '../trpc/client';
-
+import { Toaster } from 'sonner';
 const inter = Inter({
   subsets: ["latin"],
   variable: '--font-inter',
@@ -28,6 +28,7 @@ export default function RootLayout({
         <div className="min-h-full">
           <TRPCReactProvider>
             {children}
+            <Toaster />
           </TRPCReactProvider>
         </div>
       </body>
