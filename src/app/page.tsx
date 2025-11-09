@@ -10,11 +10,12 @@ const Page = () => {
 
   const trpc = useTRPC();
   const queryClient = useQueryClient();
-  const data = useQuery(trpc.getWorflows.queryOptions());
+  const data = useQuery(trpc.getWorkflows.queryOptions());
 
   const create = useMutation(trpc.createWorkflow.mutationOptions({
     onSuccess: () => {
       toast.success("Job Queued");
+      queryClient.invalidateQueries({ queryKey: trpc.getWorkflows.queryKey() });
     }
   }));
   return (
