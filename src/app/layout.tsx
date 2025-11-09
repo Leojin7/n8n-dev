@@ -17,6 +17,12 @@ export const metadata: Metadata = {
   themeColor: '#ffffff',
 };
 
+/**
+ * App root layout that provides global TRPC context and mounts a global toast container.
+ *
+ * @param children - The page content to render inside the root layout
+ * @returns The root HTML element tree for the application, including provider and toast container
+ */
 export default function RootLayout({
   children,
 }: {

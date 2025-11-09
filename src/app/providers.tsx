@@ -23,6 +23,12 @@ const trpcClient = trpc.createClient({
   ],
 });
 
+/**
+ * Wraps children with tRPC and React Query providers so the app can access the shared tRPC client and React Query client.
+ *
+ * @param children - The React nodes to render inside the provider tree
+ * @returns The provider-wrapped element tree that supplies `trpcClient` and `queryClient` to descendants
+ */
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
