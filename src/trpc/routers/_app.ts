@@ -1,17 +1,21 @@
 import { z } from 'zod';
-import { baseProcedure, createTRPCRouter, protectedProcedure } from '../init';
+import { createTRPCRouter, protectedProcedure } from '../init';
 import prisma from '@/lib/db';
+import { inngest } from '@/inngest/client';
 export const appRouter = createTRPCRouter({
-  getUsers: protectedProcedure.query(({ ctx }) => {
+  getWorflows: protectedProcedure.query(({ ctx }) => {
+    return prisma.workflow.findMany();
 
-    console.log({ userId: ctx.auth.user.id });
-    return prisma.user.findMany({
+  }),
+  createWorkflow: protectedProcedure.mutation(async () => {
 
-      where: {
-        id: ctx.auth.user.id,
-      },
-
-    });
+    await inngest.send({
+      name: "test/hello.world",
+      data: {
+        email: "dev@nodebase.ai"
+      }
+    })
+    return { success: true, message: "job-queued" }
   }),
 });
 
