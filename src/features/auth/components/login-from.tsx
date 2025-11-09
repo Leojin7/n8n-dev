@@ -34,6 +34,15 @@ const loginSchema = z.object({
 
 type LoginFormValues = z.infer<typeof loginSchema>
 
+/**
+ * Render a login form UI with client-side validation and sign-in handling.
+ *
+ * The form validates email and password using the configured schema, attempts
+ * to sign in via the auth client on submit, shows success or error toasts, and
+ * navigates to the root path on successful authentication.
+ *
+ * @returns A JSX element containing the login form and its controls
+ */
 export function LoginForm() {
   const router = useRouter();
 

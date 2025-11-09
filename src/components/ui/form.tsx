@@ -135,6 +135,17 @@ function FormDescription({ className, ...props }: React.ComponentProps<"p">) {
   )
 }
 
+/**
+ * Renders a form field message element that displays either the field's validation error message or the component's children.
+ *
+ * If the current field has a validation error, the error's `message` is shown; otherwise `children` are rendered. If neither exists, nothing is rendered.
+ *
+ * The rendered element is a `<p>` with `data-slot="form-message"` and an `id` derived from the surrounding form item context for accessibility.
+ *
+ * @param className - Optional additional CSS class names to apply to the paragraph
+ * @param props - Any other props forwarded to the underlying `<p>` element (e.g., `children`, `style`, event handlers)
+ * @returns A paragraph element containing the message, or `null` when there is no message to display
+ */
 function FormMessage({ className, ...props }: React.ComponentProps<"p">) {
   const { error, formMessageId } = useFormField()
   const body = error ? String(error?.message ?? "") : props.children
