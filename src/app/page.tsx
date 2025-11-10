@@ -10,11 +10,15 @@ const Page = () => {
 
   const trpc = useTRPC();
   const queryClient = useQueryClient();
-  const data = useQuery(trpc.getWorflows.queryOptions());
+  const data = useQuery(trpc.getWorkflows.queryOptions());
 
   const testAi = useMutation(trpc.testAi.mutationOptions({
     onSuccess: () => {
       toast.success("AI Job Queued");
+    },
+    onError: (error) => {
+      console.error("AI Job Error:", error);
+      toast.error("Failed to queue AI job. Please try again.");
     }
   }));
   const create = useMutation(trpc.createWorkflow.mutationOptions({

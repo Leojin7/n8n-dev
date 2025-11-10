@@ -4,17 +4,18 @@ import prisma from '@/lib/db';
 import { inngest } from '@/inngest/client';
 import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
+import { TRPCError } from '@trpc/server';
+import { logger } from 'better-auth';
 
 export const appRouter = createTRPCRouter({
   testAi: protectedProcedure.mutation(async () => {
-
     await inngest.send({
       name: "execute/ai",
     })
     return { success: true, message: "job-queued" };
   }),
 
-  getWorflows: protectedProcedure.query(({ ctx }) => {
+  getWorkflows: protectedProcedure.query(({ ctx }) => {
     return prisma.workflow.findMany();
 
   }),
