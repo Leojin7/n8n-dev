@@ -1,6 +1,9 @@
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import prisma from './db';
+import { checkout, polar, portal } from '@polar-sh/better-auth'
+
+import { polarClient } from './polar'
 
 interface SessionUser {
   id?: string;
@@ -28,6 +31,24 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: true,
   },
+  plugins: [
+    polar({
+      client: polarClient,
+      createCustomerOnSignUp: true,
+      use: [
+        checkout({
+          products: [{
+            productId: '3e7c19ec-fbab-42bd-89e3-2dac12008534',
+            slug: "pro",
+
+          }
+          ],
+          successUrl: process.env.POLAR_SUCCESS_URL,
+          authenticatedUsersOnly: true,
+        }),
+        portal(),
+      ],
+    })],
   session: {
     // @ts-ignore - better-auth types might be outdated
     strategy: 'jwt',

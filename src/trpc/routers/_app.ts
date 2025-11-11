@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { createTRPCRouter, protectedProcedure } from '../init';
+import { createTRPCRouter, protectedProcedure, premiumProcedure } from '../init';
 import prisma from '@/lib/db';
 import { inngest } from '@/inngest/client';
 import { google } from '@ai-sdk/google';
@@ -8,7 +8,7 @@ import { TRPCError } from '@trpc/server';
 import { logger } from 'better-auth';
 
 export const appRouter = createTRPCRouter({
-  testAi: protectedProcedure.mutation(async () => {
+  testAi: premiumProcedure.mutation(async () => {
     await inngest.send({
       name: "execute/ai",
     })
