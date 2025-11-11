@@ -85,12 +85,28 @@ export function LoginForm() {
                 <div className='flex flex-col gap-4'>
 
                   <Button variant='outline' className='w-full' disabled={isPending} type='button'>
-                    <Image src='logos/google.svg' alt='google' width={24} height={24} />
-                    Continue with Google
+                    <div className='w-6 h-6 relative'>
+                      <Image 
+                        src='/logos/google.svg' 
+                        alt='google' 
+                        fill 
+                        className='object-contain' 
+                        sizes='24px'
+                      />
+                    </div>
+                    <span className='ml-2'>Continue with Google</span>
                   </Button>
                   <Button variant='outline' className='w-full' disabled={isPending} type='button'>
-                    <Image src='logos/github.svg' alt='github' width={24} height={24} />
-                    Continue with Github
+                    <div className='w-6 h-6 relative'>
+                      <Image 
+                        src='/logos/github.svg' 
+                        alt='github' 
+                        fill 
+                        className='object-contain' 
+                        sizes='24px'
+                      />
+                    </div>
+                    <span className='ml-2'>Continue with Github</span>
                   </Button>
                 </div>
 

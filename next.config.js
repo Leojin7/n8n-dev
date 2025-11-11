@@ -1,7 +1,19 @@
 const { withSentryConfig } = require("@sentry/nextjs");
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+// https://localhost:3000/workflows
+const nextConfig = {
+  devIndicators: false,
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/workflows",
+        permanent: false,
+      },
+    ];
+  },
+};
 
 module.exports = withSentryConfig(
   nextConfig,

@@ -13,7 +13,12 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Next.js App",
   description: "A modern Next.js application",
-  viewport: 'width=device-width, initial-scale=1',
+  metadataBase: new URL('http://localhost:3000'),
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
   themeColor: '#ffffff',
 };
 
