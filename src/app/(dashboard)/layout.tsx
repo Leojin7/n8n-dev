@@ -5,8 +5,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset className='bg-accent/20' />
-      {children}
+      <SidebarInset className='bg-accent/20'>
+        {children}
+      </SidebarInset>
     </SidebarProvider>
   );
 };
