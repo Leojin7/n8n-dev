@@ -31,6 +31,7 @@ import {
 } from '@components/ui/sidebar';
 // import { title } from 'process'; // Removed: Unnecessary import
 import { authClient } from '@/lib/auth-client';
+import { useHasActiveSubscription } from '@/features/subscriptions/hooks/use-subscription';
 const menuItems = [
   {
     title: "Workflows",
@@ -58,6 +59,8 @@ export const AppSidebar = () => {
 
   const pathname = usePathname();
   const router = useRouter();
+  const { hasActiveSubscription, isLoading } = useHasActiveSubscription();
+
   return (
     <Sidebar collapsible='icon'>
       <SidebarHeader>
@@ -99,21 +102,23 @@ export const AppSidebar = () => {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              tooltip='Upgrade to Pro'
-              className='group gap-x-4 h-10 px-4 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-md'
-              onClick={() => { }}
-            >
-              <StarIcon className='h-4 w-4 transition-transform group-hover:scale-110' />
-              <span className='transition-colors group-hover:text-primary'>Upgrade to Pro</span>
-            </SidebarMenuButton>
+            {!hasActiveSubscription && !isLoading && (
+              <SidebarMenuButton
+                tooltip='Upgrade to Pro'
+                className='group gap-x-4 h-10 px-4 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-md'
+                onClick={() => authClient.checkout({ slug: 'pro' })}
+              >
+                <StarIcon className='h-4 w-4 transition-transform group-hover:scale-110' />
+                <span className='transition-colors group-hover:text-primary'>Upgrade to Pro</span>
+              </SidebarMenuButton>
+            )}
           </SidebarMenuItem>
 
           <SidebarMenuItem>
             <SidebarMenuButton
               tooltip='Billing Portal'
               className='group gap-x-4 h-10 px-4 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-md'
-              onClick={() => { }}
+              onClick={() => authClient.customer.portal()}
             >
               <StarIcon className='h-4 w-4 transition-transform group-hover:scale-110' />
               <span className='transition-colors group-hover:text-primary'>Billing Portal</span>
