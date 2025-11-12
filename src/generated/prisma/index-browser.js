@@ -170,7 +170,10 @@ exports.Prisma.VerificationScalarFieldEnum = {
 
 exports.Prisma.WorkflowScalarFieldEnum = {
   id: 'id',
-  name: 'name'
+  name: 'name',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userID: 'userID'
 };
 
 exports.Prisma.SortOrder = {
