@@ -4,6 +4,7 @@ import { protectedProcedure } from "@/trpc/init";
 import prisma from "@/lib/db";
 import { z } from "zod";
 import { Search } from "lucide-react";
+import { PAGINATION } from "@/config/constants";
 
 export const workflowsRouter = createTRPCRouter({
   create: premiumProcedure.mutation(({ ctx }) => {
@@ -51,21 +52,58 @@ export const workflowsRouter = createTRPCRouter({
   }),
 
 
-  getMany: protectedProcedure.input(z.object({ search: z.string().optional() })).query(({ ctx, input }) => {
-    return prisma.workflow.findMany({
-      where: {
-        userID: ctx.auth.user.id,
-        ...(input?.search && {
+  getMany: protectedProcedure.input(z.object({
+    page: z.number().default(PAGINATION.DEFAULT_PAGE), pageSize:
+      z.number()
+        .min(PAGINATION.MIN_PAGE_SIZE)
+        .max(PAGINATION.MAX_PAGE_SIZE)
+        .default(PAGINATION.DEFAULT_PAGE_SIZE), search: z.string().default(""),
+  })).query(async ({ ctx, input }) => {
+
+    const { page, pageSize, search } = input;
+    const [item, totalCount] = await Promise.all([
+      prisma.workflow.findMany({
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+        where: {
+          userID: ctx.auth.user.id,
+          ...(search && {
+            name: {
+              contains: search,
+              mode: 'insensitive',
+            },
+          }),
+        },
+        orderBy: {
+          updatedAt: 'desc',
+        },
+      }),
+      prisma.workflow.count({
+        where: {
+          userID: ctx.auth.user.id,
           name: {
-            contains: input.search,
+            contains: search,
             mode: 'insensitive',
           },
-        }),
-      },
-      orderBy: {
-        updatedAt: 'desc',
-      },
-    });
+
+        },
+      })
+    ]);
+
+
+    const totalPages = Math.ceil(totalCount / pageSize);
+    const hasPreviousPage = page > PAGINATION.DEFAULT_PAGE;
+    const hasNextPage = page < totalPages;
+    return {
+      item,
+      page,
+      pageSize,
+      search,
+      totalCount,
+      totalPages,
+      hasPreviousPage,
+      hasNextPage,
+    };
   }),
 
 });
