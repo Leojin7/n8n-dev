@@ -4,6 +4,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { TRPCReactProvider } from '../trpc/client';
 import { Toaster } from 'sonner';
+import { NuqsAdapter } from "nuqs/adapters/next/app";
+
 const inter = Inter({
   subsets: ["latin"],
   variable: '--font-inter',
@@ -31,9 +33,12 @@ export default function RootLayout({
     <html lang="en" className="h-full">
       <body className={`${inter.variable} font-sans h-full bg-white text-gray-900`}>
         <div className="min-h-full">
+
           <TRPCReactProvider>
-            {children}
-            <Toaster />
+            <NuqsAdapter>
+              {children}
+              <Toaster />
+            </NuqsAdapter>
           </TRPCReactProvider>
         </div>
       </body>
