@@ -37,18 +37,20 @@ export const workflowsRouter = createTRPCRouter({
       },
       data: {
         name: input.name
-      }
+      },
     });
   }),
 
 
-  getOne: protectedProcedure.input(z.object({ id: z.string() })).query(({ ctx, input }) => {
-    return prisma.workflow.findUnique({
+  getOne: protectedProcedure.input(z.object({ id: z.string() })).query(async ({ ctx, input }) => {
+    const workflow = await prisma.workflow.findUniqueOrThrow({
       where: {
         id: input.id,
         userID: ctx.auth.user.id
       }
-    });
+    })
+
+    return workflow;
   }),
 
 
