@@ -9,7 +9,7 @@ export const EditorLoading = () => {
 }
 
 export const EditorError = () => {
-  return <ErrorView message="Error loafing editor" />
+  return <ErrorView message="Error loading editor" />
 }
 
 export const Editor = ({ workflowId }: { workflowId: string }) => {
