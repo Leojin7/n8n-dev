@@ -9,6 +9,8 @@ import { headers } from 'next/headers';
 import { auth } from '@/lib/auth';
 import { QueryClient, dehydrate } from '@tanstack/react-query';
 import { workflowsParamsLoader } from '@/features/workflows/server/params-loader';
+import { WorkflowsLoading, WorkflowsError } from '@/features/workflows/components/workflows';
+
 type Props = {
   searchParams: Promise<SearchParams>
 }
@@ -24,8 +26,8 @@ const Page = async ({ searchParams }: Props) => {
   return (
     <WorkflowsContainer>
       <HydrateClient>
-        <ErrorBoundary fallback={<p>Something went wrong loading workflows</p>}>
-          <Suspense fallback={<p>Loading workflows...</p>}>
+        <ErrorBoundary fallback={<WorkflowsError />}>
+          <Suspense fallback={<WorkflowsLoading />}>
             <WorkflowsList />
           </Suspense>
         </ErrorBoundary>

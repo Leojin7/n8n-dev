@@ -3,7 +3,7 @@ import { cache } from 'react';
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
 import { polarClient } from '@/lib/polar';
-
+import superjson from 'superjson';
 // Define types for the context
 type User = {
   id: string;
@@ -43,7 +43,7 @@ type Context = Awaited<ReturnType<typeof createTRPCContext>>;
 
 const t = initTRPC.context<Context>().create({
   // Optional: Add any custom configuration here
-  // transformer: superjson,
+  transformer: superjson,
 });
 
 // Base router and procedure helpers
