@@ -53,17 +53,19 @@ export type Connection = $Result.DefaultSelection<Prisma.$ConnectionPayload>
  * Enums
  */
 export namespace $Enums {
-  export const NodeTypes: {
-  INITIAL: 'INITIAL'
+  export const NodeType: {
+  INITIAL: 'INITIAL',
+  MANUAL_TRIGGER: 'MANUAL_TRIGGER',
+  HTTP_REQUEST: 'HTTP_REQUEST'
 };
 
-export type NodeTypes = (typeof NodeTypes)[keyof typeof NodeTypes]
+export type NodeType = (typeof NodeType)[keyof typeof NodeType]
 
 }
 
-export type NodeTypes = $Enums.NodeTypes
+export type NodeType = $Enums.NodeType
 
-export const NodeTypes: typeof $Enums.NodeTypes
+export const NodeType: typeof $Enums.NodeType
 
 /**
  * ##  Prisma Client ʲˢ
@@ -6408,7 +6410,7 @@ export namespace Prisma {
     id: string | null
     workflowId: string | null
     name: string | null
-    type: $Enums.NodeTypes | null
+    type: $Enums.NodeType | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -6417,7 +6419,7 @@ export namespace Prisma {
     id: string | null
     workflowId: string | null
     name: string | null
-    type: $Enums.NodeTypes | null
+    type: $Enums.NodeType | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -6541,7 +6543,7 @@ export namespace Prisma {
     id: string
     workflowId: string
     name: string
-    type: $Enums.NodeTypes
+    type: $Enums.NodeType
     position: JsonValue
     data: JsonValue
     createdAt: Date
@@ -6624,7 +6626,7 @@ export namespace Prisma {
       id: string
       workflowId: string
       name: string
-      type: $Enums.NodeTypes
+      type: $Enums.NodeType
       position: Prisma.JsonValue
       data: Prisma.JsonValue
       createdAt: Date
@@ -7028,7 +7030,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Node", 'String'>
     readonly workflowId: FieldRef<"Node", 'String'>
     readonly name: FieldRef<"Node", 'String'>
-    readonly type: FieldRef<"Node", 'NodeTypes'>
+    readonly type: FieldRef<"Node", 'NodeType'>
     readonly position: FieldRef<"Node", 'Json'>
     readonly data: FieldRef<"Node", 'Json'>
     readonly createdAt: FieldRef<"Node", 'DateTime'>
@@ -8578,16 +8580,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'NodeTypes'
+   * Reference to a field of type 'NodeType'
    */
-  export type EnumNodeTypesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NodeTypes'>
+  export type EnumNodeTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NodeType'>
     
 
 
   /**
-   * Reference to a field of type 'NodeTypes[]'
+   * Reference to a field of type 'NodeType[]'
    */
-  export type ListEnumNodeTypesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NodeTypes[]'>
+  export type ListEnumNodeTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NodeType[]'>
     
 
 
@@ -8976,7 +8978,7 @@ export namespace Prisma {
     id?: StringFilter<"Node"> | string
     workflowId?: StringFilter<"Node"> | string
     name?: StringFilter<"Node"> | string
-    type?: EnumNodeTypesFilter<"Node"> | $Enums.NodeTypes
+    type?: EnumNodeTypeFilter<"Node"> | $Enums.NodeType
     position?: JsonFilter<"Node">
     data?: JsonFilter<"Node">
     createdAt?: DateTimeFilter<"Node"> | Date | string
@@ -9007,7 +9009,7 @@ export namespace Prisma {
     NOT?: NodeWhereInput | NodeWhereInput[]
     workflowId?: StringFilter<"Node"> | string
     name?: StringFilter<"Node"> | string
-    type?: EnumNodeTypesFilter<"Node"> | $Enums.NodeTypes
+    type?: EnumNodeTypeFilter<"Node"> | $Enums.NodeType
     position?: JsonFilter<"Node">
     data?: JsonFilter<"Node">
     createdAt?: DateTimeFilter<"Node"> | Date | string
@@ -9038,7 +9040,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Node"> | string
     workflowId?: StringWithAggregatesFilter<"Node"> | string
     name?: StringWithAggregatesFilter<"Node"> | string
-    type?: EnumNodeTypesWithAggregatesFilter<"Node"> | $Enums.NodeTypes
+    type?: EnumNodeTypeWithAggregatesFilter<"Node"> | $Enums.NodeType
     position?: JsonWithAggregatesFilter<"Node">
     data?: JsonWithAggregatesFilter<"Node">
     createdAt?: DateTimeWithAggregatesFilter<"Node"> | Date | string
@@ -9520,7 +9522,7 @@ export namespace Prisma {
   export type NodeCreateInput = {
     id?: string
     name: string
-    type: $Enums.NodeTypes
+    type: $Enums.NodeType
     position: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
@@ -9534,7 +9536,7 @@ export namespace Prisma {
     id?: string
     workflowId: string
     name: string
-    type: $Enums.NodeTypes
+    type: $Enums.NodeType
     position: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
@@ -9546,7 +9548,7 @@ export namespace Prisma {
   export type NodeUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    type?: EnumNodeTypesFieldUpdateOperationsInput | $Enums.NodeTypes
+    type?: EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
     position?: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9560,7 +9562,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     workflowId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    type?: EnumNodeTypesFieldUpdateOperationsInput | $Enums.NodeTypes
+    type?: EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
     position?: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9573,7 +9575,7 @@ export namespace Prisma {
     id?: string
     workflowId: string
     name: string
-    type: $Enums.NodeTypes
+    type: $Enums.NodeType
     position: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
@@ -9583,7 +9585,7 @@ export namespace Prisma {
   export type NodeUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    type?: EnumNodeTypesFieldUpdateOperationsInput | $Enums.NodeTypes
+    type?: EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
     position?: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9594,7 +9596,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     workflowId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    type?: EnumNodeTypesFieldUpdateOperationsInput | $Enums.NodeTypes
+    type?: EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
     position?: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10026,11 +10028,11 @@ export namespace Prisma {
     userID?: SortOrder
   }
 
-  export type EnumNodeTypesFilter<$PrismaModel = never> = {
-    equals?: $Enums.NodeTypes | EnumNodeTypesFieldRefInput<$PrismaModel>
-    in?: $Enums.NodeTypes[] | ListEnumNodeTypesFieldRefInput<$PrismaModel>
-    notIn?: $Enums.NodeTypes[] | ListEnumNodeTypesFieldRefInput<$PrismaModel>
-    not?: NestedEnumNodeTypesFilter<$PrismaModel> | $Enums.NodeTypes
+  export type EnumNodeTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.NodeType | EnumNodeTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.NodeType[] | ListEnumNodeTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NodeType[] | ListEnumNodeTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumNodeTypeFilter<$PrismaModel> | $Enums.NodeType
   }
   export type JsonFilter<$PrismaModel = never> = 
     | PatchUndefined<
@@ -10089,14 +10091,14 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type EnumNodeTypesWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.NodeTypes | EnumNodeTypesFieldRefInput<$PrismaModel>
-    in?: $Enums.NodeTypes[] | ListEnumNodeTypesFieldRefInput<$PrismaModel>
-    notIn?: $Enums.NodeTypes[] | ListEnumNodeTypesFieldRefInput<$PrismaModel>
-    not?: NestedEnumNodeTypesWithAggregatesFilter<$PrismaModel> | $Enums.NodeTypes
+  export type EnumNodeTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.NodeType | EnumNodeTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.NodeType[] | ListEnumNodeTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NodeType[] | ListEnumNodeTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumNodeTypeWithAggregatesFilter<$PrismaModel> | $Enums.NodeType
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumNodeTypesFilter<$PrismaModel>
-    _max?: NestedEnumNodeTypesFilter<$PrismaModel>
+    _min?: NestedEnumNodeTypeFilter<$PrismaModel>
+    _max?: NestedEnumNodeTypeFilter<$PrismaModel>
   }
   export type JsonWithAggregatesFilter<$PrismaModel = never> = 
     | PatchUndefined<
@@ -10475,8 +10477,8 @@ export namespace Prisma {
     connect?: ConnectionWhereUniqueInput | ConnectionWhereUniqueInput[]
   }
 
-  export type EnumNodeTypesFieldUpdateOperationsInput = {
-    set?: $Enums.NodeTypes
+  export type EnumNodeTypeFieldUpdateOperationsInput = {
+    set?: $Enums.NodeType
   }
 
   export type WorkflowUpdateOneRequiredWithoutNodeNestedInput = {
@@ -10732,21 +10734,21 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type NestedEnumNodeTypesFilter<$PrismaModel = never> = {
-    equals?: $Enums.NodeTypes | EnumNodeTypesFieldRefInput<$PrismaModel>
-    in?: $Enums.NodeTypes[] | ListEnumNodeTypesFieldRefInput<$PrismaModel>
-    notIn?: $Enums.NodeTypes[] | ListEnumNodeTypesFieldRefInput<$PrismaModel>
-    not?: NestedEnumNodeTypesFilter<$PrismaModel> | $Enums.NodeTypes
+  export type NestedEnumNodeTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.NodeType | EnumNodeTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.NodeType[] | ListEnumNodeTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NodeType[] | ListEnumNodeTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumNodeTypeFilter<$PrismaModel> | $Enums.NodeType
   }
 
-  export type NestedEnumNodeTypesWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.NodeTypes | EnumNodeTypesFieldRefInput<$PrismaModel>
-    in?: $Enums.NodeTypes[] | ListEnumNodeTypesFieldRefInput<$PrismaModel>
-    notIn?: $Enums.NodeTypes[] | ListEnumNodeTypesFieldRefInput<$PrismaModel>
-    not?: NestedEnumNodeTypesWithAggregatesFilter<$PrismaModel> | $Enums.NodeTypes
+  export type NestedEnumNodeTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.NodeType | EnumNodeTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.NodeType[] | ListEnumNodeTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NodeType[] | ListEnumNodeTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumNodeTypeWithAggregatesFilter<$PrismaModel> | $Enums.NodeType
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumNodeTypesFilter<$PrismaModel>
-    _max?: NestedEnumNodeTypesFilter<$PrismaModel>
+    _min?: NestedEnumNodeTypeFilter<$PrismaModel>
+    _max?: NestedEnumNodeTypeFilter<$PrismaModel>
   }
   export type NestedJsonFilter<$PrismaModel = never> = 
     | PatchUndefined<
@@ -11092,7 +11094,7 @@ export namespace Prisma {
   export type NodeCreateWithoutWorkflowInput = {
     id?: string
     name: string
-    type: $Enums.NodeTypes
+    type: $Enums.NodeType
     position: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
@@ -11104,7 +11106,7 @@ export namespace Prisma {
   export type NodeUncheckedCreateWithoutWorkflowInput = {
     id?: string
     name: string
-    type: $Enums.NodeTypes
+    type: $Enums.NodeType
     position: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
@@ -11205,7 +11207,7 @@ export namespace Prisma {
     id?: StringFilter<"Node"> | string
     workflowId?: StringFilter<"Node"> | string
     name?: StringFilter<"Node"> | string
-    type?: EnumNodeTypesFilter<"Node"> | $Enums.NodeTypes
+    type?: EnumNodeTypeFilter<"Node"> | $Enums.NodeType
     position?: JsonFilter<"Node">
     data?: JsonFilter<"Node">
     createdAt?: DateTimeFilter<"Node"> | Date | string
@@ -11447,7 +11449,7 @@ export namespace Prisma {
   export type NodeCreateWithoutOutputConnectionsInput = {
     id?: string
     name: string
-    type: $Enums.NodeTypes
+    type: $Enums.NodeType
     position: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
@@ -11460,7 +11462,7 @@ export namespace Prisma {
     id?: string
     workflowId: string
     name: string
-    type: $Enums.NodeTypes
+    type: $Enums.NodeType
     position: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
@@ -11476,7 +11478,7 @@ export namespace Prisma {
   export type NodeCreateWithoutInputConnectionsInput = {
     id?: string
     name: string
-    type: $Enums.NodeTypes
+    type: $Enums.NodeType
     position: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
@@ -11489,7 +11491,7 @@ export namespace Prisma {
     id?: string
     workflowId: string
     name: string
-    type: $Enums.NodeTypes
+    type: $Enums.NodeType
     position: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
@@ -11545,7 +11547,7 @@ export namespace Prisma {
   export type NodeUpdateWithoutOutputConnectionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    type?: EnumNodeTypesFieldUpdateOperationsInput | $Enums.NodeTypes
+    type?: EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
     position?: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11558,7 +11560,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     workflowId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    type?: EnumNodeTypesFieldUpdateOperationsInput | $Enums.NodeTypes
+    type?: EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
     position?: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11580,7 +11582,7 @@ export namespace Prisma {
   export type NodeUpdateWithoutInputConnectionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    type?: EnumNodeTypesFieldUpdateOperationsInput | $Enums.NodeTypes
+    type?: EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
     position?: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11593,7 +11595,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     workflowId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    type?: EnumNodeTypesFieldUpdateOperationsInput | $Enums.NodeTypes
+    type?: EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
     position?: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11736,7 +11738,7 @@ export namespace Prisma {
   export type NodeCreateManyWorkflowInput = {
     id?: string
     name: string
-    type: $Enums.NodeTypes
+    type: $Enums.NodeType
     position: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
@@ -11756,7 +11758,7 @@ export namespace Prisma {
   export type NodeUpdateWithoutWorkflowInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    type?: EnumNodeTypesFieldUpdateOperationsInput | $Enums.NodeTypes
+    type?: EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
     position?: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11768,7 +11770,7 @@ export namespace Prisma {
   export type NodeUncheckedUpdateWithoutWorkflowInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    type?: EnumNodeTypesFieldUpdateOperationsInput | $Enums.NodeTypes
+    type?: EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
     position?: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11780,7 +11782,7 @@ export namespace Prisma {
   export type NodeUncheckedUpdateManyWithoutWorkflowInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    type?: EnumNodeTypesFieldUpdateOperationsInput | $Enums.NodeTypes
+    type?: EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
     position?: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

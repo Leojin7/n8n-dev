@@ -13,7 +13,7 @@ export const AddNodeButton = memo(() => {
       className="bg-background"
       onClick={() => setShowMenu(!showMenu)}
     >
-      <PlusIcon className="mr-2 h-4 w-4" />
+      <PlusIcon />
     </Button>
   );
 });

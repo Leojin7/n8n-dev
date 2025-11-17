@@ -6,7 +6,7 @@ import prisma from "@/lib/db";
 import { z } from "zod";
 import { Search } from "lucide-react";
 import { PAGINATION } from "@/config/constants";
-import { NodeTypes } from "@/generated/prisma";
+import { NodeType } from "@/generated/prisma";
 
 export const workflowsRouter = createTRPCRouter({
   create: premiumProcedure.mutation(({ ctx }) => {
@@ -18,8 +18,8 @@ export const workflowsRouter = createTRPCRouter({
         userID: ctx.auth.user.id,
         node: {
           create: {
-            name: NodeTypes.INITIAL,
-            type: NodeTypes.INITIAL,
+            name: NodeType.INITIAL,
+            type: NodeType.INITIAL,
             position: { x: 0, y: 0 },
           },
         },

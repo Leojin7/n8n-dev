@@ -80,3 +80,8 @@ model Workflow {
 
   user User @relation(fields: [userID], references: [id], onDelete: Cascade)
 }
+
+enum NodeTypes {
+  INITIAL
+  // ... other node types
+}
