@@ -1,10 +1,12 @@
 import { createTRPCRouter, premiumProcedure } from "@/trpc/init";
+import { generateSlug } from "@/utils/generate-slug";
 import { protectedProcedure } from "@/trpc/init";
-
+import type { Node, Edge } from "@xyflow/react";
 import prisma from "@/lib/db";
 import { z } from "zod";
 import { Search } from "lucide-react";
 import { PAGINATION } from "@/config/constants";
+import { NodeTypes } from "@/generated/prisma";
 
 export const workflowsRouter = createTRPCRouter({
   create: premiumProcedure.mutation(({ ctx }) => {
@@ -12,12 +14,17 @@ export const workflowsRouter = createTRPCRouter({
 
 
       data: {
-        name: "New Workflow",
-        userID: ctx.auth.user.id
+        name: generateSlug(3),
+        userID: ctx.auth.user.id,
+        node: {
+          create: {
+            name: NodeTypes.INITIAL,
+            type: NodeTypes.INITIAL,
+            position: { x: 0, y: 0 },
+          },
+        },
       },
     });
-
-
   }),
 
   remove: protectedProcedure.input(z.object({ id: z.string() })).mutation(({ ctx, input }) => {
@@ -47,10 +54,39 @@ export const workflowsRouter = createTRPCRouter({
       where: {
         id: input.id,
         userID: ctx.auth.user.id
+      }, include: {
+        node: true,
+        connections: true,
+      }
+    });
+    const nodes: Node[] = workflow.node.map(node => {
+      return {
+        id: node.id,
+        type: node.type,
+        name: node.name,
+        data: (node.data as Record<string, unknown>) || {},
+        position: node.position as { x: number; y: number },
+
+      }
+    });
+    const edges: Edge[] = workflow.connections.map(connection => {
+      return {
+        id: connection.id,
+        source: connection.fromNodeId,
+        sourceHandle: connection.fromOutput,
+        target: connection.toNodeId,
+        targetHandle: connection.toInput,
+        markerEnd: "Arrow",
+        markerStart: "Arrow",
+
       }
     })
-
-    return workflow;
+    return {
+      id: workflow.id,
+      name: workflow.name,
+      nodes,
+      edges,
+    };
   }),
 
 

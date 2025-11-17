@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --sidebar-width: 16rem; /* Default width */
+}
+
+/* For mobile */
+@media (max-width: 768px) {
+  :root {
+    --sidebar-width: 0px; /* Collapsed by default on mobile */
+  }
+  
+  [data-state="open"] {
+    --sidebar-width: 16rem; /* Show sidebar when open */
+  }
+}
+
+/* Ensure the sidebar has proper z-index and transition */
+[data-sidebar] {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 50;
+  width: var(--sidebar-width);
+  transition: width 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+/* Add smooth transition for content area */
+[data-sidebar-inset] {
+  transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out;
+}
