@@ -8,9 +8,9 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  // Ignore all ESLint errors
-  eslint: {
-    ignoreDuringBuilds: true,
+  experimental: {
+    // Force using the WASM version of SWC
+    forceSwcTransforms: true,
   },
   // Disable error overlay
   webpack: (config, { isServer }) => {

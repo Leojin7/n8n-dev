@@ -2,36 +2,32 @@
 
 import type { NodeProps } from "@xyflow/react";
 import { PlusIcon } from "lucide-react";
-import { memo } from "react";
+import { memo, useState } from "react";
 import { PlaceholderNode } from "./react-flow/placeholder-node";
 import { WorkflowNode } from "./workflow-node";
+import { NodeSelector } from "./node-selector";
 
-export const InitialNode = memo(({ data, ...props }: NodeProps) => {
-  const handleSettings = () => {
-    console.log('Settings clicked');
+export const InitialNode = memo((props: NodeProps) => {
+  const [selectorOpen, setSelectorOpen] = useState(false);
 
-  };
-
-  const handleDelete = () => {
-    console.log('Delete clicked');
-    // Add your delete logic here
-  };
 
   return (
-    <WorkflowNode showToolbar={false}
-    >
-      <PlaceholderNode
-        {...props}
-        onClick={() => {
-          console.log('Node clicked');
-
-        }}
+    <NodeSelector open={selectorOpen} onOpenChange={setSelectorOpen}>
+      <WorkflowNode showToolbar={false}
       >
-        <div className="flex items-center justify-center">
-          <PlusIcon className="size-5 text-primary" />
-        </div>
-      </PlaceholderNode>
-    </WorkflowNode>
+        <PlaceholderNode
+          {...props}
+          onClick={() => {
+            setSelectorOpen(true);
+
+          }}
+        >
+          <div className="flex items-center justify-center">
+            <PlusIcon className="size-5 text-primary" />
+          </div>
+        </PlaceholderNode>
+      </WorkflowNode>
+    </NodeSelector>
   );
 });
 
