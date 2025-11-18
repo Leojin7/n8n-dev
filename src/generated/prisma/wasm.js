@@ -222,8 +222,10 @@ exports.Prisma.JsonNullValueFilter = {
   JsonNull: Prisma.JsonNull,
   AnyNull: Prisma.AnyNull
 };
-exports.NodeTypes = exports.$Enums.NodeTypes = {
-  INITIAL: 'INITIAL'
+exports.NodeType = exports.$Enums.NodeType = {
+  INITIAL: 'INITIAL',
+  MANUAL_TRIGGER: 'MANUAL_TRIGGER',
+  HTTP_REQUEST: 'HTTP_REQUEST'
 };
 
 exports.Prisma.ModelName = {
