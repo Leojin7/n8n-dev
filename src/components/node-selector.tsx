@@ -87,11 +87,11 @@ export function NodeSelector({
 
     setNodes((nodes) => {
       const hasInitialTrigger = nodes.some((node) => node.type === NodeType.INITIAL);
-  // Use client-provided window size when available, otherwise fall back to safe defaults
-  const w = width ?? 800; // safe fallback for server render
-  const h = height ?? 600; // safe fallback for server render
-  const centerX = w / 2;
-  const centerY = h / 2;
+      // Use client-provided window size when available, otherwise fall back to safe defaults
+      const w = width ?? 800; // safe fallback for server render
+      const h = height ?? 600; // safe fallback for server render
+      const centerX = w / 2;
+      const centerY = h / 2;
       const flowPosition = screenToFlowPosition({
         x: centerX + (Math.random() - 0.5) * 200,
         y: centerY + (Math.random() - 0.5) * 200
