@@ -121,7 +121,9 @@ export function NodeSelector({
     setNodes,
     getNodes,
     screenToFlowPosition,
-    onOpenChange
+    onOpenChange,
+    width,
+    height
   ])
 
   return (
