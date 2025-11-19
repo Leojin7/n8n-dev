@@ -8,12 +8,11 @@ import { NodeSelector } from "@/components/node-selector";
 export const AddNodeButton = memo(() => {
   const [showMenu, setShowMenu] = useState(false);
   return (
-    <NodeSelector open={showMenu} onOpenChange={() => setShowMenu(!showMenu)}>
+    <NodeSelector open={showMenu} onOpenChange={setShowMenu}>
       <Button
         variant="outline"
         size="icon"
         className="bg-background"
-        onClick={() => setShowMenu(!showMenu)}
       >
         <PlusIcon />
       </Button>

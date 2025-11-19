@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 
 import { useCallback } from "react";
+import { useWindowSize } from "@/hooks/use-window-size";
 
 import {
 
@@ -71,6 +72,7 @@ export function NodeSelector({
   open, onOpenChange, children
 }: NodeSelectorProps) {
   const { setNodes, getNodes, screenToFlowPosition } = useReactFlow();
+  const { width, height } = useWindowSize();
 
   const handleNodeSelect = useCallback((selection: NodeTypeOption) => {
     if (selection.type === NodeType.MANUAL_TRIGGER) {
@@ -85,8 +87,11 @@ export function NodeSelector({
 
     setNodes((nodes) => {
       const hasInitialTrigger = nodes.some((node) => node.type === NodeType.INITIAL);
-      const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight / 2;
+  // Use client-provided window size when available, otherwise fall back to safe defaults
+  const w = width ?? 800; // safe fallback for server render
+  const h = height ?? 600; // safe fallback for server render
+  const centerX = w / 2;
+  const centerY = h / 2;
       const flowPosition = screenToFlowPosition({
         x: centerX + (Math.random() - 0.5) * 200,
         y: centerY + (Math.random() - 0.5) * 200
@@ -99,8 +104,15 @@ export function NodeSelector({
 
       };
       if (hasInitialTrigger) {
-        return [newNode];
+        // If we're adding an INITIAL node, remove existing INITIAL nodes and append the new one
+        if (selection.type === NodeType.INITIAL) {
+          return [...nodes.filter((n) => n.type !== NodeType.INITIAL), newNode];
+        }
+
+        // If adding a non-INITIAL node while an INITIAL exists, replace only the INITIAL node
+        return nodes.map((n) => (n.type === NodeType.INITIAL ? newNode : n));
       }
+
       return [...nodes, newNode];
 
     });
