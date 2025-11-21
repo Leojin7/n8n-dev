@@ -4,7 +4,7 @@ import { SidebarTrigger } from "@components/ui/sidebar";
 import { SaveIcon } from "lucide-react";
 import { Button } from "@components/ui/button";
 
-import { useSuspenseWorkflow, useUpdateWorkflowName } from "@/features/workflows/hooks/use-workflows";
+import { useSuspenseWorkflow, useUpdateWorkflowName, useUpdateWorkflow } from "@/features/workflows/hooks/use-workflows";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -16,16 +16,57 @@ import {
 import { Input } from "@components/ui/input";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useAtomValue } from "jotai";
+import { editorAtom } from "../store/atoms";
+
+
 export const EditorSaveButton = ({ workflowId }: { workflowId: string }) => {
+
+  const editor = useAtomValue(editorAtom);
+  const { data: workflow } = useSuspenseWorkflow(workflowId);
+  const saveWorkflow = useUpdateWorkflow();
+  const handleSave = async () => {
+    if (!editor || !workflow) {
+      return;
+    }
+    const editorNodes = editor.getNodes();
+    const editorEdges = editor.getEdges();
+
+    // Normalize nodes to match the schema (ensure type is present)
+    const nodes = editorNodes
+      .filter((n) => n.type)
+      .map((n) => ({
+        id: n.id,
+        type: n.type!,
+        position: n.position,
+        data: (n.data as Record<string, any>) || {},
+      }));
+
+    // Normalize edges to match the schema
+    const edges = editorEdges.map((e) => ({
+      source: e.source,
+      target: e.target,
+      sourceHandle: e.sourceHandle || undefined,
+      targetHandle: e.targetHandle || undefined,
+    }));
+
+    saveWorkflow.mutate({
+      id: workflowId,
+      name: workflow.name,
+      nodes,
+      edges,
+    });
+  }
   return (
     <div className="ml-auto flex items-center gap-2">
-      <Button size="sm" onClick={() => { }} disabled={false}>
-
-        <SaveIcon />
+      <Button
+        size="sm"
+        onClick={handleSave}
+        disabled={saveWorkflow.isPending}
+      >
+        <SaveIcon className="size-4" />
         <p>Save</p>
-
       </Button>
-
     </div>
   );
 
