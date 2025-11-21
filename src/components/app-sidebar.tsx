@@ -2,15 +2,13 @@
 
 import Image from 'next/image';
 import {
-  // CreditCardIcon, // Not used in current menuItems
+  CreditCardIcon,
   KeyIcon,
   StarIcon,
   FolderOpenIcon,
   HistoryIcon,
-  LogOutIcon,    // Not used in current menuItems
-  // KeyIcon,        // Not used in current menuItems
-  // LogOutIcon,     // Not used in current menuItems
-  // StarIcon,       // Not used in current menuItems
+  LogOutIcon,
+  // BrickWallIcon,    // previously used for Billing Portal
 } from 'lucide-react';
 // import Image from 'next/image'; // Not used
 import Link from 'next/link';
@@ -120,7 +118,7 @@ export const AppSidebar = () => {
               className='group gap-x-4 h-10 px-4 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-md'
               onClick={() => authClient.customer.portal()}
             >
-              <StarIcon className='h-4 w-4 transition-transform group-hover:scale-110' />
+              <CreditCardIcon className='h-4 w-4 transition-transform group-hover:scale-110' />
               <span className='transition-colors group-hover:text-primary'>Billing Portal</span>
             </SidebarMenuButton>
           </SidebarMenuItem>

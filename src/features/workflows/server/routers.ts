@@ -3,10 +3,13 @@ import { generateSlug } from "@/utils/generate-slug";
 import { protectedProcedure } from "@/trpc/init";
 import type { Node, Edge } from "@xyflow/react";
 import prisma from "@/lib/db";
-import { z } from "zod";
+import { unknown, z } from "zod";
 import { Search } from "lucide-react";
 import { PAGINATION } from "@/config/constants";
 import { NodeType } from "@/generated/prisma";
+
+import { nodeComponents } from "@/config/node-components";
+
 
 export const workflowsRouter = createTRPCRouter({
   create: premiumProcedure.mutation(({ ctx }) => {
@@ -32,9 +35,84 @@ export const workflowsRouter = createTRPCRouter({
       where: {
         id: input.id,
         userID: ctx.auth.user.id
-      }
-    });
+      },
+    })
   }),
+
+  update: protectedProcedure.input(z.object({
+    id: z.string(),
+    name: z.string().min(1).optional(),
+    nodes: z.array(z.object({
+      id: z.string(),
+      type: z.nativeEnum(NodeType),
+      position: z.object({
+        x: z.number(),
+        y: z.number()
+      }),
+      data: z.record(z.string(), z.any()).optional(),
+    })),
+    edges: z.array(z.object({
+      source: z.string(),
+      target: z.string(),
+      sourceHandle: z.string().nullish(),
+      targetHandle: z.string().nullish(),
+    })),
+  })).mutation(async ({ ctx, input }) => {
+    const { id, name, nodes, edges } = input;
+
+    // Verify workflow exists and user has access
+    await prisma.workflow.findUniqueOrThrow({
+      where: { id, userID: ctx.auth.user.id }
+    });
+
+    return await prisma.$transaction(async (tx) => {
+      // Delete existing nodes and connections
+      await Promise.all([
+        tx.node.deleteMany({ where: { workflowId: id } }),
+        tx.connection.deleteMany({ where: { workflowId: id } })
+      ]);
+
+      // Create new nodes with proper typing
+      await tx.node.createMany({
+        data: nodes.map((node) => ({
+          id: node.id,
+          workflowId: id,
+          name: node.type,
+          type: node.type,
+          position: node.position,
+          data: node.data || {},
+        }))
+      });
+
+      // Create new connections
+      if (edges.length > 0) {
+        await tx.connection.createMany({
+          data: edges.map((edge) => ({
+            workflowId: id,
+            fromNodeId: edge.source,
+            toNodeId: edge.target,
+            fromOutput: edge.sourceHandle || "main",
+            toInput: edge.targetHandle || "main",
+          }))
+        });
+      }
+
+      // Update workflow with new name and timestamp
+      return await tx.workflow.update({
+        where: { id },
+        data: {
+          ...(name && { name }),
+          updatedAt: new Date(),
+        },
+        include: {
+          node: true,
+          connections: true,
+        },
+      });
+    });
+
+  }),
+
 
   updateName: protectedProcedure.input(z.object({ id: z.string(), name: z.string().min(1) })).mutation(({ ctx, input }) => {
     return prisma.workflow.update({
@@ -62,6 +140,7 @@ export const workflowsRouter = createTRPCRouter({
     const nodes: Node[] = workflow.node.map(node => {
       return {
         id: node.id,
+
         type: node.type,
         name: node.name,
         data: (node.data as Record<string, unknown>) || {},
@@ -143,5 +222,4 @@ export const workflowsRouter = createTRPCRouter({
       hasNextPage,
     };
   }),
-
 });
