@@ -85,7 +85,7 @@ export const HttpRequestDialog = ({
     } catch (error) {
       console.error('Error in form submission:', error);
       toast.error(error instanceof Error ? error.message : 'Failed to save configuration');
-      throw error;
+      // Error is logged and shown in toast, no need to re-throw
     }
   }
 
