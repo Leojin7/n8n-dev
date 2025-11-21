@@ -31,6 +31,7 @@ import { useEffect, useState } from "react";
 
 import { useReactFlow } from "@xyflow/react";
 import { on } from "events";
+import { toast } from "sonner";
 const formSchema = z.object({
   method: z.enum(["GET", "POST", "PUT", "DELETE", "PATCH"]),
   endpoint: z.string().url({ message: "Please enter a valid URL" }),
@@ -83,7 +84,7 @@ export const HttpRequestDialog = ({
       onOpenChange(false);
     } catch (error) {
       console.error('Error in form submission:', error);
-      // The error will be caught by react-hook-form and shown in the form
+      toast.error(error instanceof Error ? error.message : 'Failed to save configuration');
       throw error;
     }
   }
