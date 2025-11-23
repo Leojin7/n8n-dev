@@ -4,14 +4,37 @@ import { protectedProcedure } from "@/trpc/init";
 import type { Node, Edge } from "@xyflow/react";
 import prisma from "@/lib/db";
 import { unknown, z } from "zod";
-import { Search } from "lucide-react";
+import { CarTaxiFront, Search } from "lucide-react";
 import { PAGINATION } from "@/config/constants";
 import { NodeType } from "@/generated/prisma";
 
 import { nodeComponents } from "@/config/node-components";
+import { inngest } from "@/inngest/client";
 
 
 export const workflowsRouter = createTRPCRouter({
+  execute: protectedProcedure.input(z.object({ id: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+
+      const workflow = await prisma.workflow.findUniqueOrThrow({
+        where: {
+          id: input.id,
+          userID: ctx.auth.user.id,
+        }
+      });
+
+      await inngest.send({
+
+        name: "workflows/execute.workflow",
+        data: {
+          workflowId: input.id,
+          initialData: {}
+          ,
+        }
+      })
+
+      return workflow;
+    }),
   create: premiumProcedure.mutation(({ ctx }) => {
     return prisma.workflow.create({
 

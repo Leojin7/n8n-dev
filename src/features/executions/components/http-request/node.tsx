@@ -6,13 +6,13 @@ import { memo, useState } from "react";
 import { toast } from "sonner";
 import { BaseExecutionNode } from "../base-execution-node";
 import { HttpRequestDialog } from "./dialog";
-import { FormType } from "./dialog";
+import { HttpRequestFormValues } from "./dialog";
 
 type HttpRequestNodeData = {
   endpoint?: string;
   method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
   body?: string;
-  [key: string]: unknown;
+
 };
 
 type HttpRequestNodeType = Node<HttpRequestNodeData>;
@@ -26,7 +26,7 @@ export const HttpsRequestNode = memo((props: NodeProps<HttpRequestNodeType>) => 
   const handleOpenSettings = () => {
     setDialogOpen(true);
   }
-  const handleSubmit = async (values: FormType) => {
+  const handleSubmit = async (values: HttpRequestFormValues) => {
     try {
       console.log('Submitting form with values:', values);
 
@@ -38,9 +38,7 @@ export const HttpsRequestNode = memo((props: NodeProps<HttpRequestNodeType>) => 
               ...node,
               data: {
                 ...node.data,
-                endpoint: values.endpoint,
-                method: values.method,
-                body: values.body,
+                ...values,
                 lastUpdated: new Date().toISOString()
               }
             }
@@ -66,28 +64,7 @@ export const HttpsRequestNode = memo((props: NodeProps<HttpRequestNodeType>) => 
       throw error; // This will prevent the dialog from closing on error
     }
 
-    // If you want to make the actual HTTP request, you can uncomment this:
-    /*
-    try {
-      const response = await fetch(values.endpoint, {
-        method: values.method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        ...(values.body && { body: values.body }),
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      const data = await response.json();
-      console.log('Request successful:', data);
-    } catch (error) {
-      console.error('Error making request:', error);
-      throw error; // This will show an error in the form
-    }
-    */
+
   };
 
   const nodeData = props.data;
@@ -96,10 +73,11 @@ export const HttpsRequestNode = memo((props: NodeProps<HttpRequestNodeType>) => 
 
 
   return (
-    <>     <HttpRequestDialog open={dialogOpen} onOpenChange={setDialogOpen}
+    <>     <HttpRequestDialog
+      open={dialogOpen}
+      onOpenChange={setDialogOpen}
       onSubmit={handleSubmit}
-      defaultEndpoint={nodeData.endpoint}
-      defaultMethod={nodeData.method} defaultBody={nodeData.body} />
+      defaultValues={nodeData} />
       <BaseExecutionNode
         {...props}
         id={props.id}
