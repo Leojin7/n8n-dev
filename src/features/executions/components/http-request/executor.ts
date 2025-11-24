@@ -2,14 +2,20 @@ import type { NodeExecutor } from "@/features/executions/types";
 import { httpRequestChannel } from "@/inngest/channels/http-request";
 import { NonRetriableError } from "inngest";
 import ky, { type Options as KyOptions } from "ky";
+import Handlebars from "handlebars";
+import { json } from "zod";
 
-
+Handlebars.registerHelper("json", (context) => {
+  const jsonString = JSON.stringify(context, null, 2);
+  const safeString = new Handlebars.SafeString(jsonString);
+  return safeString;
+});
 type HttpRequestData = {
-  variableName?: string,
-  endpoint?: string;
-  method?: string;
+  variableName: string,
+  endpoint: string;
+  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   body?: string;
-}
+};
 
 export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({ data, nodeId, context, step, publish }) => {
   await publish(
@@ -77,29 +83,30 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({ data,
           [data.variableName]: responsePayload,
         };
       }
+    }
+    const response = await ky(endpoint, options);
+    const contentType = response.headers.get("content-type");
 
-      // Fallback to direct httpResponse for backward compatibility
-      return {
-        ...context,
-        ...responsePayload,
-      };
-    });
+    const responseData = contentType?.includes("application/json")
+      ? await response.json()
+      : await response.text();
 
-    await publish(
-      httpRequestChannel().status({
-        nodeId,
-        status: "success",
-      }),
-    );
 
-    return result;
-  } catch (e) {
-    await publish(
-      httpRequestChannel().status({
-        nodeId,
-        status: "error",
-      }),
-    );
-    throw e;
-  }
-};
+    const responsePayload = {
+      httpResponse: {
+        status: response.status,
+        statusText: response.statusText,
+        data: responseData,
+      },
+    };
+
+
+    return {
+      ...context,
+      [data.variableName]: responsePayload,
+    }
+
+  });
+
+  return result;
+}
