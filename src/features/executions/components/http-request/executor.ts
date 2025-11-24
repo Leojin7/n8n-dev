@@ -4,6 +4,7 @@ import ky, { type Options as KyOptions } from "ky";
 
 
 type HttpRequestData = {
+  variableName?: string,
   endpoint?: string;
   method?: string;
   body?: string;
@@ -12,7 +13,11 @@ type HttpRequestData = {
 export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({ data, nodeId, context, step }) => {
 
   if (!data.endpoint) {
-    throw new NonRetriableError("HTTP Request node: no Endpoint confihured")
+    throw new NonRetriableError("HTTP Request node: no Endpoint configured")
+  }
+
+  if (!data.variableName) {
+    throw new NonRetriableError("Variable Name not configured")
   }
 
 
@@ -26,7 +31,10 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({ data,
 
 
       options.body = data.body;
+      options.headers = {
 
+        "Content-Type": "application/json"
+      }
     }
     const response = await ky(endpoint, options);
     const contentType = response.headers.get("content-type");
@@ -34,13 +42,26 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({ data,
     const responseData = contentType?.includes("application/json")
       ? await response.json()
       : await response.text();
-    return {
-      ...context,
+
+
+    const responsePayload = {
       httpResponse: {
         status: response.status,
         statusText: response.statusText,
         data: responseData,
+      },
+    };
+    if (data.variableName) {
+      return {
+        ...context,
+        [data.variableName]: responsePayload,
       }
+    }
+    // this Time i am using fallback to direct httResponse for backward compaitibility
+    return {
+
+      ...context,
+      ...responsePayload,
     }
   });
 
