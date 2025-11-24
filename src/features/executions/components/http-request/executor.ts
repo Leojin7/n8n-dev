@@ -47,25 +47,27 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({ data,
     );
     throw new NonRetriableError("Variable Name not configured")
   }
-
   try {
-    const result = await step.run("http-request", async () => {
-      const endpoint = data.endpoint!;
-      const method = data.method || "GET";
-
+    const result = await step.run("http-request", async (): Promise<Record<string, unknown>> => {
+      const endpoint = Handlebars.compile(data.endpoint)(context);
+      const method = data.method;
       const options: KyOptions = { method };
 
       if (["POST", "PUT", "PATCH"].includes(method)) {
-        options.body = data.body;
+        const resolved = Handlebars.compile(data.body || "{}")(context);
+        JSON.parse(resolved);
+        options.body = resolved;
         options.headers = {
-          "Content-Type": "application/json"
+          ...options.headers,
+          "Content-Type": "application/json",
         };
       }
 
-      const response = await ky(endpoint, options);
-      const contentType = response.headers.get("content-type");
 
-      const responseData = contentType?.includes("application/json")
+      const response = await ky(endpoint, options);
+      const contentType = response.headers.get("content-type") || "";
+
+      const responseData = contentType.includes("application/json")
         ? await response.json()
         : await response.text();
 
@@ -77,36 +79,32 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({ data,
         },
       };
 
-      if (data.variableName) {
-        return {
-          ...context,
-          [data.variableName]: responsePayload,
-        };
-      }
-    }
-    const response = await ky(endpoint, options);
-    const contentType = response.headers.get("content-type");
+      return {
+        ...context,
+        [data.variableName]: responsePayload,
+      };
 
-    const responseData = contentType?.includes("application/json")
-      ? await response.json()
-      : await response.text();
+    });
 
-
-    const responsePayload = {
-      httpResponse: {
-        status: response.status,
-        statusText: response.statusText,
-        data: responseData,
-      },
-    };
+    await publish(
+      httpRequestChannel().status({
+        nodeId,
+        status: "success",
+      }),
+    );
 
 
-    return {
-      ...context,
-      [data.variableName]: responsePayload,
-    }
+    return result;
+  }
+  catch (e) {
+    await publish(
+      httpRequestChannel().status({
+        nodeId,
+        status: "error",
+      }),
+    );
+    throw e;
+  }
+};
 
-  });
 
-  return result;
-}
