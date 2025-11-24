@@ -34,9 +34,9 @@ import { on } from "events";
 import { toast } from "sonner";
 import { Variable } from "lucide-react";
 const formSchema = z.object({
-  variableName: z.string().min(1, { message: "Varibale name is required" }).regex(/^[A-za-z_$][A-Za-z0-9_$]*$/, {
+  variableName: z.string().min(1, { message: "Variable name is required" }).regex(/^[A-Za-z_$][A-Za-z0-9_$]*$/, {
     message:
-      "Variable name must start with a letter or underscore and container only letters ,numbers and underscore",
+      "Variable name must start with a letter or underscore and contain only letters, numbers, and underscores",
   }),
   method: z.enum(["GET", "POST", "PUT", "DELETE", "PATCH"]),
   endpoint: z.string().url({ message: "Please enter a valid URL" }),
