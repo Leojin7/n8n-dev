@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "ngrok:dev": "ngrok http --url=contortively-nondeferable-jacquiline.ngrok-free.dev 3000",
     "postinstall": "prisma generate"
   },
   "dependencies": {

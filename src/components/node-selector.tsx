@@ -40,8 +40,15 @@ const triggerNodes: NodeTypeOption[] = [
   {
     type: NodeType.MANUAL_TRIGGER,
     label: "Manual Trigger",
-    description: "Runs the flow on clicking a button.Good for getting started Quick.",
+    description: "Runs the flow when clicking manual trigger a button.Good for getting started Quick.",
     icon: MousePointerIcon,
+  },
+
+  {
+    type: NodeType.GOOGLE_FORM_TRIGGER,
+    label: "Google Form",
+    description: "Runs the flow when a google form on clicking a button.Good for getting started Quick.",
+    icon: "/logos/googleform.svg"
   },
 
 ];
