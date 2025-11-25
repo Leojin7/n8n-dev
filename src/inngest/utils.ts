@@ -2,6 +2,7 @@ import { Connection } from "@xyflow/react";
 import toposort from "toposort";
 import { Node } from "@xyflow/react";
 import { BlockList } from "net";
+import { inngest } from "./client";
 
 
 export const topologicalSort = (nodes: Node[], connections: Connection[],): Node[] => {
@@ -44,4 +45,21 @@ export const topologicalSort = (nodes: Node[], connections: Connection[],): Node
 
   return sortedNodeIds.map((id) => nodeMap.get(id)!).filter(Boolean);
 
+};
+
+export const sendWorkflowExecution = async (data: {
+
+  workflowId: string;
+  [key: string]: any;
+
+}) => {
+
+  return inngest.send({
+
+    name: "workflows/execute.workflow",
+    data: {
+      workflowId: data.workflowId,
+      initialData: data.initialData || {} // Include any additional data
+    }
+  });
 };

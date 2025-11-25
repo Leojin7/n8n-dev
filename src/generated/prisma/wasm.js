@@ -225,7 +225,8 @@ exports.Prisma.JsonNullValueFilter = {
 exports.NodeType = exports.$Enums.NodeType = {
   INITIAL: 'INITIAL',
   MANUAL_TRIGGER: 'MANUAL_TRIGGER',
-  HTTP_REQUEST: 'HTTP_REQUEST'
+  HTTP_REQUEST: 'HTTP_REQUEST',
+  GOOGLE_FORM_TRIGGER: 'GOOGLE_FORM_TRIGGER'
 };
 
 exports.Prisma.ModelName = {
