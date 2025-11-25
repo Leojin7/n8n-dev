@@ -29,7 +29,8 @@ export const workflowsRouter = createTRPCRouter({
       });
       return workflowId;
     }),
-  create: premiumProcedure.mutation(({ ctx }) => {
+  // for enabling the creting of  workflows with polar subscription (change protected to premium procedure only)
+  create: protectedProcedure.mutation(({ ctx }) => {
     return prisma.workflow.create({
 
 
