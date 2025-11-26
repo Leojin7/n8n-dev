@@ -1,9 +1,9 @@
 "use client";
-
+import { NodeType } from "@/generated/prisma";
 import { SidebarTrigger } from "@components/ui/sidebar";
 import { SaveIcon } from "lucide-react";
 import { Button } from "@components/ui/button";
-
+import { ExecuteWorkflowButton } from "./execute-workflow-button";
 import { useSuspenseWorkflow, useUpdateWorkflowName, useUpdateWorkflow } from "@/features/workflows/hooks/use-workflows";
 import {
   Breadcrumb,
@@ -37,7 +37,7 @@ export const EditorSaveButton = ({ workflowId }: { workflowId: string }) => {
       .filter((n) => n.type)
       .map((n) => ({
         id: n.id,
-        type: n.type!,
+        type: n.type as NodeType,
         position: n.position,
         data: (n.data as Record<string, any>) || {},
       }));

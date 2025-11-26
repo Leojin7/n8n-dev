@@ -52,11 +52,28 @@ const triggerNodes: NodeTypeOption[] = [
   },
   {
     type: NodeType.STRIPE_TRIGGER,
-    label: "Stripe Event",
+    label: "Stripe Event :",
     description: "Runs the flow when a Stripe event on clicking a button.",
     icon: "/logos/stripe.svg"
   },
-
+  {
+    type: NodeType.GEMINI,
+    label: "Gemini Event :",
+    description: "Runs the flow when a Gemini is used to generate text on clicking a button.",
+    icon: "/logos/gemini.svg"
+  },
+  {
+    type: NodeType.OPENAI,
+    label: "OpenAI Event :",
+    description: "Runs the flow when an OpenAI model is used to generate text on clicking a button.",
+    icon: "/logos/openai.svg"
+  },
+  {
+    type: NodeType.ANTHROPIC,
+    label: "Claude Event :",
+    description: "Runs the flow when an Anthropic model is used to generate text on clicking a button.",
+    icon: "/logos/anthropic.svg"
+  },
 ];
 
 const executionNodes: NodeTypeOption[] = [
