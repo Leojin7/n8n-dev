@@ -1,7 +1,7 @@
 import type { NodeExecutor } from "@/features/executions/types";
 import { geminiChannel } from "@/inngest/channels/gemini";
 import { NonRetriableError } from "inngest";
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { google } from "@ai-sdk/google";
 import Handlebars from "handlebars";
 import { generateText } from "ai";
 
@@ -10,6 +10,7 @@ Handlebars.registerHelper("json", (context) => {
   const safeString = new Handlebars.SafeString(jsonString);
   return safeString;
 });
+
 type GeminiData = {
   variableName: string,
   model?: string,
@@ -20,50 +21,51 @@ type GeminiData = {
 export const geminiExecutor: NodeExecutor<GeminiData> = async ({ data, nodeId, context, step, publish }) => {
   await publish(
     geminiChannel().status({
-
       nodeId,
       status: "loading",
     }),
   );
+
   if (!data.variableName) {
     await publish(
       geminiChannel().status({
-
         nodeId,
         status: "error",
       }),
     );
     throw new NonRetriableError("Gemini node: Variable name is missing");
   }
+
   if (!data.userPrompt) {
     await publish(
       geminiChannel().status({
-
         nodeId,
         status: "error",
       }),
     );
     throw new NonRetriableError("Gemini node: User prompt is missing");
   }
+
   // TODO: throw if credentials is missing
-  const systemPrompt = data.systemPrompt ? Handlebars.compile(data.systemPrompt)(context) : " You are a helpful assistant";
-
-
+  const systemPrompt = data.systemPrompt ? Handlebars.compile(data.systemPrompt)(context) : "You are a helpful assistant";
   const userPrompt = Handlebars.compile(data.userPrompt)(context);
   const credentialValue = process.env.GOOGLE_GENERATIVE_AI_API_KEY!;
 
-  const google = createGoogleGenerativeAI({
-    apiKey: credentialValue,
-  })
+  // Set the API key in the environment
+  process.env.GOOGLE_GENERATIVE_AI_API_KEY = credentialValue;
 
+  // Clean up the model name by removing any (recommended) tag
+  const cleanModelName = data.model?.replace(/\(recommended\)/g, '').trim() || 'gemini-pro';
+
+  // Create the model instance with the clean model name
+  const model = google(cleanModelName);
 
   try {
-
     const { steps } = await step.ai.wrap(
       "gemini-generate-text",
       generateText,
       {
-        model: google(data.model || "gemini-2.0-flash"),
+        model,
         system: systemPrompt,
         prompt: userPrompt,
         experimental_telemetry: {
@@ -71,23 +73,24 @@ export const geminiExecutor: NodeExecutor<GeminiData> = async ({ data, nodeId, c
           recordInputs: true,
           recordOutputs: true,
         }
-      },
-    )
+      }
+    );
 
     const text = steps[0].content[0].type === "text" ? steps[0].content[0].text : "";
 
     await publish(
       geminiChannel().status({
-        nodeId, status: "success",
+        nodeId,
+        status: "success",
       }),
     );
+
     return {
       ...context,
       [data.variableName]: {
         text,
       }
-
-    }
+    };
   }
   catch (e) {
     await publish(
@@ -95,10 +98,7 @@ export const geminiExecutor: NodeExecutor<GeminiData> = async ({ data, nodeId, c
         nodeId,
         status: "error",
       })
-    )
+    );
     throw e;
   }
-
 };
-
-

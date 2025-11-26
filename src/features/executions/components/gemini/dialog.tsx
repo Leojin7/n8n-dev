@@ -35,7 +35,7 @@ import { toast } from "sonner";
 import { Variable } from "lucide-react";
 
 export const AVAILABLE_MODELS = [
-  "gemini-2.0-flash(recommended)",
+  "gemini-2.0-flash",
   "gemini-1.5-flash",
   "gemini-1.5-flash-8b",
   "gemini-1.5-pro",

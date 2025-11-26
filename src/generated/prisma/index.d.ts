@@ -34,6 +34,11 @@ export type Account = $Result.DefaultSelection<Prisma.$AccountPayload>
  */
 export type Verification = $Result.DefaultSelection<Prisma.$VerificationPayload>
 /**
+ * Model Credential
+ * 
+ */
+export type Credential = $Result.DefaultSelection<Prisma.$CredentialPayload>
+/**
  * Model Workflow
  * 
  */
@@ -53,20 +58,33 @@ export type Connection = $Result.DefaultSelection<Prisma.$ConnectionPayload>
  * Enums
  */
 export namespace $Enums {
-  export const NodeType: {
-    INITIAL: 'INITIAL',
-    MANUAL_TRIGGER: 'MANUAL_TRIGGER',
-    HTTP_REQUEST: 'HTTP_REQUEST',
-    GOOGLE_FORM_TRIGGER: 'GOOGLE_FORM_TRIGGER',
-    STRIPE_TRIGGER: 'STRIPE_TRIGGER',
-    ANTHROPIC: 'ANTHROPIC',
-    GEMINI: 'GEMINI',
-    OPENAI: 'OPENAI'
-  };
+  export const CredentialType: {
+  OPENAI: 'OPENAI',
+  ANTHROPIC: 'ANTHROPIC',
+  GEMINI: 'GEMINI'
+};
 
-  export type NodeType = (typeof NodeType)[keyof typeof NodeType]
+export type CredentialType = (typeof CredentialType)[keyof typeof CredentialType]
+
+
+export const NodeType: {
+  INITIAL: 'INITIAL',
+  MANUAL_TRIGGER: 'MANUAL_TRIGGER',
+  HTTP_REQUEST: 'HTTP_REQUEST',
+  GOOGLE_FORM_TRIGGER: 'GOOGLE_FORM_TRIGGER',
+  STRIPE_TRIGGER: 'STRIPE_TRIGGER',
+  ANTHROPIC: 'ANTHROPIC',
+  GEMINI: 'GEMINI',
+  OPENAI: 'OPENAI'
+};
+
+export type NodeType = (typeof NodeType)[keyof typeof NodeType]
 
 }
+
+export type CredentialType = $Enums.CredentialType
+
+export const CredentialType: typeof $Enums.CredentialType
 
 export type NodeType = $Enums.NodeType
 
@@ -93,22 +111,22 @@ export class PrismaClient<
 > {
   [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['other'] }
 
-  /**
- * ##  Prisma Client ʲˢ
- * 
- * Type-safe database client for TypeScript & Node.js
- * @example
- * ```
- * const prisma = new PrismaClient()
- * // Fetch zero or more Users
- * const users = await prisma.user.findMany()
- * ```
- *
- * 
- * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
- */
+    /**
+   * ##  Prisma Client ʲˢ
+   * 
+   * Type-safe database client for TypeScript & Node.js
+   * @example
+   * ```
+   * const prisma = new PrismaClient()
+   * // Fetch zero or more Users
+   * const users = await prisma.user.findMany()
+   * ```
+   *
+   * 
+   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
+   */
 
-  constructor(optionsArg?: Prisma.Subset<ClientOptions, Prisma.PrismaClientOptions>);
+  constructor(optionsArg ?: Prisma.Subset<ClientOptions, Prisma.PrismaClientOptions>);
   $on<V extends U>(eventType: V, callback: (event: V extends 'query' ? Prisma.QueryEvent : Prisma.LogEvent) => void): void;
 
   /**
@@ -128,15 +146,15 @@ export class PrismaClient<
    */
   $use(cb: Prisma.Middleware): void
 
-  /**
-     * Executes a prepared raw query and returns the number of affected rows.
-     * @example
-     * ```
-     * const result = await prisma.$executeRaw`UPDATE User SET cool = ${true} WHERE email = ${'user@email.com'};`
-     * ```
-     * 
-     * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
-     */
+/**
+   * Executes a prepared raw query and returns the number of affected rows.
+   * @example
+   * ```
+   * const result = await prisma.$executeRaw`UPDATE User SET cool = ${true} WHERE email = ${'user@email.com'};`
+   * ```
+   * 
+   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
+   */
   $executeRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<number>;
 
   /**
@@ -195,14 +213,14 @@ export class PrismaClient<
 
   $extends: $Extensions.ExtendsHook<"extends", Prisma.TypeMapCb, ExtArgs>
 
-  /**
-* `prisma.user`: Exposes CRUD operations for the **User** model.
-* Example usage:
-* ```ts
-* // Fetch zero or more Users
-* const users = await prisma.user.findMany()
-* ```
-*/
+      /**
+   * `prisma.user`: Exposes CRUD operations for the **User** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Users
+    * const users = await prisma.user.findMany()
+    * ```
+    */
   get user(): Prisma.UserDelegate<ExtArgs>;
 
   /**
@@ -234,6 +252,16 @@ export class PrismaClient<
     * ```
     */
   get verification(): Prisma.VerificationDelegate<ExtArgs>;
+
+  /**
+   * `prisma.credential`: Exposes CRUD operations for the **Credential** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Credentials
+    * const credentials = await prisma.credential.findMany()
+    * ```
+    */
+  get credential(): Prisma.CredentialDelegate<ExtArgs>;
 
   /**
    * `prisma.workflow`: Exposes CRUD operations for the **Workflow** model.
@@ -330,7 +358,7 @@ export namespace Prisma {
     client: string
   }
 
-  export const prismaVersion: PrismaVersion
+  export const prismaVersion: PrismaVersion 
 
   /**
    * Utility Types
@@ -432,7 +460,7 @@ export namespace Prisma {
    * From T, pick a set of properties whose keys are in the union K
    */
   type Prisma__Pick<T, K extends keyof T> = {
-    [P in K]: T[P];
+      [P in K]: T[P];
   };
 
 
@@ -467,8 +495,8 @@ export namespace Prisma {
     (T extends SelectAndInclude
       ? 'Please either choose `select` or `include`.'
       : T extends SelectAndOmit
-      ? 'Please either choose `select` or `omit`.'
-      : {})
+        ? 'Please either choose `select` or `omit`.'
+        : {})
 
   /**
    * Subset + Intersection
@@ -488,7 +516,7 @@ export namespace Prisma {
   type XOR<T, U> =
     T extends object ?
     U extends object ?
-    (Without<T, U> & U) | (Without<U, T> & T)
+      (Without<T, U> & U) | (Without<U, T> & T)
     : U : T
 
 
@@ -496,16 +524,16 @@ export namespace Prisma {
    * Is T a Record?
    */
   type IsObject<T extends any> = T extends Array<any>
-    ? False
-    : T extends Date
-    ? False
-    : T extends Uint8Array
-    ? False
-    : T extends BigInt
-    ? False
-    : T extends object
-    ? True
-    : False
+  ? False
+  : T extends Date
+  ? False
+  : T extends Uint8Array
+  ? False
+  : T extends BigInt
+  ? False
+  : T extends object
+  ? True
+  : False
 
 
   /**
@@ -556,11 +584,11 @@ export namespace Prisma {
     : never
 
   export type Overwrite<O extends object, O1 extends object> = {
-    [K in keyof O]: K extends keyof O1 ? O1[K] : O[K];
+      [K in keyof O]: K extends keyof O1 ? O1[K] : O[K];
   } & {};
 
   type _Merge<U extends object> = IntersectOf<Overwrite<U, {
-    [K in keyof U]-?: At<U, K>;
+      [K in keyof U]-?: At<U, K>;
   }>>;
 
   type Key = string | number | symbol;
@@ -568,8 +596,8 @@ export namespace Prisma {
   type AtStrict<O extends object, K extends Key> = O[K & keyof O];
   type AtLoose<O extends object, K extends Key> = O extends unknown ? AtStrict<O, K> : never;
   export type At<O extends object, K extends Key, strict extends Boolean = 1> = {
-    1: AtStrict<O, K>;
-    0: AtLoose<O, K>;
+      1: AtStrict<O, K>;
+      0: AtLoose<O, K>;
   }[strict];
 
   export type ComputeRaw<A extends any> = A extends Function ? A : {
@@ -591,7 +619,7 @@ export namespace Prisma {
   type AtLeast<O extends object, K extends string> = NoExpand<
     O extends unknown
     ? | (K extends keyof O ? { [P in K]: O[P] } & O : O)
-    | { [P in keyof O as P extends K ? K : never]-?: O[P] } & O
+      | {[P in keyof O as P extends K ? K : never]-?: O[P]} & O
     : never>;
 
   type _Strict<U, _U = U> = U extends unknown ? U & OptionalFlat<_Record<Exclude<Keys<_U>, keyof U>, never>> : never;
@@ -656,8 +684,8 @@ export namespace Prisma {
 
   export type GetScalarType<T, O> = O extends object ? {
     [P in keyof T]: P extends keyof O
-    ? O[P]
-    : never
+      ? O[P]
+      : never
   } : never
 
   type FieldPaths<
@@ -670,15 +698,15 @@ export namespace Prisma {
       Or<Extends<'OR', K>, Extends<'AND', K>>,
       Extends<'NOT', K>
     > extends True
-    ? // infer is only needed to not hit TS limit
-    // based on the brilliant idea of Pierre-Antoine Mills
-    // https://github.com/microsoft/TypeScript/issues/30188#issuecomment-478938437
-    T[K] extends infer TK
-    ? GetHavingFields<UnEnumerate<TK> extends object ? Merge<UnEnumerate<TK>> : never>
-    : never
-    : {} extends FieldPaths<T[K]>
-    ? never
-    : K
+      ? // infer is only needed to not hit TS limit
+        // based on the brilliant idea of Pierre-Antoine Mills
+        // https://github.com/microsoft/TypeScript/issues/30188#issuecomment-478938437
+        T[K] extends infer TK
+        ? GetHavingFields<UnEnumerate<TK> extends object ? Merge<UnEnumerate<TK>> : never>
+        : never
+      : {} extends FieldPaths<T[K]>
+      ? never
+      : K
   }[keyof T]
 
   /**
@@ -709,6 +737,7 @@ export namespace Prisma {
     Session: 'Session',
     Account: 'Account',
     Verification: 'Verification',
+    Credential: 'Credential',
     Workflow: 'Workflow',
     Node: 'Node',
     Connection: 'Connection'
@@ -721,13 +750,13 @@ export namespace Prisma {
     db?: Datasource
   }
 
-  interface TypeMapCb extends $Utils.Fn<{ extArgs: $Extensions.InternalArgs, clientOptions: PrismaClientOptions }, $Utils.Record<string, any>> {
+  interface TypeMapCb extends $Utils.Fn<{extArgs: $Extensions.InternalArgs, clientOptions: PrismaClientOptions }, $Utils.Record<string, any>> {
     returns: Prisma.TypeMap<this['params']['extArgs'], this['params']['clientOptions']>
   }
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "workflow" | "node" | "connection"
+      modelProps: "user" | "session" | "account" | "verification" | "credential" | "workflow" | "node" | "connection"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1008,6 +1037,76 @@ export namespace Prisma {
           count: {
             args: Prisma.VerificationCountArgs<ExtArgs>
             result: $Utils.Optional<VerificationCountAggregateOutputType> | number
+          }
+        }
+      }
+      Credential: {
+        payload: Prisma.$CredentialPayload<ExtArgs>
+        fields: Prisma.CredentialFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CredentialFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CredentialPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CredentialFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CredentialPayload>
+          }
+          findFirst: {
+            args: Prisma.CredentialFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CredentialPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CredentialFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CredentialPayload>
+          }
+          findMany: {
+            args: Prisma.CredentialFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CredentialPayload>[]
+          }
+          create: {
+            args: Prisma.CredentialCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CredentialPayload>
+          }
+          createMany: {
+            args: Prisma.CredentialCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CredentialCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CredentialPayload>[]
+          }
+          delete: {
+            args: Prisma.CredentialDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CredentialPayload>
+          }
+          update: {
+            args: Prisma.CredentialUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CredentialPayload>
+          }
+          deleteMany: {
+            args: Prisma.CredentialDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CredentialUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.CredentialUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CredentialPayload>
+          }
+          aggregate: {
+            args: Prisma.CredentialAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCredential>
+          }
+          groupBy: {
+            args: Prisma.CredentialGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CredentialGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CredentialCountArgs<ExtArgs>
+            result: $Utils.Optional<CredentialCountAggregateOutputType> | number
           }
         }
       }
@@ -1385,12 +1484,14 @@ export namespace Prisma {
     sessions: number
     accounts: number
     workflows: number
+    credential: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sessions?: boolean | UserCountOutputTypeCountSessionsArgs
     accounts?: boolean | UserCountOutputTypeCountAccountsArgs
     workflows?: boolean | UserCountOutputTypeCountWorkflowsArgs
+    credential?: boolean | UserCountOutputTypeCountCredentialArgs
   }
 
   // Custom InputTypes
@@ -1423,6 +1524,44 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountWorkflowsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: WorkflowWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCredentialArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CredentialWhereInput
+  }
+
+
+  /**
+   * Count Type CredentialCountOutputType
+   */
+
+  export type CredentialCountOutputType = {
+    Node: number
+  }
+
+  export type CredentialCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Node?: boolean | CredentialCountOutputTypeCountNodeArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CredentialCountOutputType without action
+   */
+  export type CredentialCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CredentialCountOutputType
+     */
+    select?: CredentialCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CredentialCountOutputType without action
+   */
+  export type CredentialCountOutputTypeCountNodeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NodeWhereInput
   }
 
 
@@ -1633,11 +1772,11 @@ export namespace Prisma {
   }
 
   export type GetUserAggregateType<T extends UserAggregateArgs> = {
-    [P in keyof T & keyof AggregateUser]: P extends '_count' | 'count'
-    ? T[P] extends true
-    ? number
-    : GetScalarType<T[P], AggregateUser[P]>
-    : GetScalarType<T[P], AggregateUser[P]>
+        [P in keyof T & keyof AggregateUser]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUser[P]>
+      : GetScalarType<T[P], AggregateUser[P]>
   }
 
 
@@ -1671,15 +1810,15 @@ export namespace Prisma {
   type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
     Array<
       PickEnumerable<UserGroupByOutputType, T['by']> &
-      {
-        [P in ((keyof T) & (keyof UserGroupByOutputType))]: P extends '_count'
-        ? T[P] extends boolean
-        ? number
-        : GetScalarType<T[P], UserGroupByOutputType[P]>
-        : GetScalarType<T[P], UserGroupByOutputType[P]>
-      }
+        {
+          [P in ((keyof T) & (keyof UserGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UserGroupByOutputType[P]>
+            : GetScalarType<T[P], UserGroupByOutputType[P]>
+        }
+      >
     >
-  >
 
 
   export type UserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1693,6 +1832,7 @@ export namespace Prisma {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
     workflows?: boolean | User$workflowsArgs<ExtArgs>
+    credential?: boolean | User$credentialArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1720,6 +1860,7 @@ export namespace Prisma {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
     workflows?: boolean | User$workflowsArgs<ExtArgs>
+    credential?: boolean | User$credentialArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1730,6 +1871,7 @@ export namespace Prisma {
       sessions: Prisma.$SessionPayload<ExtArgs>[]
       accounts: Prisma.$AccountPayload<ExtArgs>[]
       workflows: Prisma.$WorkflowPayload<ExtArgs>[]
+      credential: Prisma.$CredentialPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -1745,7 +1887,7 @@ export namespace Prisma {
 
   type UserGetPayload<S extends boolean | null | undefined | UserDefaultArgs> = $Result.GetResult<Prisma.$UserPayload, S>
 
-  type UserCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+  type UserCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
     Omit<UserFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: UserCountAggregateInputType | true
     }
@@ -1981,10 +2123,10 @@ export namespace Prisma {
       args?: Subset<T, UserCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
-      ? T['select'] extends true
-      ? number
-      : GetScalarType<T['select'], UserCountAggregateOutputType>
-      : number
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UserCountAggregateOutputType>
+        : number
     >
 
     /**
@@ -2038,8 +2180,8 @@ export namespace Prisma {
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-      ? { orderBy: UserGroupByArgs['orderBy'] }
-      : { orderBy?: UserGroupByArgs['orderBy'] },
+        ? { orderBy: UserGroupByArgs['orderBy'] }
+        : { orderBy?: UserGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -2050,49 +2192,49 @@ export namespace Prisma {
       ? `Error: "by" must not be empty.`
       : HavingValid extends False
       ? {
-        [P in HavingFields]: P extends ByFields
-        ? never
-        : P extends string
-        ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-        : [
-          Error,
-          'Field ',
-          P,
-          ` in "having" needs to be provided in "by"`,
-        ]
-      }[HavingFields]
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
       : 'take' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-      ? ByValid extends True
-      ? {}
-      : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
-      : 'Error: If you provide "take", you also need to provide "orderBy"'
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
       : 'skip' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-      ? ByValid extends True
-      ? {}
-      : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
-      : 'Error: If you provide "skip", you also need to provide "orderBy"'
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
       : ByValid extends True
       ? {}
       : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
     >(args: SubsetIntersection<T, UserGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-    /**
-     * Fields of the User model
-     */
-    readonly fields: UserFieldRefs;
+  /**
+   * Fields of the User model
+   */
+  readonly fields: UserFieldRefs;
   }
 
   /**
@@ -2106,6 +2248,7 @@ export namespace Prisma {
     sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany"> | Null>
     accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany"> | Null>
     workflows<T extends User$workflowsArgs<ExtArgs> = {}>(args?: Subset<T, User$workflowsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkflowPayload<ExtArgs>, T, "findMany"> | Null>
+    credential<T extends User$credentialArgs<ExtArgs> = {}>(args?: Subset<T, User$credentialArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CredentialPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2133,7 +2276,7 @@ export namespace Prisma {
 
   /**
    * Fields of the User model
-   */
+   */ 
   interface UserFieldRefs {
     readonly id: FieldRef<"User", 'String'>
     readonly name: FieldRef<"User", 'String'>
@@ -2143,7 +2286,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -2516,6 +2659,26 @@ export namespace Prisma {
   }
 
   /**
+   * User.credential
+   */
+  export type User$credentialArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Credential
+     */
+    select?: CredentialSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CredentialInclude<ExtArgs> | null
+    where?: CredentialWhereInput
+    orderBy?: CredentialOrderByWithRelationInput | CredentialOrderByWithRelationInput[]
+    cursor?: CredentialWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CredentialScalarFieldEnum | CredentialScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2659,11 +2822,11 @@ export namespace Prisma {
   }
 
   export type GetSessionAggregateType<T extends SessionAggregateArgs> = {
-    [P in keyof T & keyof AggregateSession]: P extends '_count' | 'count'
-    ? T[P] extends true
-    ? number
-    : GetScalarType<T[P], AggregateSession[P]>
-    : GetScalarType<T[P], AggregateSession[P]>
+        [P in keyof T & keyof AggregateSession]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSession[P]>
+      : GetScalarType<T[P], AggregateSession[P]>
   }
 
 
@@ -2698,15 +2861,15 @@ export namespace Prisma {
   type GetSessionGroupByPayload<T extends SessionGroupByArgs> = Prisma.PrismaPromise<
     Array<
       PickEnumerable<SessionGroupByOutputType, T['by']> &
-      {
-        [P in ((keyof T) & (keyof SessionGroupByOutputType))]: P extends '_count'
-        ? T[P] extends boolean
-        ? number
-        : GetScalarType<T[P], SessionGroupByOutputType[P]>
-        : GetScalarType<T[P], SessionGroupByOutputType[P]>
-      }
+        {
+          [P in ((keyof T) & (keyof SessionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SessionGroupByOutputType[P]>
+            : GetScalarType<T[P], SessionGroupByOutputType[P]>
+        }
+      >
     >
-  >
 
 
   export type SessionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2771,7 +2934,7 @@ export namespace Prisma {
 
   type SessionGetPayload<S extends boolean | null | undefined | SessionDefaultArgs> = $Result.GetResult<Prisma.$SessionPayload, S>
 
-  type SessionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+  type SessionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
     Omit<SessionFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: SessionCountAggregateInputType | true
     }
@@ -3007,10 +3170,10 @@ export namespace Prisma {
       args?: Subset<T, SessionCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
-      ? T['select'] extends true
-      ? number
-      : GetScalarType<T['select'], SessionCountAggregateOutputType>
-      : number
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SessionCountAggregateOutputType>
+        : number
     >
 
     /**
@@ -3064,8 +3227,8 @@ export namespace Prisma {
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-      ? { orderBy: SessionGroupByArgs['orderBy'] }
-      : { orderBy?: SessionGroupByArgs['orderBy'] },
+        ? { orderBy: SessionGroupByArgs['orderBy'] }
+        : { orderBy?: SessionGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -3076,49 +3239,49 @@ export namespace Prisma {
       ? `Error: "by" must not be empty.`
       : HavingValid extends False
       ? {
-        [P in HavingFields]: P extends ByFields
-        ? never
-        : P extends string
-        ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-        : [
-          Error,
-          'Field ',
-          P,
-          ` in "having" needs to be provided in "by"`,
-        ]
-      }[HavingFields]
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
       : 'take' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-      ? ByValid extends True
-      ? {}
-      : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
-      : 'Error: If you provide "take", you also need to provide "orderBy"'
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
       : 'skip' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-      ? ByValid extends True
-      ? {}
-      : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
-      : 'Error: If you provide "skip", you also need to provide "orderBy"'
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
       : ByValid extends True
       ? {}
       : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
     >(args: SubsetIntersection<T, SessionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSessionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-    /**
-     * Fields of the Session model
-     */
-    readonly fields: SessionFieldRefs;
+  /**
+   * Fields of the Session model
+   */
+  readonly fields: SessionFieldRefs;
   }
 
   /**
@@ -3157,7 +3320,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Session model
-   */
+   */ 
   interface SessionFieldRefs {
     readonly id: FieldRef<"Session", 'String'>
     readonly expiresAt: FieldRef<"Session", 'DateTime'>
@@ -3168,7 +3331,7 @@ export namespace Prisma {
     readonly userAgent: FieldRef<"Session", 'String'>
     readonly userId: FieldRef<"Session", 'String'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -3658,11 +3821,11 @@ export namespace Prisma {
   }
 
   export type GetAccountAggregateType<T extends AccountAggregateArgs> = {
-    [P in keyof T & keyof AggregateAccount]: P extends '_count' | 'count'
-    ? T[P] extends true
-    ? number
-    : GetScalarType<T[P], AggregateAccount[P]>
-    : GetScalarType<T[P], AggregateAccount[P]>
+        [P in keyof T & keyof AggregateAccount]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAccount[P]>
+      : GetScalarType<T[P], AggregateAccount[P]>
   }
 
 
@@ -3702,15 +3865,15 @@ export namespace Prisma {
   type GetAccountGroupByPayload<T extends AccountGroupByArgs> = Prisma.PrismaPromise<
     Array<
       PickEnumerable<AccountGroupByOutputType, T['by']> &
-      {
-        [P in ((keyof T) & (keyof AccountGroupByOutputType))]: P extends '_count'
-        ? T[P] extends boolean
-        ? number
-        : GetScalarType<T[P], AccountGroupByOutputType[P]>
-        : GetScalarType<T[P], AccountGroupByOutputType[P]>
-      }
+        {
+          [P in ((keyof T) & (keyof AccountGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AccountGroupByOutputType[P]>
+            : GetScalarType<T[P], AccountGroupByOutputType[P]>
+        }
+      >
     >
-  >
 
 
   export type AccountSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3795,7 +3958,7 @@ export namespace Prisma {
 
   type AccountGetPayload<S extends boolean | null | undefined | AccountDefaultArgs> = $Result.GetResult<Prisma.$AccountPayload, S>
 
-  type AccountCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+  type AccountCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
     Omit<AccountFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: AccountCountAggregateInputType | true
     }
@@ -4031,10 +4194,10 @@ export namespace Prisma {
       args?: Subset<T, AccountCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
-      ? T['select'] extends true
-      ? number
-      : GetScalarType<T['select'], AccountCountAggregateOutputType>
-      : number
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AccountCountAggregateOutputType>
+        : number
     >
 
     /**
@@ -4088,8 +4251,8 @@ export namespace Prisma {
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-      ? { orderBy: AccountGroupByArgs['orderBy'] }
-      : { orderBy?: AccountGroupByArgs['orderBy'] },
+        ? { orderBy: AccountGroupByArgs['orderBy'] }
+        : { orderBy?: AccountGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -4100,49 +4263,49 @@ export namespace Prisma {
       ? `Error: "by" must not be empty.`
       : HavingValid extends False
       ? {
-        [P in HavingFields]: P extends ByFields
-        ? never
-        : P extends string
-        ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-        : [
-          Error,
-          'Field ',
-          P,
-          ` in "having" needs to be provided in "by"`,
-        ]
-      }[HavingFields]
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
       : 'take' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-      ? ByValid extends True
-      ? {}
-      : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
-      : 'Error: If you provide "take", you also need to provide "orderBy"'
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
       : 'skip' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-      ? ByValid extends True
-      ? {}
-      : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
-      : 'Error: If you provide "skip", you also need to provide "orderBy"'
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
       : ByValid extends True
       ? {}
       : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
     >(args: SubsetIntersection<T, AccountGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAccountGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-    /**
-     * Fields of the Account model
-     */
-    readonly fields: AccountFieldRefs;
+  /**
+   * Fields of the Account model
+   */
+  readonly fields: AccountFieldRefs;
   }
 
   /**
@@ -4181,7 +4344,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Account model
-   */
+   */ 
   interface AccountFieldRefs {
     readonly id: FieldRef<"Account", 'String'>
     readonly accountId: FieldRef<"Account", 'String'>
@@ -4197,7 +4360,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Account", 'DateTime'>
     readonly updatedAt: FieldRef<"Account", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -4645,11 +4808,11 @@ export namespace Prisma {
   }
 
   export type GetVerificationAggregateType<T extends VerificationAggregateArgs> = {
-    [P in keyof T & keyof AggregateVerification]: P extends '_count' | 'count'
-    ? T[P] extends true
-    ? number
-    : GetScalarType<T[P], AggregateVerification[P]>
-    : GetScalarType<T[P], AggregateVerification[P]>
+        [P in keyof T & keyof AggregateVerification]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateVerification[P]>
+      : GetScalarType<T[P], AggregateVerification[P]>
   }
 
 
@@ -4682,15 +4845,15 @@ export namespace Prisma {
   type GetVerificationGroupByPayload<T extends VerificationGroupByArgs> = Prisma.PrismaPromise<
     Array<
       PickEnumerable<VerificationGroupByOutputType, T['by']> &
-      {
-        [P in ((keyof T) & (keyof VerificationGroupByOutputType))]: P extends '_count'
-        ? T[P] extends boolean
-        ? number
-        : GetScalarType<T[P], VerificationGroupByOutputType[P]>
-        : GetScalarType<T[P], VerificationGroupByOutputType[P]>
-      }
+        {
+          [P in ((keyof T) & (keyof VerificationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], VerificationGroupByOutputType[P]>
+            : GetScalarType<T[P], VerificationGroupByOutputType[P]>
+        }
+      >
     >
-  >
 
 
   export type VerificationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4737,7 +4900,7 @@ export namespace Prisma {
 
   type VerificationGetPayload<S extends boolean | null | undefined | VerificationDefaultArgs> = $Result.GetResult<Prisma.$VerificationPayload, S>
 
-  type VerificationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+  type VerificationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
     Omit<VerificationFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: VerificationCountAggregateInputType | true
     }
@@ -4973,10 +5136,10 @@ export namespace Prisma {
       args?: Subset<T, VerificationCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
-      ? T['select'] extends true
-      ? number
-      : GetScalarType<T['select'], VerificationCountAggregateOutputType>
-      : number
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], VerificationCountAggregateOutputType>
+        : number
     >
 
     /**
@@ -5030,8 +5193,8 @@ export namespace Prisma {
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-      ? { orderBy: VerificationGroupByArgs['orderBy'] }
-      : { orderBy?: VerificationGroupByArgs['orderBy'] },
+        ? { orderBy: VerificationGroupByArgs['orderBy'] }
+        : { orderBy?: VerificationGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -5042,49 +5205,49 @@ export namespace Prisma {
       ? `Error: "by" must not be empty.`
       : HavingValid extends False
       ? {
-        [P in HavingFields]: P extends ByFields
-        ? never
-        : P extends string
-        ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-        : [
-          Error,
-          'Field ',
-          P,
-          ` in "having" needs to be provided in "by"`,
-        ]
-      }[HavingFields]
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
       : 'take' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-      ? ByValid extends True
-      ? {}
-      : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
-      : 'Error: If you provide "take", you also need to provide "orderBy"'
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
       : 'skip' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-      ? ByValid extends True
-      ? {}
-      : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
-      : 'Error: If you provide "skip", you also need to provide "orderBy"'
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
       : ByValid extends True
       ? {}
       : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
     >(args: SubsetIntersection<T, VerificationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetVerificationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-    /**
-     * Fields of the Verification model
-     */
-    readonly fields: VerificationFieldRefs;
+  /**
+   * Fields of the Verification model
+   */
+  readonly fields: VerificationFieldRefs;
   }
 
   /**
@@ -5122,7 +5285,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Verification model
-   */
+   */ 
   interface VerificationFieldRefs {
     readonly id: FieldRef<"Verification", 'String'>
     readonly identifier: FieldRef<"Verification", 'String'>
@@ -5131,7 +5294,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Verification", 'DateTime'>
     readonly updatedAt: FieldRef<"Verification", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -5419,6 +5582,989 @@ export namespace Prisma {
 
 
   /**
+   * Model Credential
+   */
+
+  export type AggregateCredential = {
+    _count: CredentialCountAggregateOutputType | null
+    _min: CredentialMinAggregateOutputType | null
+    _max: CredentialMaxAggregateOutputType | null
+  }
+
+  export type CredentialMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    value: string | null
+    type: $Enums.CredentialType | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    userId: string | null
+  }
+
+  export type CredentialMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    value: string | null
+    type: $Enums.CredentialType | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    userId: string | null
+  }
+
+  export type CredentialCountAggregateOutputType = {
+    id: number
+    name: number
+    value: number
+    type: number
+    createdAt: number
+    updatedAt: number
+    userId: number
+    _all: number
+  }
+
+
+  export type CredentialMinAggregateInputType = {
+    id?: true
+    name?: true
+    value?: true
+    type?: true
+    createdAt?: true
+    updatedAt?: true
+    userId?: true
+  }
+
+  export type CredentialMaxAggregateInputType = {
+    id?: true
+    name?: true
+    value?: true
+    type?: true
+    createdAt?: true
+    updatedAt?: true
+    userId?: true
+  }
+
+  export type CredentialCountAggregateInputType = {
+    id?: true
+    name?: true
+    value?: true
+    type?: true
+    createdAt?: true
+    updatedAt?: true
+    userId?: true
+    _all?: true
+  }
+
+  export type CredentialAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Credential to aggregate.
+     */
+    where?: CredentialWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Credentials to fetch.
+     */
+    orderBy?: CredentialOrderByWithRelationInput | CredentialOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CredentialWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Credentials from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Credentials.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Credentials
+    **/
+    _count?: true | CredentialCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CredentialMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CredentialMaxAggregateInputType
+  }
+
+  export type GetCredentialAggregateType<T extends CredentialAggregateArgs> = {
+        [P in keyof T & keyof AggregateCredential]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCredential[P]>
+      : GetScalarType<T[P], AggregateCredential[P]>
+  }
+
+
+
+
+  export type CredentialGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CredentialWhereInput
+    orderBy?: CredentialOrderByWithAggregationInput | CredentialOrderByWithAggregationInput[]
+    by: CredentialScalarFieldEnum[] | CredentialScalarFieldEnum
+    having?: CredentialScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CredentialCountAggregateInputType | true
+    _min?: CredentialMinAggregateInputType
+    _max?: CredentialMaxAggregateInputType
+  }
+
+  export type CredentialGroupByOutputType = {
+    id: string
+    name: string
+    value: string
+    type: $Enums.CredentialType
+    createdAt: Date
+    updatedAt: Date
+    userId: string
+    _count: CredentialCountAggregateOutputType | null
+    _min: CredentialMinAggregateOutputType | null
+    _max: CredentialMaxAggregateOutputType | null
+  }
+
+  type GetCredentialGroupByPayload<T extends CredentialGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CredentialGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CredentialGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CredentialGroupByOutputType[P]>
+            : GetScalarType<T[P], CredentialGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CredentialSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    value?: boolean
+    type?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    Node?: boolean | Credential$NodeArgs<ExtArgs>
+    _count?: boolean | CredentialCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["credential"]>
+
+  export type CredentialSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    value?: boolean
+    type?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["credential"]>
+
+  export type CredentialSelectScalar = {
+    id?: boolean
+    name?: boolean
+    value?: boolean
+    type?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+  }
+
+  export type CredentialInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    Node?: boolean | Credential$NodeArgs<ExtArgs>
+    _count?: boolean | CredentialCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type CredentialIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $CredentialPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Credential"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      Node: Prisma.$NodePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      value: string
+      type: $Enums.CredentialType
+      createdAt: Date
+      updatedAt: Date
+      userId: string
+    }, ExtArgs["result"]["credential"]>
+    composites: {}
+  }
+
+  type CredentialGetPayload<S extends boolean | null | undefined | CredentialDefaultArgs> = $Result.GetResult<Prisma.$CredentialPayload, S>
+
+  type CredentialCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<CredentialFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: CredentialCountAggregateInputType | true
+    }
+
+  export interface CredentialDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Credential'], meta: { name: 'Credential' } }
+    /**
+     * Find zero or one Credential that matches the filter.
+     * @param {CredentialFindUniqueArgs} args - Arguments to find a Credential
+     * @example
+     * // Get one Credential
+     * const credential = await prisma.credential.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CredentialFindUniqueArgs>(args: SelectSubset<T, CredentialFindUniqueArgs<ExtArgs>>): Prisma__CredentialClient<$Result.GetResult<Prisma.$CredentialPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one Credential that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {CredentialFindUniqueOrThrowArgs} args - Arguments to find a Credential
+     * @example
+     * // Get one Credential
+     * const credential = await prisma.credential.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CredentialFindUniqueOrThrowArgs>(args: SelectSubset<T, CredentialFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CredentialClient<$Result.GetResult<Prisma.$CredentialPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first Credential that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CredentialFindFirstArgs} args - Arguments to find a Credential
+     * @example
+     * // Get one Credential
+     * const credential = await prisma.credential.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CredentialFindFirstArgs>(args?: SelectSubset<T, CredentialFindFirstArgs<ExtArgs>>): Prisma__CredentialClient<$Result.GetResult<Prisma.$CredentialPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first Credential that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CredentialFindFirstOrThrowArgs} args - Arguments to find a Credential
+     * @example
+     * // Get one Credential
+     * const credential = await prisma.credential.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CredentialFindFirstOrThrowArgs>(args?: SelectSubset<T, CredentialFindFirstOrThrowArgs<ExtArgs>>): Prisma__CredentialClient<$Result.GetResult<Prisma.$CredentialPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more Credentials that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CredentialFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Credentials
+     * const credentials = await prisma.credential.findMany()
+     * 
+     * // Get first 10 Credentials
+     * const credentials = await prisma.credential.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const credentialWithIdOnly = await prisma.credential.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CredentialFindManyArgs>(args?: SelectSubset<T, CredentialFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CredentialPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a Credential.
+     * @param {CredentialCreateArgs} args - Arguments to create a Credential.
+     * @example
+     * // Create one Credential
+     * const Credential = await prisma.credential.create({
+     *   data: {
+     *     // ... data to create a Credential
+     *   }
+     * })
+     * 
+     */
+    create<T extends CredentialCreateArgs>(args: SelectSubset<T, CredentialCreateArgs<ExtArgs>>): Prisma__CredentialClient<$Result.GetResult<Prisma.$CredentialPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many Credentials.
+     * @param {CredentialCreateManyArgs} args - Arguments to create many Credentials.
+     * @example
+     * // Create many Credentials
+     * const credential = await prisma.credential.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CredentialCreateManyArgs>(args?: SelectSubset<T, CredentialCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Credentials and returns the data saved in the database.
+     * @param {CredentialCreateManyAndReturnArgs} args - Arguments to create many Credentials.
+     * @example
+     * // Create many Credentials
+     * const credential = await prisma.credential.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Credentials and only return the `id`
+     * const credentialWithIdOnly = await prisma.credential.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CredentialCreateManyAndReturnArgs>(args?: SelectSubset<T, CredentialCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CredentialPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a Credential.
+     * @param {CredentialDeleteArgs} args - Arguments to delete one Credential.
+     * @example
+     * // Delete one Credential
+     * const Credential = await prisma.credential.delete({
+     *   where: {
+     *     // ... filter to delete one Credential
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CredentialDeleteArgs>(args: SelectSubset<T, CredentialDeleteArgs<ExtArgs>>): Prisma__CredentialClient<$Result.GetResult<Prisma.$CredentialPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one Credential.
+     * @param {CredentialUpdateArgs} args - Arguments to update one Credential.
+     * @example
+     * // Update one Credential
+     * const credential = await prisma.credential.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CredentialUpdateArgs>(args: SelectSubset<T, CredentialUpdateArgs<ExtArgs>>): Prisma__CredentialClient<$Result.GetResult<Prisma.$CredentialPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more Credentials.
+     * @param {CredentialDeleteManyArgs} args - Arguments to filter Credentials to delete.
+     * @example
+     * // Delete a few Credentials
+     * const { count } = await prisma.credential.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CredentialDeleteManyArgs>(args?: SelectSubset<T, CredentialDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Credentials.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CredentialUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Credentials
+     * const credential = await prisma.credential.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CredentialUpdateManyArgs>(args: SelectSubset<T, CredentialUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Credential.
+     * @param {CredentialUpsertArgs} args - Arguments to update or create a Credential.
+     * @example
+     * // Update or create a Credential
+     * const credential = await prisma.credential.upsert({
+     *   create: {
+     *     // ... data to create a Credential
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Credential we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CredentialUpsertArgs>(args: SelectSubset<T, CredentialUpsertArgs<ExtArgs>>): Prisma__CredentialClient<$Result.GetResult<Prisma.$CredentialPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of Credentials.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CredentialCountArgs} args - Arguments to filter Credentials to count.
+     * @example
+     * // Count the number of Credentials
+     * const count = await prisma.credential.count({
+     *   where: {
+     *     // ... the filter for the Credentials we want to count
+     *   }
+     * })
+    **/
+    count<T extends CredentialCountArgs>(
+      args?: Subset<T, CredentialCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CredentialCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Credential.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CredentialAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CredentialAggregateArgs>(args: Subset<T, CredentialAggregateArgs>): Prisma.PrismaPromise<GetCredentialAggregateType<T>>
+
+    /**
+     * Group by Credential.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CredentialGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CredentialGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CredentialGroupByArgs['orderBy'] }
+        : { orderBy?: CredentialGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CredentialGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCredentialGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Credential model
+   */
+  readonly fields: CredentialFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Credential.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CredentialClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    Node<T extends Credential$NodeArgs<ExtArgs> = {}>(args?: Subset<T, Credential$NodeArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NodePayload<ExtArgs>, T, "findMany"> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Credential model
+   */ 
+  interface CredentialFieldRefs {
+    readonly id: FieldRef<"Credential", 'String'>
+    readonly name: FieldRef<"Credential", 'String'>
+    readonly value: FieldRef<"Credential", 'String'>
+    readonly type: FieldRef<"Credential", 'CredentialType'>
+    readonly createdAt: FieldRef<"Credential", 'DateTime'>
+    readonly updatedAt: FieldRef<"Credential", 'DateTime'>
+    readonly userId: FieldRef<"Credential", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Credential findUnique
+   */
+  export type CredentialFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Credential
+     */
+    select?: CredentialSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CredentialInclude<ExtArgs> | null
+    /**
+     * Filter, which Credential to fetch.
+     */
+    where: CredentialWhereUniqueInput
+  }
+
+  /**
+   * Credential findUniqueOrThrow
+   */
+  export type CredentialFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Credential
+     */
+    select?: CredentialSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CredentialInclude<ExtArgs> | null
+    /**
+     * Filter, which Credential to fetch.
+     */
+    where: CredentialWhereUniqueInput
+  }
+
+  /**
+   * Credential findFirst
+   */
+  export type CredentialFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Credential
+     */
+    select?: CredentialSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CredentialInclude<ExtArgs> | null
+    /**
+     * Filter, which Credential to fetch.
+     */
+    where?: CredentialWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Credentials to fetch.
+     */
+    orderBy?: CredentialOrderByWithRelationInput | CredentialOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Credentials.
+     */
+    cursor?: CredentialWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Credentials from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Credentials.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Credentials.
+     */
+    distinct?: CredentialScalarFieldEnum | CredentialScalarFieldEnum[]
+  }
+
+  /**
+   * Credential findFirstOrThrow
+   */
+  export type CredentialFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Credential
+     */
+    select?: CredentialSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CredentialInclude<ExtArgs> | null
+    /**
+     * Filter, which Credential to fetch.
+     */
+    where?: CredentialWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Credentials to fetch.
+     */
+    orderBy?: CredentialOrderByWithRelationInput | CredentialOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Credentials.
+     */
+    cursor?: CredentialWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Credentials from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Credentials.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Credentials.
+     */
+    distinct?: CredentialScalarFieldEnum | CredentialScalarFieldEnum[]
+  }
+
+  /**
+   * Credential findMany
+   */
+  export type CredentialFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Credential
+     */
+    select?: CredentialSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CredentialInclude<ExtArgs> | null
+    /**
+     * Filter, which Credentials to fetch.
+     */
+    where?: CredentialWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Credentials to fetch.
+     */
+    orderBy?: CredentialOrderByWithRelationInput | CredentialOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Credentials.
+     */
+    cursor?: CredentialWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Credentials from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Credentials.
+     */
+    skip?: number
+    distinct?: CredentialScalarFieldEnum | CredentialScalarFieldEnum[]
+  }
+
+  /**
+   * Credential create
+   */
+  export type CredentialCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Credential
+     */
+    select?: CredentialSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CredentialInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Credential.
+     */
+    data: XOR<CredentialCreateInput, CredentialUncheckedCreateInput>
+  }
+
+  /**
+   * Credential createMany
+   */
+  export type CredentialCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Credentials.
+     */
+    data: CredentialCreateManyInput | CredentialCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Credential createManyAndReturn
+   */
+  export type CredentialCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Credential
+     */
+    select?: CredentialSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many Credentials.
+     */
+    data: CredentialCreateManyInput | CredentialCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CredentialIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Credential update
+   */
+  export type CredentialUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Credential
+     */
+    select?: CredentialSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CredentialInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Credential.
+     */
+    data: XOR<CredentialUpdateInput, CredentialUncheckedUpdateInput>
+    /**
+     * Choose, which Credential to update.
+     */
+    where: CredentialWhereUniqueInput
+  }
+
+  /**
+   * Credential updateMany
+   */
+  export type CredentialUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Credentials.
+     */
+    data: XOR<CredentialUpdateManyMutationInput, CredentialUncheckedUpdateManyInput>
+    /**
+     * Filter which Credentials to update
+     */
+    where?: CredentialWhereInput
+  }
+
+  /**
+   * Credential upsert
+   */
+  export type CredentialUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Credential
+     */
+    select?: CredentialSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CredentialInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Credential to update in case it exists.
+     */
+    where: CredentialWhereUniqueInput
+    /**
+     * In case the Credential found by the `where` argument doesn't exist, create a new Credential with this data.
+     */
+    create: XOR<CredentialCreateInput, CredentialUncheckedCreateInput>
+    /**
+     * In case the Credential was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CredentialUpdateInput, CredentialUncheckedUpdateInput>
+  }
+
+  /**
+   * Credential delete
+   */
+  export type CredentialDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Credential
+     */
+    select?: CredentialSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CredentialInclude<ExtArgs> | null
+    /**
+     * Filter which Credential to delete.
+     */
+    where: CredentialWhereUniqueInput
+  }
+
+  /**
+   * Credential deleteMany
+   */
+  export type CredentialDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Credentials to delete
+     */
+    where?: CredentialWhereInput
+  }
+
+  /**
+   * Credential.Node
+   */
+  export type Credential$NodeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Node
+     */
+    select?: NodeSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NodeInclude<ExtArgs> | null
+    where?: NodeWhereInput
+    orderBy?: NodeOrderByWithRelationInput | NodeOrderByWithRelationInput[]
+    cursor?: NodeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NodeScalarFieldEnum | NodeScalarFieldEnum[]
+  }
+
+  /**
+   * Credential without action
+   */
+  export type CredentialDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Credential
+     */
+    select?: CredentialSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CredentialInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model Workflow
    */
 
@@ -5529,11 +6675,11 @@ export namespace Prisma {
   }
 
   export type GetWorkflowAggregateType<T extends WorkflowAggregateArgs> = {
-    [P in keyof T & keyof AggregateWorkflow]: P extends '_count' | 'count'
-    ? T[P] extends true
-    ? number
-    : GetScalarType<T[P], AggregateWorkflow[P]>
-    : GetScalarType<T[P], AggregateWorkflow[P]>
+        [P in keyof T & keyof AggregateWorkflow]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateWorkflow[P]>
+      : GetScalarType<T[P], AggregateWorkflow[P]>
   }
 
 
@@ -5565,15 +6711,15 @@ export namespace Prisma {
   type GetWorkflowGroupByPayload<T extends WorkflowGroupByArgs> = Prisma.PrismaPromise<
     Array<
       PickEnumerable<WorkflowGroupByOutputType, T['by']> &
-      {
-        [P in ((keyof T) & (keyof WorkflowGroupByOutputType))]: P extends '_count'
-        ? T[P] extends boolean
-        ? number
-        : GetScalarType<T[P], WorkflowGroupByOutputType[P]>
-        : GetScalarType<T[P], WorkflowGroupByOutputType[P]>
-      }
+        {
+          [P in ((keyof T) & (keyof WorkflowGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], WorkflowGroupByOutputType[P]>
+            : GetScalarType<T[P], WorkflowGroupByOutputType[P]>
+        }
+      >
     >
-  >
 
 
   export type WorkflowSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5634,7 +6780,7 @@ export namespace Prisma {
 
   type WorkflowGetPayload<S extends boolean | null | undefined | WorkflowDefaultArgs> = $Result.GetResult<Prisma.$WorkflowPayload, S>
 
-  type WorkflowCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+  type WorkflowCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
     Omit<WorkflowFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: WorkflowCountAggregateInputType | true
     }
@@ -5870,10 +7016,10 @@ export namespace Prisma {
       args?: Subset<T, WorkflowCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
-      ? T['select'] extends true
-      ? number
-      : GetScalarType<T['select'], WorkflowCountAggregateOutputType>
-      : number
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], WorkflowCountAggregateOutputType>
+        : number
     >
 
     /**
@@ -5927,8 +7073,8 @@ export namespace Prisma {
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-      ? { orderBy: WorkflowGroupByArgs['orderBy'] }
-      : { orderBy?: WorkflowGroupByArgs['orderBy'] },
+        ? { orderBy: WorkflowGroupByArgs['orderBy'] }
+        : { orderBy?: WorkflowGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -5939,49 +7085,49 @@ export namespace Prisma {
       ? `Error: "by" must not be empty.`
       : HavingValid extends False
       ? {
-        [P in HavingFields]: P extends ByFields
-        ? never
-        : P extends string
-        ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-        : [
-          Error,
-          'Field ',
-          P,
-          ` in "having" needs to be provided in "by"`,
-        ]
-      }[HavingFields]
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
       : 'take' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-      ? ByValid extends True
-      ? {}
-      : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
-      : 'Error: If you provide "take", you also need to provide "orderBy"'
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
       : 'skip' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-      ? ByValid extends True
-      ? {}
-      : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
-      : 'Error: If you provide "skip", you also need to provide "orderBy"'
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
       : ByValid extends True
       ? {}
       : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
     >(args: SubsetIntersection<T, WorkflowGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWorkflowGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-    /**
-     * Fields of the Workflow model
-     */
-    readonly fields: WorkflowFieldRefs;
+  /**
+   * Fields of the Workflow model
+   */
+  readonly fields: WorkflowFieldRefs;
   }
 
   /**
@@ -6022,7 +7168,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Workflow model
-   */
+   */ 
   interface WorkflowFieldRefs {
     readonly id: FieldRef<"Workflow", 'String'>
     readonly name: FieldRef<"Workflow", 'String'>
@@ -6030,7 +7176,7 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"Workflow", 'DateTime'>
     readonly userID: FieldRef<"Workflow", 'String'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -6416,6 +7562,7 @@ export namespace Prisma {
     workflowId: string | null
     name: string | null
     type: $Enums.NodeType | null
+    credentialId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -6425,6 +7572,7 @@ export namespace Prisma {
     workflowId: string | null
     name: string | null
     type: $Enums.NodeType | null
+    credentialId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -6436,6 +7584,7 @@ export namespace Prisma {
     type: number
     position: number
     data: number
+    credentialId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -6447,6 +7596,7 @@ export namespace Prisma {
     workflowId?: true
     name?: true
     type?: true
+    credentialId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -6456,6 +7606,7 @@ export namespace Prisma {
     workflowId?: true
     name?: true
     type?: true
+    credentialId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -6467,6 +7618,7 @@ export namespace Prisma {
     type?: true
     position?: true
     data?: true
+    credentialId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -6522,11 +7674,11 @@ export namespace Prisma {
   }
 
   export type GetNodeAggregateType<T extends NodeAggregateArgs> = {
-    [P in keyof T & keyof AggregateNode]: P extends '_count' | 'count'
-    ? T[P] extends true
-    ? number
-    : GetScalarType<T[P], AggregateNode[P]>
-    : GetScalarType<T[P], AggregateNode[P]>
+        [P in keyof T & keyof AggregateNode]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateNode[P]>
+      : GetScalarType<T[P], AggregateNode[P]>
   }
 
 
@@ -6551,6 +7703,7 @@ export namespace Prisma {
     type: $Enums.NodeType
     position: JsonValue
     data: JsonValue
+    credentialId: string | null
     createdAt: Date
     updatedAt: Date
     _count: NodeCountAggregateOutputType | null
@@ -6561,15 +7714,15 @@ export namespace Prisma {
   type GetNodeGroupByPayload<T extends NodeGroupByArgs> = Prisma.PrismaPromise<
     Array<
       PickEnumerable<NodeGroupByOutputType, T['by']> &
-      {
-        [P in ((keyof T) & (keyof NodeGroupByOutputType))]: P extends '_count'
-        ? T[P] extends boolean
-        ? number
-        : GetScalarType<T[P], NodeGroupByOutputType[P]>
-        : GetScalarType<T[P], NodeGroupByOutputType[P]>
-      }
+        {
+          [P in ((keyof T) & (keyof NodeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], NodeGroupByOutputType[P]>
+            : GetScalarType<T[P], NodeGroupByOutputType[P]>
+        }
+      >
     >
-  >
 
 
   export type NodeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -6579,9 +7732,11 @@ export namespace Prisma {
     type?: boolean
     position?: boolean
     data?: boolean
+    credentialId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     workflow?: boolean | WorkflowDefaultArgs<ExtArgs>
+    credential?: boolean | Node$credentialArgs<ExtArgs>
     outputConnections?: boolean | Node$outputConnectionsArgs<ExtArgs>
     inputConnections?: boolean | Node$inputConnectionsArgs<ExtArgs>
     _count?: boolean | NodeCountOutputTypeDefaultArgs<ExtArgs>
@@ -6594,9 +7749,11 @@ export namespace Prisma {
     type?: boolean
     position?: boolean
     data?: boolean
+    credentialId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     workflow?: boolean | WorkflowDefaultArgs<ExtArgs>
+    credential?: boolean | Node$credentialArgs<ExtArgs>
   }, ExtArgs["result"]["node"]>
 
   export type NodeSelectScalar = {
@@ -6606,24 +7763,28 @@ export namespace Prisma {
     type?: boolean
     position?: boolean
     data?: boolean
+    credentialId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
   export type NodeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     workflow?: boolean | WorkflowDefaultArgs<ExtArgs>
+    credential?: boolean | Node$credentialArgs<ExtArgs>
     outputConnections?: boolean | Node$outputConnectionsArgs<ExtArgs>
     inputConnections?: boolean | Node$inputConnectionsArgs<ExtArgs>
     _count?: boolean | NodeCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type NodeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     workflow?: boolean | WorkflowDefaultArgs<ExtArgs>
+    credential?: boolean | Node$credentialArgs<ExtArgs>
   }
 
   export type $NodePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Node"
     objects: {
       workflow: Prisma.$WorkflowPayload<ExtArgs>
+      credential: Prisma.$CredentialPayload<ExtArgs> | null
       outputConnections: Prisma.$ConnectionPayload<ExtArgs>[]
       inputConnections: Prisma.$ConnectionPayload<ExtArgs>[]
     }
@@ -6634,6 +7795,7 @@ export namespace Prisma {
       type: $Enums.NodeType
       position: Prisma.JsonValue
       data: Prisma.JsonValue
+      credentialId: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["node"]>
@@ -6642,7 +7804,7 @@ export namespace Prisma {
 
   type NodeGetPayload<S extends boolean | null | undefined | NodeDefaultArgs> = $Result.GetResult<Prisma.$NodePayload, S>
 
-  type NodeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+  type NodeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
     Omit<NodeFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: NodeCountAggregateInputType | true
     }
@@ -6878,10 +8040,10 @@ export namespace Prisma {
       args?: Subset<T, NodeCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
-      ? T['select'] extends true
-      ? number
-      : GetScalarType<T['select'], NodeCountAggregateOutputType>
-      : number
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], NodeCountAggregateOutputType>
+        : number
     >
 
     /**
@@ -6935,8 +8097,8 @@ export namespace Prisma {
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-      ? { orderBy: NodeGroupByArgs['orderBy'] }
-      : { orderBy?: NodeGroupByArgs['orderBy'] },
+        ? { orderBy: NodeGroupByArgs['orderBy'] }
+        : { orderBy?: NodeGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -6947,49 +8109,49 @@ export namespace Prisma {
       ? `Error: "by" must not be empty.`
       : HavingValid extends False
       ? {
-        [P in HavingFields]: P extends ByFields
-        ? never
-        : P extends string
-        ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-        : [
-          Error,
-          'Field ',
-          P,
-          ` in "having" needs to be provided in "by"`,
-        ]
-      }[HavingFields]
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
       : 'take' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-      ? ByValid extends True
-      ? {}
-      : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
-      : 'Error: If you provide "take", you also need to provide "orderBy"'
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
       : 'skip' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-      ? ByValid extends True
-      ? {}
-      : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
-      : 'Error: If you provide "skip", you also need to provide "orderBy"'
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
       : ByValid extends True
       ? {}
       : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
     >(args: SubsetIntersection<T, NodeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetNodeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-    /**
-     * Fields of the Node model
-     */
-    readonly fields: NodeFieldRefs;
+  /**
+   * Fields of the Node model
+   */
+  readonly fields: NodeFieldRefs;
   }
 
   /**
@@ -7001,6 +8163,7 @@ export namespace Prisma {
   export interface Prisma__NodeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     workflow<T extends WorkflowDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WorkflowDefaultArgs<ExtArgs>>): Prisma__WorkflowClient<$Result.GetResult<Prisma.$WorkflowPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    credential<T extends Node$credentialArgs<ExtArgs> = {}>(args?: Subset<T, Node$credentialArgs<ExtArgs>>): Prisma__CredentialClient<$Result.GetResult<Prisma.$CredentialPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     outputConnections<T extends Node$outputConnectionsArgs<ExtArgs> = {}>(args?: Subset<T, Node$outputConnectionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConnectionPayload<ExtArgs>, T, "findMany"> | Null>
     inputConnections<T extends Node$inputConnectionsArgs<ExtArgs> = {}>(args?: Subset<T, Node$inputConnectionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConnectionPayload<ExtArgs>, T, "findMany"> | Null>
     /**
@@ -7030,7 +8193,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Node model
-   */
+   */ 
   interface NodeFieldRefs {
     readonly id: FieldRef<"Node", 'String'>
     readonly workflowId: FieldRef<"Node", 'String'>
@@ -7038,10 +8201,11 @@ export namespace Prisma {
     readonly type: FieldRef<"Node", 'NodeType'>
     readonly position: FieldRef<"Node", 'Json'>
     readonly data: FieldRef<"Node", 'Json'>
+    readonly credentialId: FieldRef<"Node", 'String'>
     readonly createdAt: FieldRef<"Node", 'DateTime'>
     readonly updatedAt: FieldRef<"Node", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -7358,6 +8522,21 @@ export namespace Prisma {
   }
 
   /**
+   * Node.credential
+   */
+  export type Node$credentialArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Credential
+     */
+    select?: CredentialSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CredentialInclude<ExtArgs> | null
+    where?: CredentialWhereInput
+  }
+
+  /**
    * Node.outputConnections
    */
   export type Node$outputConnectionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7541,11 +8720,11 @@ export namespace Prisma {
   }
 
   export type GetConnectionAggregateType<T extends ConnectionAggregateArgs> = {
-    [P in keyof T & keyof AggregateConnection]: P extends '_count' | 'count'
-    ? T[P] extends true
-    ? number
-    : GetScalarType<T[P], AggregateConnection[P]>
-    : GetScalarType<T[P], AggregateConnection[P]>
+        [P in keyof T & keyof AggregateConnection]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateConnection[P]>
+      : GetScalarType<T[P], AggregateConnection[P]>
   }
 
 
@@ -7580,15 +8759,15 @@ export namespace Prisma {
   type GetConnectionGroupByPayload<T extends ConnectionGroupByArgs> = Prisma.PrismaPromise<
     Array<
       PickEnumerable<ConnectionGroupByOutputType, T['by']> &
-      {
-        [P in ((keyof T) & (keyof ConnectionGroupByOutputType))]: P extends '_count'
-        ? T[P] extends boolean
-        ? number
-        : GetScalarType<T[P], ConnectionGroupByOutputType[P]>
-        : GetScalarType<T[P], ConnectionGroupByOutputType[P]>
-      }
+        {
+          [P in ((keyof T) & (keyof ConnectionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ConnectionGroupByOutputType[P]>
+            : GetScalarType<T[P], ConnectionGroupByOutputType[P]>
+        }
+      >
     >
-  >
 
 
   export type ConnectionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7663,7 +8842,7 @@ export namespace Prisma {
 
   type ConnectionGetPayload<S extends boolean | null | undefined | ConnectionDefaultArgs> = $Result.GetResult<Prisma.$ConnectionPayload, S>
 
-  type ConnectionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+  type ConnectionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
     Omit<ConnectionFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: ConnectionCountAggregateInputType | true
     }
@@ -7899,10 +9078,10 @@ export namespace Prisma {
       args?: Subset<T, ConnectionCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
-      ? T['select'] extends true
-      ? number
-      : GetScalarType<T['select'], ConnectionCountAggregateOutputType>
-      : number
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ConnectionCountAggregateOutputType>
+        : number
     >
 
     /**
@@ -7956,8 +9135,8 @@ export namespace Prisma {
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-      ? { orderBy: ConnectionGroupByArgs['orderBy'] }
-      : { orderBy?: ConnectionGroupByArgs['orderBy'] },
+        ? { orderBy: ConnectionGroupByArgs['orderBy'] }
+        : { orderBy?: ConnectionGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -7968,49 +9147,49 @@ export namespace Prisma {
       ? `Error: "by" must not be empty.`
       : HavingValid extends False
       ? {
-        [P in HavingFields]: P extends ByFields
-        ? never
-        : P extends string
-        ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-        : [
-          Error,
-          'Field ',
-          P,
-          ` in "having" needs to be provided in "by"`,
-        ]
-      }[HavingFields]
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
       : 'take' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-      ? ByValid extends True
-      ? {}
-      : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
-      : 'Error: If you provide "take", you also need to provide "orderBy"'
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
       : 'skip' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-      ? ByValid extends True
-      ? {}
-      : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
-      : 'Error: If you provide "skip", you also need to provide "orderBy"'
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
       : ByValid extends True
       ? {}
       : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
     >(args: SubsetIntersection<T, ConnectionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetConnectionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-    /**
-     * Fields of the Connection model
-     */
-    readonly fields: ConnectionFieldRefs;
+  /**
+   * Fields of the Connection model
+   */
+  readonly fields: ConnectionFieldRefs;
   }
 
   /**
@@ -8051,7 +9230,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Connection model
-   */
+   */ 
   interface ConnectionFieldRefs {
     readonly id: FieldRef<"Connection", 'String'>
     readonly workflowId: FieldRef<"Connection", 'String'>
@@ -8062,7 +9241,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Connection", 'DateTime'>
     readonly updatedAt: FieldRef<"Connection", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -8465,6 +9644,19 @@ export namespace Prisma {
   export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
 
 
+  export const CredentialScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    value: 'value',
+    type: 'type',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    userId: 'userId'
+  };
+
+  export type CredentialScalarFieldEnum = (typeof CredentialScalarFieldEnum)[keyof typeof CredentialScalarFieldEnum]
+
+
   export const WorkflowScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -8483,6 +9675,7 @@ export namespace Prisma {
     type: 'type',
     position: 'position',
     data: 'data',
+    credentialId: 'credentialId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -8553,70 +9746,84 @@ export namespace Prisma {
    * Reference to a field of type 'String'
    */
   export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>
-
+    
 
 
   /**
    * Reference to a field of type 'String[]'
    */
   export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
-
+    
 
 
   /**
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-
+    
 
 
   /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
-
+    
 
 
   /**
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
 
+
+  /**
+   * Reference to a field of type 'CredentialType'
+   */
+  export type EnumCredentialTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CredentialType'>
+    
+
+
+  /**
+   * Reference to a field of type 'CredentialType[]'
+   */
+  export type ListEnumCredentialTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CredentialType[]'>
+    
 
 
   /**
    * Reference to a field of type 'NodeType'
    */
   export type EnumNodeTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NodeType'>
-
+    
 
 
   /**
    * Reference to a field of type 'NodeType[]'
    */
   export type ListEnumNodeTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NodeType[]'>
-
+    
 
 
   /**
    * Reference to a field of type 'Json'
    */
   export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-
+    
 
 
   /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-
+    
 
 
   /**
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-
+    
   /**
    * Deep Input Types
    */
@@ -8636,6 +9843,7 @@ export namespace Prisma {
     sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
     workflows?: WorkflowListRelationFilter
+    credential?: CredentialListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -8649,6 +9857,7 @@ export namespace Prisma {
     sessions?: SessionOrderByRelationAggregateInput
     accounts?: AccountOrderByRelationAggregateInput
     workflows?: WorkflowOrderByRelationAggregateInput
+    credential?: CredentialOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -8665,6 +9874,7 @@ export namespace Prisma {
     sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
     workflows?: WorkflowListRelationFilter
+    credential?: CredentialListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -8915,6 +10125,74 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Verification"> | Date | string
   }
 
+  export type CredentialWhereInput = {
+    AND?: CredentialWhereInput | CredentialWhereInput[]
+    OR?: CredentialWhereInput[]
+    NOT?: CredentialWhereInput | CredentialWhereInput[]
+    id?: StringFilter<"Credential"> | string
+    name?: StringFilter<"Credential"> | string
+    value?: StringFilter<"Credential"> | string
+    type?: EnumCredentialTypeFilter<"Credential"> | $Enums.CredentialType
+    createdAt?: DateTimeFilter<"Credential"> | Date | string
+    updatedAt?: DateTimeFilter<"Credential"> | Date | string
+    userId?: StringFilter<"Credential"> | string
+    user?: XOR<UserRelationFilter, UserWhereInput>
+    Node?: NodeListRelationFilter
+  }
+
+  export type CredentialOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    value?: SortOrder
+    type?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+    user?: UserOrderByWithRelationInput
+    Node?: NodeOrderByRelationAggregateInput
+  }
+
+  export type CredentialWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: CredentialWhereInput | CredentialWhereInput[]
+    OR?: CredentialWhereInput[]
+    NOT?: CredentialWhereInput | CredentialWhereInput[]
+    name?: StringFilter<"Credential"> | string
+    value?: StringFilter<"Credential"> | string
+    type?: EnumCredentialTypeFilter<"Credential"> | $Enums.CredentialType
+    createdAt?: DateTimeFilter<"Credential"> | Date | string
+    updatedAt?: DateTimeFilter<"Credential"> | Date | string
+    userId?: StringFilter<"Credential"> | string
+    user?: XOR<UserRelationFilter, UserWhereInput>
+    Node?: NodeListRelationFilter
+  }, "id">
+
+  export type CredentialOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    value?: SortOrder
+    type?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+    _count?: CredentialCountOrderByAggregateInput
+    _max?: CredentialMaxOrderByAggregateInput
+    _min?: CredentialMinOrderByAggregateInput
+  }
+
+  export type CredentialScalarWhereWithAggregatesInput = {
+    AND?: CredentialScalarWhereWithAggregatesInput | CredentialScalarWhereWithAggregatesInput[]
+    OR?: CredentialScalarWhereWithAggregatesInput[]
+    NOT?: CredentialScalarWhereWithAggregatesInput | CredentialScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Credential"> | string
+    name?: StringWithAggregatesFilter<"Credential"> | string
+    value?: StringWithAggregatesFilter<"Credential"> | string
+    type?: EnumCredentialTypeWithAggregatesFilter<"Credential"> | $Enums.CredentialType
+    createdAt?: DateTimeWithAggregatesFilter<"Credential"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Credential"> | Date | string
+    userId?: StringWithAggregatesFilter<"Credential"> | string
+  }
+
   export type WorkflowWhereInput = {
     AND?: WorkflowWhereInput | WorkflowWhereInput[]
     OR?: WorkflowWhereInput[]
@@ -8986,9 +10264,11 @@ export namespace Prisma {
     type?: EnumNodeTypeFilter<"Node"> | $Enums.NodeType
     position?: JsonFilter<"Node">
     data?: JsonFilter<"Node">
+    credentialId?: StringNullableFilter<"Node"> | string | null
     createdAt?: DateTimeFilter<"Node"> | Date | string
     updatedAt?: DateTimeFilter<"Node"> | Date | string
     workflow?: XOR<WorkflowRelationFilter, WorkflowWhereInput>
+    credential?: XOR<CredentialNullableRelationFilter, CredentialWhereInput> | null
     outputConnections?: ConnectionListRelationFilter
     inputConnections?: ConnectionListRelationFilter
   }
@@ -9000,9 +10280,11 @@ export namespace Prisma {
     type?: SortOrder
     position?: SortOrder
     data?: SortOrder
+    credentialId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     workflow?: WorkflowOrderByWithRelationInput
+    credential?: CredentialOrderByWithRelationInput
     outputConnections?: ConnectionOrderByRelationAggregateInput
     inputConnections?: ConnectionOrderByRelationAggregateInput
   }
@@ -9017,9 +10299,11 @@ export namespace Prisma {
     type?: EnumNodeTypeFilter<"Node"> | $Enums.NodeType
     position?: JsonFilter<"Node">
     data?: JsonFilter<"Node">
+    credentialId?: StringNullableFilter<"Node"> | string | null
     createdAt?: DateTimeFilter<"Node"> | Date | string
     updatedAt?: DateTimeFilter<"Node"> | Date | string
     workflow?: XOR<WorkflowRelationFilter, WorkflowWhereInput>
+    credential?: XOR<CredentialNullableRelationFilter, CredentialWhereInput> | null
     outputConnections?: ConnectionListRelationFilter
     inputConnections?: ConnectionListRelationFilter
   }, "id">
@@ -9031,6 +10315,7 @@ export namespace Prisma {
     type?: SortOrder
     position?: SortOrder
     data?: SortOrder
+    credentialId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: NodeCountOrderByAggregateInput
@@ -9048,6 +10333,7 @@ export namespace Prisma {
     type?: EnumNodeTypeWithAggregatesFilter<"Node"> | $Enums.NodeType
     position?: JsonWithAggregatesFilter<"Node">
     data?: JsonWithAggregatesFilter<"Node">
+    credentialId?: StringNullableWithAggregatesFilter<"Node"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Node"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Node"> | Date | string
   }
@@ -9140,6 +10426,7 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     workflows?: WorkflowCreateNestedManyWithoutUserInput
+    credential?: CredentialCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -9153,6 +10440,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     workflows?: WorkflowUncheckedCreateNestedManyWithoutUserInput
+    credential?: CredentialUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -9166,6 +10454,7 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     workflows?: WorkflowUpdateManyWithoutUserNestedInput
+    credential?: CredentialUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -9179,6 +10468,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     workflows?: WorkflowUncheckedUpdateManyWithoutUserNestedInput
+    credential?: CredentialUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -9461,6 +10751,79 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CredentialCreateInput = {
+    id?: string
+    name: string
+    value: string
+    type: $Enums.CredentialType
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutCredentialInput
+    Node?: NodeCreateNestedManyWithoutCredentialInput
+  }
+
+  export type CredentialUncheckedCreateInput = {
+    id?: string
+    name: string
+    value: string
+    type: $Enums.CredentialType
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+    Node?: NodeUncheckedCreateNestedManyWithoutCredentialInput
+  }
+
+  export type CredentialUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    type?: EnumCredentialTypeFieldUpdateOperationsInput | $Enums.CredentialType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutCredentialNestedInput
+    Node?: NodeUpdateManyWithoutCredentialNestedInput
+  }
+
+  export type CredentialUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    type?: EnumCredentialTypeFieldUpdateOperationsInput | $Enums.CredentialType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    Node?: NodeUncheckedUpdateManyWithoutCredentialNestedInput
+  }
+
+  export type CredentialCreateManyInput = {
+    id?: string
+    name: string
+    value: string
+    type: $Enums.CredentialType
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+  }
+
+  export type CredentialUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    type?: EnumCredentialTypeFieldUpdateOperationsInput | $Enums.CredentialType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CredentialUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    type?: EnumCredentialTypeFieldUpdateOperationsInput | $Enums.CredentialType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type WorkflowCreateInput = {
     id?: string
     name: string
@@ -9533,6 +10896,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     workflow: WorkflowCreateNestedOneWithoutNodeInput
+    credential?: CredentialCreateNestedOneWithoutNodeInput
     outputConnections?: ConnectionCreateNestedManyWithoutFromNodeInput
     inputConnections?: ConnectionCreateNestedManyWithoutToNodeInput
   }
@@ -9544,6 +10908,7 @@ export namespace Prisma {
     type: $Enums.NodeType
     position: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
+    credentialId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     outputConnections?: ConnectionUncheckedCreateNestedManyWithoutFromNodeInput
@@ -9559,6 +10924,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workflow?: WorkflowUpdateOneRequiredWithoutNodeNestedInput
+    credential?: CredentialUpdateOneWithoutNodeNestedInput
     outputConnections?: ConnectionUpdateManyWithoutFromNodeNestedInput
     inputConnections?: ConnectionUpdateManyWithoutToNodeNestedInput
   }
@@ -9570,6 +10936,7 @@ export namespace Prisma {
     type?: EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
     position?: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
+    credentialId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     outputConnections?: ConnectionUncheckedUpdateManyWithoutFromNodeNestedInput
@@ -9583,6 +10950,7 @@ export namespace Prisma {
     type: $Enums.NodeType
     position: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
+    credentialId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -9604,6 +10972,7 @@ export namespace Prisma {
     type?: EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
     position?: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
+    credentialId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9746,6 +11115,12 @@ export namespace Prisma {
     none?: WorkflowWhereInput
   }
 
+  export type CredentialListRelationFilter = {
+    every?: CredentialWhereInput
+    some?: CredentialWhereInput
+    none?: CredentialWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -9760,6 +11135,10 @@ export namespace Prisma {
   }
 
   export type WorkflowOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CredentialOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -9989,20 +11368,67 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type EnumCredentialTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.CredentialType | EnumCredentialTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CredentialType[] | ListEnumCredentialTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CredentialType[] | ListEnumCredentialTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCredentialTypeFilter<$PrismaModel> | $Enums.CredentialType
+  }
+
   export type NodeListRelationFilter = {
     every?: NodeWhereInput
     some?: NodeWhereInput
     none?: NodeWhereInput
   }
 
+  export type NodeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CredentialCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    value?: SortOrder
+    type?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type CredentialMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    value?: SortOrder
+    type?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type CredentialMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    value?: SortOrder
+    type?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type EnumCredentialTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CredentialType | EnumCredentialTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CredentialType[] | ListEnumCredentialTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CredentialType[] | ListEnumCredentialTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCredentialTypeWithAggregatesFilter<$PrismaModel> | $Enums.CredentialType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCredentialTypeFilter<$PrismaModel>
+    _max?: NestedEnumCredentialTypeFilter<$PrismaModel>
+  }
+
   export type ConnectionListRelationFilter = {
     every?: ConnectionWhereInput
     some?: ConnectionWhereInput
     none?: ConnectionWhereInput
-  }
-
-  export type NodeOrderByRelationAggregateInput = {
-    _count?: SortOrder
   }
 
   export type ConnectionOrderByRelationAggregateInput = {
@@ -10039,11 +11465,11 @@ export namespace Prisma {
     notIn?: $Enums.NodeType[] | ListEnumNodeTypeFieldRefInput<$PrismaModel>
     not?: NestedEnumNodeTypeFilter<$PrismaModel> | $Enums.NodeType
   }
-  export type JsonFilter<$PrismaModel = never> =
+  export type JsonFilter<$PrismaModel = never> = 
     | PatchUndefined<
-      Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
-      Required<JsonFilterBase<$PrismaModel>>
-    >
+        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonFilterBase<$PrismaModel>>
+      >
     | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
 
   export type JsonFilterBase<$PrismaModel = never> = {
@@ -10067,6 +11493,11 @@ export namespace Prisma {
     isNot?: WorkflowWhereInput
   }
 
+  export type CredentialNullableRelationFilter = {
+    is?: CredentialWhereInput | null
+    isNot?: CredentialWhereInput | null
+  }
+
   export type NodeCountOrderByAggregateInput = {
     id?: SortOrder
     workflowId?: SortOrder
@@ -10074,6 +11505,7 @@ export namespace Prisma {
     type?: SortOrder
     position?: SortOrder
     data?: SortOrder
+    credentialId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -10083,6 +11515,7 @@ export namespace Prisma {
     workflowId?: SortOrder
     name?: SortOrder
     type?: SortOrder
+    credentialId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -10092,6 +11525,7 @@ export namespace Prisma {
     workflowId?: SortOrder
     name?: SortOrder
     type?: SortOrder
+    credentialId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -10105,11 +11539,11 @@ export namespace Prisma {
     _min?: NestedEnumNodeTypeFilter<$PrismaModel>
     _max?: NestedEnumNodeTypeFilter<$PrismaModel>
   }
-  export type JsonWithAggregatesFilter<$PrismaModel = never> =
+  export type JsonWithAggregatesFilter<$PrismaModel = never> = 
     | PatchUndefined<
-      Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-      Required<JsonWithAggregatesFilterBase<$PrismaModel>>
-    >
+        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
+      >
     | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
 
   export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
@@ -10197,6 +11631,13 @@ export namespace Prisma {
     connect?: WorkflowWhereUniqueInput | WorkflowWhereUniqueInput[]
   }
 
+  export type CredentialCreateNestedManyWithoutUserInput = {
+    create?: XOR<CredentialCreateWithoutUserInput, CredentialUncheckedCreateWithoutUserInput> | CredentialCreateWithoutUserInput[] | CredentialUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CredentialCreateOrConnectWithoutUserInput | CredentialCreateOrConnectWithoutUserInput[]
+    createMany?: CredentialCreateManyUserInputEnvelope
+    connect?: CredentialWhereUniqueInput | CredentialWhereUniqueInput[]
+  }
+
   export type SessionUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -10216,6 +11657,13 @@ export namespace Prisma {
     connectOrCreate?: WorkflowCreateOrConnectWithoutUserInput | WorkflowCreateOrConnectWithoutUserInput[]
     createMany?: WorkflowCreateManyUserInputEnvelope
     connect?: WorkflowWhereUniqueInput | WorkflowWhereUniqueInput[]
+  }
+
+  export type CredentialUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<CredentialCreateWithoutUserInput, CredentialUncheckedCreateWithoutUserInput> | CredentialCreateWithoutUserInput[] | CredentialUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CredentialCreateOrConnectWithoutUserInput | CredentialCreateOrConnectWithoutUserInput[]
+    createMany?: CredentialCreateManyUserInputEnvelope
+    connect?: CredentialWhereUniqueInput | CredentialWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -10276,6 +11724,20 @@ export namespace Prisma {
     deleteMany?: WorkflowScalarWhereInput | WorkflowScalarWhereInput[]
   }
 
+  export type CredentialUpdateManyWithoutUserNestedInput = {
+    create?: XOR<CredentialCreateWithoutUserInput, CredentialUncheckedCreateWithoutUserInput> | CredentialCreateWithoutUserInput[] | CredentialUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CredentialCreateOrConnectWithoutUserInput | CredentialCreateOrConnectWithoutUserInput[]
+    upsert?: CredentialUpsertWithWhereUniqueWithoutUserInput | CredentialUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: CredentialCreateManyUserInputEnvelope
+    set?: CredentialWhereUniqueInput | CredentialWhereUniqueInput[]
+    disconnect?: CredentialWhereUniqueInput | CredentialWhereUniqueInput[]
+    delete?: CredentialWhereUniqueInput | CredentialWhereUniqueInput[]
+    connect?: CredentialWhereUniqueInput | CredentialWhereUniqueInput[]
+    update?: CredentialUpdateWithWhereUniqueWithoutUserInput | CredentialUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: CredentialUpdateManyWithWhereWithoutUserInput | CredentialUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: CredentialScalarWhereInput | CredentialScalarWhereInput[]
+  }
+
   export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -10318,6 +11780,20 @@ export namespace Prisma {
     deleteMany?: WorkflowScalarWhereInput | WorkflowScalarWhereInput[]
   }
 
+  export type CredentialUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<CredentialCreateWithoutUserInput, CredentialUncheckedCreateWithoutUserInput> | CredentialCreateWithoutUserInput[] | CredentialUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CredentialCreateOrConnectWithoutUserInput | CredentialCreateOrConnectWithoutUserInput[]
+    upsert?: CredentialUpsertWithWhereUniqueWithoutUserInput | CredentialUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: CredentialCreateManyUserInputEnvelope
+    set?: CredentialWhereUniqueInput | CredentialWhereUniqueInput[]
+    disconnect?: CredentialWhereUniqueInput | CredentialWhereUniqueInput[]
+    delete?: CredentialWhereUniqueInput | CredentialWhereUniqueInput[]
+    connect?: CredentialWhereUniqueInput | CredentialWhereUniqueInput[]
+    update?: CredentialUpdateWithWhereUniqueWithoutUserInput | CredentialUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: CredentialUpdateManyWithWhereWithoutUserInput | CredentialUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: CredentialScalarWhereInput | CredentialScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutSessionsInput = {
     create?: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
     connectOrCreate?: UserCreateOrConnectWithoutSessionsInput
@@ -10348,6 +11824,66 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutAccountsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAccountsInput, UserUpdateWithoutAccountsInput>, UserUncheckedUpdateWithoutAccountsInput>
+  }
+
+  export type UserCreateNestedOneWithoutCredentialInput = {
+    create?: XOR<UserCreateWithoutCredentialInput, UserUncheckedCreateWithoutCredentialInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCredentialInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type NodeCreateNestedManyWithoutCredentialInput = {
+    create?: XOR<NodeCreateWithoutCredentialInput, NodeUncheckedCreateWithoutCredentialInput> | NodeCreateWithoutCredentialInput[] | NodeUncheckedCreateWithoutCredentialInput[]
+    connectOrCreate?: NodeCreateOrConnectWithoutCredentialInput | NodeCreateOrConnectWithoutCredentialInput[]
+    createMany?: NodeCreateManyCredentialInputEnvelope
+    connect?: NodeWhereUniqueInput | NodeWhereUniqueInput[]
+  }
+
+  export type NodeUncheckedCreateNestedManyWithoutCredentialInput = {
+    create?: XOR<NodeCreateWithoutCredentialInput, NodeUncheckedCreateWithoutCredentialInput> | NodeCreateWithoutCredentialInput[] | NodeUncheckedCreateWithoutCredentialInput[]
+    connectOrCreate?: NodeCreateOrConnectWithoutCredentialInput | NodeCreateOrConnectWithoutCredentialInput[]
+    createMany?: NodeCreateManyCredentialInputEnvelope
+    connect?: NodeWhereUniqueInput | NodeWhereUniqueInput[]
+  }
+
+  export type EnumCredentialTypeFieldUpdateOperationsInput = {
+    set?: $Enums.CredentialType
+  }
+
+  export type UserUpdateOneRequiredWithoutCredentialNestedInput = {
+    create?: XOR<UserCreateWithoutCredentialInput, UserUncheckedCreateWithoutCredentialInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCredentialInput
+    upsert?: UserUpsertWithoutCredentialInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCredentialInput, UserUpdateWithoutCredentialInput>, UserUncheckedUpdateWithoutCredentialInput>
+  }
+
+  export type NodeUpdateManyWithoutCredentialNestedInput = {
+    create?: XOR<NodeCreateWithoutCredentialInput, NodeUncheckedCreateWithoutCredentialInput> | NodeCreateWithoutCredentialInput[] | NodeUncheckedCreateWithoutCredentialInput[]
+    connectOrCreate?: NodeCreateOrConnectWithoutCredentialInput | NodeCreateOrConnectWithoutCredentialInput[]
+    upsert?: NodeUpsertWithWhereUniqueWithoutCredentialInput | NodeUpsertWithWhereUniqueWithoutCredentialInput[]
+    createMany?: NodeCreateManyCredentialInputEnvelope
+    set?: NodeWhereUniqueInput | NodeWhereUniqueInput[]
+    disconnect?: NodeWhereUniqueInput | NodeWhereUniqueInput[]
+    delete?: NodeWhereUniqueInput | NodeWhereUniqueInput[]
+    connect?: NodeWhereUniqueInput | NodeWhereUniqueInput[]
+    update?: NodeUpdateWithWhereUniqueWithoutCredentialInput | NodeUpdateWithWhereUniqueWithoutCredentialInput[]
+    updateMany?: NodeUpdateManyWithWhereWithoutCredentialInput | NodeUpdateManyWithWhereWithoutCredentialInput[]
+    deleteMany?: NodeScalarWhereInput | NodeScalarWhereInput[]
+  }
+
+  export type NodeUncheckedUpdateManyWithoutCredentialNestedInput = {
+    create?: XOR<NodeCreateWithoutCredentialInput, NodeUncheckedCreateWithoutCredentialInput> | NodeCreateWithoutCredentialInput[] | NodeUncheckedCreateWithoutCredentialInput[]
+    connectOrCreate?: NodeCreateOrConnectWithoutCredentialInput | NodeCreateOrConnectWithoutCredentialInput[]
+    upsert?: NodeUpsertWithWhereUniqueWithoutCredentialInput | NodeUpsertWithWhereUniqueWithoutCredentialInput[]
+    createMany?: NodeCreateManyCredentialInputEnvelope
+    set?: NodeWhereUniqueInput | NodeWhereUniqueInput[]
+    disconnect?: NodeWhereUniqueInput | NodeWhereUniqueInput[]
+    delete?: NodeWhereUniqueInput | NodeWhereUniqueInput[]
+    connect?: NodeWhereUniqueInput | NodeWhereUniqueInput[]
+    update?: NodeUpdateWithWhereUniqueWithoutCredentialInput | NodeUpdateWithWhereUniqueWithoutCredentialInput[]
+    updateMany?: NodeUpdateManyWithWhereWithoutCredentialInput | NodeUpdateManyWithWhereWithoutCredentialInput[]
+    deleteMany?: NodeScalarWhereInput | NodeScalarWhereInput[]
   }
 
   export type NodeCreateNestedManyWithoutWorkflowInput = {
@@ -10454,6 +11990,12 @@ export namespace Prisma {
     connect?: WorkflowWhereUniqueInput
   }
 
+  export type CredentialCreateNestedOneWithoutNodeInput = {
+    create?: XOR<CredentialCreateWithoutNodeInput, CredentialUncheckedCreateWithoutNodeInput>
+    connectOrCreate?: CredentialCreateOrConnectWithoutNodeInput
+    connect?: CredentialWhereUniqueInput
+  }
+
   export type ConnectionCreateNestedManyWithoutFromNodeInput = {
     create?: XOR<ConnectionCreateWithoutFromNodeInput, ConnectionUncheckedCreateWithoutFromNodeInput> | ConnectionCreateWithoutFromNodeInput[] | ConnectionUncheckedCreateWithoutFromNodeInput[]
     connectOrCreate?: ConnectionCreateOrConnectWithoutFromNodeInput | ConnectionCreateOrConnectWithoutFromNodeInput[]
@@ -10492,6 +12034,16 @@ export namespace Prisma {
     upsert?: WorkflowUpsertWithoutNodeInput
     connect?: WorkflowWhereUniqueInput
     update?: XOR<XOR<WorkflowUpdateToOneWithWhereWithoutNodeInput, WorkflowUpdateWithoutNodeInput>, WorkflowUncheckedUpdateWithoutNodeInput>
+  }
+
+  export type CredentialUpdateOneWithoutNodeNestedInput = {
+    create?: XOR<CredentialCreateWithoutNodeInput, CredentialUncheckedCreateWithoutNodeInput>
+    connectOrCreate?: CredentialCreateOrConnectWithoutNodeInput
+    upsert?: CredentialUpsertWithoutNodeInput
+    disconnect?: CredentialWhereInput | boolean
+    delete?: CredentialWhereInput | boolean
+    connect?: CredentialWhereUniqueInput
+    update?: XOR<XOR<CredentialUpdateToOneWithWhereWithoutNodeInput, CredentialUpdateWithoutNodeInput>, CredentialUncheckedUpdateWithoutNodeInput>
   }
 
   export type ConnectionUpdateManyWithoutFromNodeNestedInput = {
@@ -10739,6 +12291,23 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type NestedEnumCredentialTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.CredentialType | EnumCredentialTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CredentialType[] | ListEnumCredentialTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CredentialType[] | ListEnumCredentialTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCredentialTypeFilter<$PrismaModel> | $Enums.CredentialType
+  }
+
+  export type NestedEnumCredentialTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CredentialType | EnumCredentialTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CredentialType[] | ListEnumCredentialTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CredentialType[] | ListEnumCredentialTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCredentialTypeWithAggregatesFilter<$PrismaModel> | $Enums.CredentialType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCredentialTypeFilter<$PrismaModel>
+    _max?: NestedEnumCredentialTypeFilter<$PrismaModel>
+  }
+
   export type NestedEnumNodeTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.NodeType | EnumNodeTypeFieldRefInput<$PrismaModel>
     in?: $Enums.NodeType[] | ListEnumNodeTypeFieldRefInput<$PrismaModel>
@@ -10755,11 +12324,11 @@ export namespace Prisma {
     _min?: NestedEnumNodeTypeFilter<$PrismaModel>
     _max?: NestedEnumNodeTypeFilter<$PrismaModel>
   }
-  export type NestedJsonFilter<$PrismaModel = never> =
+  export type NestedJsonFilter<$PrismaModel = never> = 
     | PatchUndefined<
-      Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
-      Required<NestedJsonFilterBase<$PrismaModel>>
-    >
+        Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonFilterBase<$PrismaModel>>
+      >
     | OptionalFlat<Omit<Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>
 
   export type NestedJsonFilterBase<$PrismaModel = never> = {
@@ -10876,6 +12445,36 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type CredentialCreateWithoutUserInput = {
+    id?: string
+    name: string
+    value: string
+    type: $Enums.CredentialType
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    Node?: NodeCreateNestedManyWithoutCredentialInput
+  }
+
+  export type CredentialUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    value: string
+    type: $Enums.CredentialType
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    Node?: NodeUncheckedCreateNestedManyWithoutCredentialInput
+  }
+
+  export type CredentialCreateOrConnectWithoutUserInput = {
+    where: CredentialWhereUniqueInput
+    create: XOR<CredentialCreateWithoutUserInput, CredentialUncheckedCreateWithoutUserInput>
+  }
+
+  export type CredentialCreateManyUserInputEnvelope = {
+    data: CredentialCreateManyUserInput | CredentialCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type SessionUpsertWithWhereUniqueWithoutUserInput = {
     where: SessionWhereUniqueInput
     update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
@@ -10968,6 +12567,35 @@ export namespace Prisma {
     userID?: StringFilter<"Workflow"> | string
   }
 
+  export type CredentialUpsertWithWhereUniqueWithoutUserInput = {
+    where: CredentialWhereUniqueInput
+    update: XOR<CredentialUpdateWithoutUserInput, CredentialUncheckedUpdateWithoutUserInput>
+    create: XOR<CredentialCreateWithoutUserInput, CredentialUncheckedCreateWithoutUserInput>
+  }
+
+  export type CredentialUpdateWithWhereUniqueWithoutUserInput = {
+    where: CredentialWhereUniqueInput
+    data: XOR<CredentialUpdateWithoutUserInput, CredentialUncheckedUpdateWithoutUserInput>
+  }
+
+  export type CredentialUpdateManyWithWhereWithoutUserInput = {
+    where: CredentialScalarWhereInput
+    data: XOR<CredentialUpdateManyMutationInput, CredentialUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type CredentialScalarWhereInput = {
+    AND?: CredentialScalarWhereInput | CredentialScalarWhereInput[]
+    OR?: CredentialScalarWhereInput[]
+    NOT?: CredentialScalarWhereInput | CredentialScalarWhereInput[]
+    id?: StringFilter<"Credential"> | string
+    name?: StringFilter<"Credential"> | string
+    value?: StringFilter<"Credential"> | string
+    type?: EnumCredentialTypeFilter<"Credential"> | $Enums.CredentialType
+    createdAt?: DateTimeFilter<"Credential"> | Date | string
+    updatedAt?: DateTimeFilter<"Credential"> | Date | string
+    userId?: StringFilter<"Credential"> | string
+  }
+
   export type UserCreateWithoutSessionsInput = {
     id: string
     name: string
@@ -10978,6 +12606,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     workflows?: WorkflowCreateNestedManyWithoutUserInput
+    credential?: CredentialCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -10990,6 +12619,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     workflows?: WorkflowUncheckedCreateNestedManyWithoutUserInput
+    credential?: CredentialUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -11018,6 +12648,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     workflows?: WorkflowUpdateManyWithoutUserNestedInput
+    credential?: CredentialUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -11030,6 +12661,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     workflows?: WorkflowUncheckedUpdateManyWithoutUserNestedInput
+    credential?: CredentialUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -11042,6 +12674,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sessions?: SessionCreateNestedManyWithoutUserInput
     workflows?: WorkflowCreateNestedManyWithoutUserInput
+    credential?: CredentialCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -11054,6 +12687,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     workflows?: WorkflowUncheckedCreateNestedManyWithoutUserInput
+    credential?: CredentialUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -11082,6 +12716,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUpdateManyWithoutUserNestedInput
     workflows?: WorkflowUpdateManyWithoutUserNestedInput
+    credential?: CredentialUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -11094,6 +12729,142 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     workflows?: WorkflowUncheckedUpdateManyWithoutUserNestedInput
+    credential?: CredentialUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutCredentialInput = {
+    id: string
+    name: string
+    email: string
+    emailVerified?: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    workflows?: WorkflowCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutCredentialInput = {
+    id: string
+    name: string
+    email: string
+    emailVerified?: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    workflows?: WorkflowUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutCredentialInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCredentialInput, UserUncheckedCreateWithoutCredentialInput>
+  }
+
+  export type NodeCreateWithoutCredentialInput = {
+    id?: string
+    name: string
+    type: $Enums.NodeType
+    position: JsonNullValueInput | InputJsonValue
+    data?: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workflow: WorkflowCreateNestedOneWithoutNodeInput
+    outputConnections?: ConnectionCreateNestedManyWithoutFromNodeInput
+    inputConnections?: ConnectionCreateNestedManyWithoutToNodeInput
+  }
+
+  export type NodeUncheckedCreateWithoutCredentialInput = {
+    id?: string
+    workflowId: string
+    name: string
+    type: $Enums.NodeType
+    position: JsonNullValueInput | InputJsonValue
+    data?: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    outputConnections?: ConnectionUncheckedCreateNestedManyWithoutFromNodeInput
+    inputConnections?: ConnectionUncheckedCreateNestedManyWithoutToNodeInput
+  }
+
+  export type NodeCreateOrConnectWithoutCredentialInput = {
+    where: NodeWhereUniqueInput
+    create: XOR<NodeCreateWithoutCredentialInput, NodeUncheckedCreateWithoutCredentialInput>
+  }
+
+  export type NodeCreateManyCredentialInputEnvelope = {
+    data: NodeCreateManyCredentialInput | NodeCreateManyCredentialInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutCredentialInput = {
+    update: XOR<UserUpdateWithoutCredentialInput, UserUncheckedUpdateWithoutCredentialInput>
+    create: XOR<UserCreateWithoutCredentialInput, UserUncheckedCreateWithoutCredentialInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCredentialInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCredentialInput, UserUncheckedUpdateWithoutCredentialInput>
+  }
+
+  export type UserUpdateWithoutCredentialInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    workflows?: WorkflowUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCredentialInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    workflows?: WorkflowUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type NodeUpsertWithWhereUniqueWithoutCredentialInput = {
+    where: NodeWhereUniqueInput
+    update: XOR<NodeUpdateWithoutCredentialInput, NodeUncheckedUpdateWithoutCredentialInput>
+    create: XOR<NodeCreateWithoutCredentialInput, NodeUncheckedCreateWithoutCredentialInput>
+  }
+
+  export type NodeUpdateWithWhereUniqueWithoutCredentialInput = {
+    where: NodeWhereUniqueInput
+    data: XOR<NodeUpdateWithoutCredentialInput, NodeUncheckedUpdateWithoutCredentialInput>
+  }
+
+  export type NodeUpdateManyWithWhereWithoutCredentialInput = {
+    where: NodeScalarWhereInput
+    data: XOR<NodeUpdateManyMutationInput, NodeUncheckedUpdateManyWithoutCredentialInput>
+  }
+
+  export type NodeScalarWhereInput = {
+    AND?: NodeScalarWhereInput | NodeScalarWhereInput[]
+    OR?: NodeScalarWhereInput[]
+    NOT?: NodeScalarWhereInput | NodeScalarWhereInput[]
+    id?: StringFilter<"Node"> | string
+    workflowId?: StringFilter<"Node"> | string
+    name?: StringFilter<"Node"> | string
+    type?: EnumNodeTypeFilter<"Node"> | $Enums.NodeType
+    position?: JsonFilter<"Node">
+    data?: JsonFilter<"Node">
+    credentialId?: StringNullableFilter<"Node"> | string | null
+    createdAt?: DateTimeFilter<"Node"> | Date | string
+    updatedAt?: DateTimeFilter<"Node"> | Date | string
   }
 
   export type NodeCreateWithoutWorkflowInput = {
@@ -11104,6 +12875,7 @@ export namespace Prisma {
     data?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    credential?: CredentialCreateNestedOneWithoutNodeInput
     outputConnections?: ConnectionCreateNestedManyWithoutFromNodeInput
     inputConnections?: ConnectionCreateNestedManyWithoutToNodeInput
   }
@@ -11114,6 +12886,7 @@ export namespace Prisma {
     type: $Enums.NodeType
     position: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
+    credentialId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     outputConnections?: ConnectionUncheckedCreateNestedManyWithoutFromNodeInput
@@ -11170,6 +12943,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
+    credential?: CredentialCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWorkflowsInput = {
@@ -11182,6 +12956,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    credential?: CredentialUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWorkflowsInput = {
@@ -11203,20 +12978,6 @@ export namespace Prisma {
   export type NodeUpdateManyWithWhereWithoutWorkflowInput = {
     where: NodeScalarWhereInput
     data: XOR<NodeUpdateManyMutationInput, NodeUncheckedUpdateManyWithoutWorkflowInput>
-  }
-
-  export type NodeScalarWhereInput = {
-    AND?: NodeScalarWhereInput | NodeScalarWhereInput[]
-    OR?: NodeScalarWhereInput[]
-    NOT?: NodeScalarWhereInput | NodeScalarWhereInput[]
-    id?: StringFilter<"Node"> | string
-    workflowId?: StringFilter<"Node"> | string
-    name?: StringFilter<"Node"> | string
-    type?: EnumNodeTypeFilter<"Node"> | $Enums.NodeType
-    position?: JsonFilter<"Node">
-    data?: JsonFilter<"Node">
-    createdAt?: DateTimeFilter<"Node"> | Date | string
-    updatedAt?: DateTimeFilter<"Node"> | Date | string
   }
 
   export type ConnectionUpsertWithWhereUniqueWithoutWorkflowInput = {
@@ -11270,6 +13031,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
+    credential?: CredentialUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWorkflowsInput = {
@@ -11282,6 +13044,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    credential?: CredentialUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type WorkflowCreateWithoutNodeInput = {
@@ -11305,6 +13068,31 @@ export namespace Prisma {
   export type WorkflowCreateOrConnectWithoutNodeInput = {
     where: WorkflowWhereUniqueInput
     create: XOR<WorkflowCreateWithoutNodeInput, WorkflowUncheckedCreateWithoutNodeInput>
+  }
+
+  export type CredentialCreateWithoutNodeInput = {
+    id?: string
+    name: string
+    value: string
+    type: $Enums.CredentialType
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutCredentialInput
+  }
+
+  export type CredentialUncheckedCreateWithoutNodeInput = {
+    id?: string
+    name: string
+    value: string
+    type: $Enums.CredentialType
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+  }
+
+  export type CredentialCreateOrConnectWithoutNodeInput = {
+    where: CredentialWhereUniqueInput
+    create: XOR<CredentialCreateWithoutNodeInput, CredentialUncheckedCreateWithoutNodeInput>
   }
 
   export type ConnectionCreateWithoutFromNodeInput = {
@@ -11396,6 +13184,37 @@ export namespace Prisma {
     connections?: ConnectionUncheckedUpdateManyWithoutWorkflowNestedInput
   }
 
+  export type CredentialUpsertWithoutNodeInput = {
+    update: XOR<CredentialUpdateWithoutNodeInput, CredentialUncheckedUpdateWithoutNodeInput>
+    create: XOR<CredentialCreateWithoutNodeInput, CredentialUncheckedCreateWithoutNodeInput>
+    where?: CredentialWhereInput
+  }
+
+  export type CredentialUpdateToOneWithWhereWithoutNodeInput = {
+    where?: CredentialWhereInput
+    data: XOR<CredentialUpdateWithoutNodeInput, CredentialUncheckedUpdateWithoutNodeInput>
+  }
+
+  export type CredentialUpdateWithoutNodeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    type?: EnumCredentialTypeFieldUpdateOperationsInput | $Enums.CredentialType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutCredentialNestedInput
+  }
+
+  export type CredentialUncheckedUpdateWithoutNodeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    type?: EnumCredentialTypeFieldUpdateOperationsInput | $Enums.CredentialType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type ConnectionUpsertWithWhereUniqueWithoutFromNodeInput = {
     where: ConnectionWhereUniqueInput
     update: XOR<ConnectionUpdateWithoutFromNodeInput, ConnectionUncheckedUpdateWithoutFromNodeInput>
@@ -11460,6 +13279,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     workflow: WorkflowCreateNestedOneWithoutNodeInput
+    credential?: CredentialCreateNestedOneWithoutNodeInput
     inputConnections?: ConnectionCreateNestedManyWithoutToNodeInput
   }
 
@@ -11470,6 +13290,7 @@ export namespace Prisma {
     type: $Enums.NodeType
     position: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
+    credentialId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     inputConnections?: ConnectionUncheckedCreateNestedManyWithoutToNodeInput
@@ -11489,6 +13310,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     workflow: WorkflowCreateNestedOneWithoutNodeInput
+    credential?: CredentialCreateNestedOneWithoutNodeInput
     outputConnections?: ConnectionCreateNestedManyWithoutFromNodeInput
   }
 
@@ -11499,6 +13321,7 @@ export namespace Prisma {
     type: $Enums.NodeType
     position: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
+    credentialId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     outputConnections?: ConnectionUncheckedCreateNestedManyWithoutFromNodeInput
@@ -11558,6 +13381,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workflow?: WorkflowUpdateOneRequiredWithoutNodeNestedInput
+    credential?: CredentialUpdateOneWithoutNodeNestedInput
     inputConnections?: ConnectionUpdateManyWithoutToNodeNestedInput
   }
 
@@ -11568,6 +13392,7 @@ export namespace Prisma {
     type?: EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
     position?: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
+    credentialId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     inputConnections?: ConnectionUncheckedUpdateManyWithoutToNodeNestedInput
@@ -11593,6 +13418,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workflow?: WorkflowUpdateOneRequiredWithoutNodeNestedInput
+    credential?: CredentialUpdateOneWithoutNodeNestedInput
     outputConnections?: ConnectionUpdateManyWithoutFromNodeNestedInput
   }
 
@@ -11603,6 +13429,7 @@ export namespace Prisma {
     type?: EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
     position?: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
+    credentialId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     outputConnections?: ConnectionUncheckedUpdateManyWithoutFromNodeNestedInput
@@ -11636,6 +13463,15 @@ export namespace Prisma {
   export type WorkflowCreateManyUserInput = {
     id?: string
     name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CredentialCreateManyUserInput = {
+    id?: string
+    name: string
+    value: string
+    type: $Enums.CredentialType
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -11740,12 +13576,90 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CredentialUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    type?: EnumCredentialTypeFieldUpdateOperationsInput | $Enums.CredentialType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Node?: NodeUpdateManyWithoutCredentialNestedInput
+  }
+
+  export type CredentialUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    type?: EnumCredentialTypeFieldUpdateOperationsInput | $Enums.CredentialType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Node?: NodeUncheckedUpdateManyWithoutCredentialNestedInput
+  }
+
+  export type CredentialUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    type?: EnumCredentialTypeFieldUpdateOperationsInput | $Enums.CredentialType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NodeCreateManyCredentialInput = {
+    id?: string
+    workflowId: string
+    name: string
+    type: $Enums.NodeType
+    position: JsonNullValueInput | InputJsonValue
+    data?: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NodeUpdateWithoutCredentialInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
+    position?: JsonNullValueInput | InputJsonValue
+    data?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workflow?: WorkflowUpdateOneRequiredWithoutNodeNestedInput
+    outputConnections?: ConnectionUpdateManyWithoutFromNodeNestedInput
+    inputConnections?: ConnectionUpdateManyWithoutToNodeNestedInput
+  }
+
+  export type NodeUncheckedUpdateWithoutCredentialInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workflowId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
+    position?: JsonNullValueInput | InputJsonValue
+    data?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    outputConnections?: ConnectionUncheckedUpdateManyWithoutFromNodeNestedInput
+    inputConnections?: ConnectionUncheckedUpdateManyWithoutToNodeNestedInput
+  }
+
+  export type NodeUncheckedUpdateManyWithoutCredentialInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workflowId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
+    position?: JsonNullValueInput | InputJsonValue
+    data?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type NodeCreateManyWorkflowInput = {
     id?: string
     name: string
     type: $Enums.NodeType
     position: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
+    credentialId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -11768,6 +13682,7 @@ export namespace Prisma {
     data?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    credential?: CredentialUpdateOneWithoutNodeNestedInput
     outputConnections?: ConnectionUpdateManyWithoutFromNodeNestedInput
     inputConnections?: ConnectionUpdateManyWithoutToNodeNestedInput
   }
@@ -11778,6 +13693,7 @@ export namespace Prisma {
     type?: EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
     position?: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
+    credentialId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     outputConnections?: ConnectionUncheckedUpdateManyWithoutFromNodeNestedInput
@@ -11790,6 +13706,7 @@ export namespace Prisma {
     type?: EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
     position?: JsonNullValueInput | InputJsonValue
     data?: JsonNullValueInput | InputJsonValue
+    credentialId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -11909,46 +13826,54 @@ export namespace Prisma {
   /**
    * Aliases for legacy arg types
    */
-  /**
-   * @deprecated Use UserCountOutputTypeDefaultArgs instead
-   */
-  export type UserCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UserCountOutputTypeDefaultArgs<ExtArgs>
-  /**
-   * @deprecated Use WorkflowCountOutputTypeDefaultArgs instead
-   */
-  export type WorkflowCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = WorkflowCountOutputTypeDefaultArgs<ExtArgs>
-  /**
-   * @deprecated Use NodeCountOutputTypeDefaultArgs instead
-   */
-  export type NodeCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = NodeCountOutputTypeDefaultArgs<ExtArgs>
-  /**
-   * @deprecated Use UserDefaultArgs instead
-   */
-  export type UserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UserDefaultArgs<ExtArgs>
-  /**
-   * @deprecated Use SessionDefaultArgs instead
-   */
-  export type SessionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = SessionDefaultArgs<ExtArgs>
-  /**
-   * @deprecated Use AccountDefaultArgs instead
-   */
-  export type AccountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = AccountDefaultArgs<ExtArgs>
-  /**
-   * @deprecated Use VerificationDefaultArgs instead
-   */
-  export type VerificationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = VerificationDefaultArgs<ExtArgs>
-  /**
-   * @deprecated Use WorkflowDefaultArgs instead
-   */
-  export type WorkflowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = WorkflowDefaultArgs<ExtArgs>
-  /**
-   * @deprecated Use NodeDefaultArgs instead
-   */
-  export type NodeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = NodeDefaultArgs<ExtArgs>
-  /**
-   * @deprecated Use ConnectionDefaultArgs instead
-   */
-  export type ConnectionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ConnectionDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use UserCountOutputTypeDefaultArgs instead
+     */
+    export type UserCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UserCountOutputTypeDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use CredentialCountOutputTypeDefaultArgs instead
+     */
+    export type CredentialCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = CredentialCountOutputTypeDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use WorkflowCountOutputTypeDefaultArgs instead
+     */
+    export type WorkflowCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = WorkflowCountOutputTypeDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use NodeCountOutputTypeDefaultArgs instead
+     */
+    export type NodeCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = NodeCountOutputTypeDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use UserDefaultArgs instead
+     */
+    export type UserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UserDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use SessionDefaultArgs instead
+     */
+    export type SessionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = SessionDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use AccountDefaultArgs instead
+     */
+    export type AccountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = AccountDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use VerificationDefaultArgs instead
+     */
+    export type VerificationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = VerificationDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use CredentialDefaultArgs instead
+     */
+    export type CredentialArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = CredentialDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use WorkflowDefaultArgs instead
+     */
+    export type WorkflowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = WorkflowDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use NodeDefaultArgs instead
+     */
+    export type NodeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = NodeDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use ConnectionDefaultArgs instead
+     */
+    export type ConnectionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ConnectionDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany
