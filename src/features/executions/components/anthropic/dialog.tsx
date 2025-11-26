@@ -184,7 +184,7 @@ export const AnthropicDialog = ({
                   <Textarea className="min-h-[80px] font-mono text-sm" placeholder="Your are a Helpful assistant..." {...field}
                   />
                   <FormDescription>
-                    Sets the behaviour of the assistant. Use{"{{variables}}"} for simple values or {"{{json variable}"} to stringify objects
+                    Sets the behaviour of the assistant. Use{"{{variables}}"} for simple values or {"{{json variable}}"} to stringify objects
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

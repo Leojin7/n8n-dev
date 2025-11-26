@@ -167,10 +167,10 @@ export const OpenAIDialog = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>System Prompt(Optional)</FormLabel>
-                  <Textarea className="min-h-[80px] font-mono text-sm" placeholder="Your are a Helpful assistant..." {...field}
+                  <Textarea className="min-h-[80px] font-mono text-sm" placeholder="You are a Helpful assistant..." {...field}
                   />
                   <FormDescription>
-                    Sets the behaviour of the assistant. Use{"{{variables}}"} for simple values or {"{{json variable}"} to stringify objects
+                    Sets the behaviour of the assistant. Use {"{{variables}}"} for simple values or {"{{json variable}}"} to stringify objects
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -182,7 +182,7 @@ export const OpenAIDialog = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>User Prompt</FormLabel>
-                  <Textarea className="min-h-[120px] font-mono text-sm" placeholder="summarize this text :{{json.httpResonse.data}}" {...field}
+                  <Textarea className="min-h-[120px] font-mono text-sm" placeholder="summarize this text :{{json.httpResponse.data}}" {...field}
                   />
                   <FormDescription>
                     Prompt to send to AI. Use {'{{variables}}'} for simple values or {'{{json variable}}'} to stringify objects

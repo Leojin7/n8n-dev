@@ -46,7 +46,7 @@ export const anthropicExecutor: NodeExecutor<AnthropicData> = async ({ data, nod
   }
 
   // TODO: throw if credentials is missing
-  const systemPrompt = data.systemPrompt ? Handlebars.compile(data.systemPrompt)(context) : " You are a helpful assistant";
+  const systemPrompt = data.systemPrompt ? Handlebars.compile(data.systemPrompt)(context) : "You are a helpful assistant";
 
 
   const userPrompt = Handlebars.compile(data.userPrompt)(context);
