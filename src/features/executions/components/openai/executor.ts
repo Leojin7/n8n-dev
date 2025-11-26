@@ -98,6 +98,7 @@ export const openaiExecutor: NodeExecutor<OpenAIData> = async ({ data, nodeId, c
     );
 
     return {
+      ...context,
       [data.variableName]: response,
     };
   } catch (error) {
