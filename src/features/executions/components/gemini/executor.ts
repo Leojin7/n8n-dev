@@ -1,18 +1,21 @@
 import type { NodeExecutor } from "@/features/executions/types";
 import { geminiChannel } from "@/inngest/channels/gemini";
 import { NonRetriableError } from "inngest";
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { createGoogleGenerativeAI, google } from "@ai-sdk/google";
 import Handlebars from "handlebars";
 import { generateText } from "ai";
+import Prismadb from "@/lib/db";
 
 Handlebars.registerHelper("json", (context) => {
   const jsonString = JSON.stringify(context, null, 2);
   const safeString = new Handlebars.SafeString(jsonString);
   return safeString;
 });
+
 type GeminiData = {
   variableName: string,
   model?: string,
+  credentialId?: string,
   systemPrompt?: string,
   userPrompt?: string,
 };
@@ -20,25 +23,24 @@ type GeminiData = {
 export const geminiExecutor: NodeExecutor<GeminiData> = async ({ data, nodeId, context, step, publish }) => {
   await publish(
     geminiChannel().status({
-
       nodeId,
       status: "loading",
     }),
   );
+
   if (!data.variableName) {
     await publish(
       geminiChannel().status({
-
         nodeId,
         status: "error",
       }),
     );
     throw new NonRetriableError("Gemini node: Variable name is missing");
   }
+
   if (!data.userPrompt) {
     await publish(
       geminiChannel().status({
-
         nodeId,
         status: "error",
       }),
@@ -54,15 +56,34 @@ export const geminiExecutor: NodeExecutor<GeminiData> = async ({ data, nodeId, c
       geminiChannel().status({
         nodeId,
         status: "error",
-      })
+      }),
     );
-    throw new NonRetriableError("Gemini node: GOOGLE_GENERATIVE_AI_API_KEY environment variable is not set");
+    throw new NonRetriableError("Gemini node: Credential Id is missing");
+  }
+  // TODO: throw if credentials is missing
+  const systemPrompt = data.systemPrompt ? Handlebars.compile(data.systemPrompt)(context) : "You are a helpful assistant";
+  const userPrompt = Handlebars.compile(data.userPrompt)(context);
+  const credential = await step.run("get-credential", () => {
+    return Prismadb.credential.findUnique({
+      where: {
+
+        id: data.credentialId,
+      }
+    })
+  })
+
+  if (!credential) {
+    throw new NonRetriableError("Gemini node:Credential not found");
   }
 
   const google = createGoogleGenerativeAI({
-    apiKey: credentialValue,
-  });
+    apiKey: credential?.value,
+  })
+  // Clean up the model name by removing any (recommended) tag
+  const cleanModelName = data.model?.replace(/\(recommended\)/g, '').trim() || 'gemini-pro';
 
+  // Create the model instance with the clean model name
+  const model = google(cleanModelName);
 
   try {
     // Map model names to the latest supported models in the Google AI SDK
@@ -95,23 +116,24 @@ export const geminiExecutor: NodeExecutor<GeminiData> = async ({ data, nodeId, c
           recordInputs: true,
           recordOutputs: true,
         }
-      },
-    )
+      }
+    );
 
     const text = steps?.[0]?.content?.[0]?.type === "text" ? steps[0].content[0].text : "";
 
     await publish(
       geminiChannel().status({
-        nodeId, status: "success",
+        nodeId,
+        status: "success",
       }),
     );
+
     return {
       ...context,
       [data.variableName]: {
         text,
       }
-
-    }
+    };
   }
   catch (e) {
     await publish(
@@ -119,10 +141,7 @@ export const geminiExecutor: NodeExecutor<GeminiData> = async ({ data, nodeId, c
         nodeId,
         status: "error",
       })
-    )
+    );
     throw e;
   }
-
 };
-
-

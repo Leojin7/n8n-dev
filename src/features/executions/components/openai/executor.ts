@@ -4,7 +4,7 @@ import { NonRetriableError } from "inngest";
 import OpenAI from "openai";
 import Handlebars from "handlebars";
 import { generateText } from "ai";
-
+import Prismadb from "@/lib/db";
 Handlebars.registerHelper("json", (context) => {
   const jsonString = JSON.stringify(context, null, 2);
   const safeString = new Handlebars.SafeString(jsonString);
@@ -14,6 +14,7 @@ Handlebars.registerHelper("json", (context) => {
 type OpenAIData = {
   variableName: string;
   model?: string;
+  credentialId?: string;
   systemPrompt?: string;
   userPrompt?: string;
 };
@@ -37,6 +38,16 @@ export const openaiExecutor: NodeExecutor<OpenAIData> = async ({ data, nodeId, c
     );
     throw new NonRetriableError("OpenAI node: Variable name is missing");
   }
+  if (!data.credentialId) {
+    await publish(
+      openaiChannel().status({
+        nodeId,
+        status: "error",
+      })
+    );
+    throw new NonRetriableError("OpenAI node: Credentials is missing");
+  }
+
 
   if (!data.userPrompt) {
     await publish(
@@ -56,20 +67,21 @@ export const openaiExecutor: NodeExecutor<OpenAIData> = async ({ data, nodeId, c
     : "You are a helpful assistant";
 
   const userPrompt = Handlebars.compile(data.userPrompt)(context);
-  const apiKey = process.env.OPENAI_API_KEY;
+  const credential = await step.run("get-credential", () => {
+    return Prismadb.credential.findUnique({
+      where: {
 
-  if (!apiKey) {
-    await publish(
-      openaiChannel().status({
-        nodeId,
-        status: "error",
-      })
-    );
-    throw new NonRetriableError("OpenAI API key is not configured");
+        id: data.credentialId,
+      }
+    })
+  })
+
+  if (!credential) {
+    throw new NonRetriableError("OpenAI node:Credential not found");
   }
 
   const openai = new OpenAI({
-    apiKey: apiKey,
+    apiKey: credential.value,
   });
 
   try {
