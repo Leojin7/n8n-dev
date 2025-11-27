@@ -14,7 +14,7 @@ Handlebars.registerHelper("json", (context) => {
 type OpenAIData = {
   variableName: string;
   model?: string;
-  credentialId?: string,
+  credentialId?: string;
   systemPrompt?: string;
   userPrompt?: string;
 };
