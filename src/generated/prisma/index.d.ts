@@ -58,7 +58,6 @@ export type Connection = $Result.DefaultSelection<Prisma.$ConnectionPayload>
  * Enums
  */
 export namespace $Enums {
-<<<<<<< HEAD
   export const CredentialType: {
   OPENAI: 'OPENAI',
   ANTHROPIC: 'ANTHROPIC',
@@ -79,19 +78,6 @@ export const NodeType: {
   OPENAI: 'OPENAI'
 };
 
-=======
-  export const NodeType: {
-  INITIAL: 'INITIAL',
-  MANUAL_TRIGGER: 'MANUAL_TRIGGER',
-  HTTP_REQUEST: 'HTTP_REQUEST',
-  GOOGLE_FORM_TRIGGER: 'GOOGLE_FORM_TRIGGER',
-  STRIPE_TRIGGER: 'STRIPE_TRIGGER',
-  ANTHROPIC: 'ANTHROPIC',
-  GEMINI: 'GEMINI',
-  OPENAI: 'OPENAI'
-};
-
->>>>>>> 3924621804e180897a6a158c95259c48331f8613
 export type NodeType = (typeof NodeType)[keyof typeof NodeType]
 
 }
@@ -9789,10 +9775,7 @@ export namespace Prisma {
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
     
-<<<<<<< HEAD
 
-=======
->>>>>>> 3924621804e180897a6a158c95259c48331f8613
 
   /**
    * Reference to a field of type 'CredentialType'
@@ -13848,13 +13831,10 @@ export namespace Prisma {
      */
     export type UserCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UserCountOutputTypeDefaultArgs<ExtArgs>
     /**
-<<<<<<< HEAD
      * @deprecated Use CredentialCountOutputTypeDefaultArgs instead
      */
     export type CredentialCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = CredentialCountOutputTypeDefaultArgs<ExtArgs>
     /**
-=======
->>>>>>> 3924621804e180897a6a158c95259c48331f8613
      * @deprecated Use WorkflowCountOutputTypeDefaultArgs instead
      */
     export type WorkflowCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = WorkflowCountOutputTypeDefaultArgs<ExtArgs>
@@ -13879,13 +13859,10 @@ export namespace Prisma {
      */
     export type VerificationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = VerificationDefaultArgs<ExtArgs>
     /**
-<<<<<<< HEAD
      * @deprecated Use CredentialDefaultArgs instead
      */
     export type CredentialArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = CredentialDefaultArgs<ExtArgs>
     /**
-=======
->>>>>>> 3924621804e180897a6a158c95259c48331f8613
      * @deprecated Use WorkflowDefaultArgs instead
      */
     export type WorkflowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = WorkflowDefaultArgs<ExtArgs>
