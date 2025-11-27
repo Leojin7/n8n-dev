@@ -8,6 +8,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
+import Image from "next/image";
 import {
   Form,
   FormDescription,
@@ -29,6 +30,8 @@ import { useReactFlow } from "@xyflow/react";
 import { toast } from "sonner";
 import { Variable } from "lucide-react";
 
+import { CredentialType } from "@/generated/prisma";
+import { useCredentialsByType } from "@/features/credentials/hooks/use-credentials";
 export const AVAILABLE_MODELS = [
   "gpt-4-turbo-preview",
   "gpt-4",
@@ -41,6 +44,7 @@ const formSchema = z.object({
     message: "Variable name must start with a letter or underscore and contain only letters, numbers, and underscores",
   }),
   systemPrompt: z.string().optional(),
+  credentialId: z.string().min(1, "Credential is required"),
   userPrompt: z.string().min(1, "User prompt is required"),
   model: z.string().min(1, "Model is required"),
 });
@@ -60,6 +64,7 @@ export const OpenAIDialog = ({
   onSubmit,
   defaultValues = {},
 }: Props) => {
+  const { data: credentials, isLoading: isLoadingCredentials, } = useCredentialsByType(CredentialType.OPENAI)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -67,6 +72,7 @@ export const OpenAIDialog = ({
       model: defaultValues.model || AVAILABLE_MODELS[0],
       systemPrompt: defaultValues.systemPrompt || "",
       userPrompt: defaultValues.userPrompt || "",
+      credentialId: defaultValues.credentialId || "",
     },
   });
 
@@ -74,6 +80,7 @@ export const OpenAIDialog = ({
     if (open) {
       form.reset({
         variableName: defaultValues.variableName || "",
+        credentialId: defaultValues.credentialId || "",
         model: defaultValues.model || AVAILABLE_MODELS[0],
         systemPrompt: defaultValues.systemPrompt || "",
         userPrompt: defaultValues.userPrompt || "",
@@ -127,6 +134,33 @@ export const OpenAIDialog = ({
                 </FormItem>
               )}
             />
+            <FormField control={form.control}
+              name="credentialId"
+              render={({ field }) => (
+
+                <FormItem>
+                  <FormLabel>OpenAI Credential</FormLabel>
+                  <FormControl>
+                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isLoadingCredentials || !credentials?.length}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a Credential" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {credentials?.map((credential) => (
+                          <SelectItem key={credential.id} value={credential.id}>
+                            <div className="flex items-center gap-x-2">
+                              <Image src="/logos/openai.svg" alt="OpenAI" width={24} height={24} />
+                              <span>{credential.name}</span>
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="model"
@@ -167,10 +201,10 @@ export const OpenAIDialog = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>System Prompt(Optional)</FormLabel>
-                  <Textarea className="min-h-[80px] font-mono text-sm" placeholder="Your are a Helpful assistant..." {...field}
+                  <Textarea className="min-h-[80px] font-mono text-sm" placeholder="You are a Helpful assistant..." {...field}
                   />
                   <FormDescription>
-                    Sets the behaviour of the assistant. Use{"{{variables}}"} for simple values or {"{{json variable}"} to stringify objects
+                    Sets the behaviour of the assistant. Use {"{{variables}}"} for simple values or {"{{json variable}}"} to stringify objects
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -182,7 +216,7 @@ export const OpenAIDialog = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>User Prompt</FormLabel>
-                  <Textarea className="min-h-[120px] font-mono text-sm" placeholder="summarize this text :{{json.httpResonse.data}}" {...field}
+                  <Textarea className="min-h-[120px] font-mono text-sm" placeholder="summarize this text :{{json.httpResponse.data}}" {...field}
                   />
                   <FormDescription>
                     Prompt to send to AI. Use {'{{variables}}'} for simple values or {'{{json variable}}'} to stringify objects

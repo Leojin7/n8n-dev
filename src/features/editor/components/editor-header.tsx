@@ -3,7 +3,7 @@ import { NodeType } from "@/generated/prisma";
 import { SidebarTrigger } from "@components/ui/sidebar";
 import { SaveIcon } from "lucide-react";
 import { Button } from "@components/ui/button";
-import { ExecuteWorkflowButton } from "./execute-workflow-button";
+
 import { useSuspenseWorkflow, useUpdateWorkflowName, useUpdateWorkflow } from "@/features/workflows/hooks/use-workflows";
 import {
   Breadcrumb,

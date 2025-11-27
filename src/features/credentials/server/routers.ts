@@ -1,20 +1,17 @@
 import { createTRPCRouter, premiumProcedure } from "@/trpc/init";
-import { generateSlug } from "@/utils/generate-slug";
+
 import { protectedProcedure } from "@/trpc/init";
-import type { Node, Edge } from "@xyflow/react";
+
 import prisma from "@/lib/db";
 import { unknown, util, z } from "zod";
-import { CarTaxiFront, Search } from "lucide-react";
 import { PAGINATION } from "@/config/constants";
 import { CredentialType, NodeType } from "@/generated/prisma";
 
-import { nodeComponents } from "@/config/node-components";
-import { inngest } from "@/inngest/client";
-import { sendWorkflowExecution } from "@/inngest/utils"
+
 
 export const credentialsRouter = createTRPCRouter({
 
-  // for enabling the creting of  workflows with polar subscription (change protected to premium procedure only)
+  // for enabling the creting of  credentials with polar subscription (change protected to premium procedure only)
   create: protectedProcedure.input(z.object({
     name: z.string().min(1, "Name is Required"),
     type: z.enum(CredentialType),
@@ -51,7 +48,7 @@ export const credentialsRouter = createTRPCRouter({
   ).mutation(async ({ ctx, input }) => {
     const { id, name, type, value } = input;
 
-    // Verify workflow exists and user has access
+    // Verify credential exists and user has access
     const credential = await prisma.credential.findUniqueOrThrow({
       where: { id, userId: ctx.auth.user.id }
     });

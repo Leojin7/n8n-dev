@@ -1,9 +1,10 @@
 import type { NodeExecutor } from "@/features/executions/types";
 import { geminiChannel } from "@/inngest/channels/gemini";
 import { NonRetriableError } from "inngest";
-import { google } from "@ai-sdk/google";
+import { createGoogleGenerativeAI, google } from "@ai-sdk/google";
 import Handlebars from "handlebars";
 import { generateText } from "ai";
+import Prismadb from "@/lib/db";
 
 Handlebars.registerHelper("json", (context) => {
   const jsonString = JSON.stringify(context, null, 2);
@@ -14,6 +15,7 @@ Handlebars.registerHelper("json", (context) => {
 type GeminiData = {
   variableName: string,
   model?: string,
+  credentialId?: string,
   systemPrompt?: string,
   userPrompt?: string,
 };
@@ -45,15 +47,34 @@ export const geminiExecutor: NodeExecutor<GeminiData> = async ({ data, nodeId, c
     );
     throw new NonRetriableError("Gemini node: User prompt is missing");
   }
-
+  if (!data.credentialId) {
+    await publish(
+      geminiChannel().status({
+        nodeId,
+        status: "error",
+      }),
+    );
+    throw new NonRetriableError("Gemini node: Credential Id is missing");
+  }
   // TODO: throw if credentials is missing
   const systemPrompt = data.systemPrompt ? Handlebars.compile(data.systemPrompt)(context) : "You are a helpful assistant";
   const userPrompt = Handlebars.compile(data.userPrompt)(context);
-  const credentialValue = process.env.GOOGLE_GENERATIVE_AI_API_KEY!;
+  const credential = await step.run("get-credential", () => {
+    return Prismadb.credential.findUnique({
+      where: {
 
-  // Set the API key in the environment
-  process.env.GOOGLE_GENERATIVE_AI_API_KEY = credentialValue;
+        id: data.credentialId,
+      }
+    })
+  })
 
+  if (!credential) {
+    throw new NonRetriableError("Gemini node:Credential not found");
+  }
+
+  const google = createGoogleGenerativeAI({
+    apiKey: credential?.value,
+  })
   // Clean up the model name by removing any (recommended) tag
   const cleanModelName = data.model?.replace(/\(recommended\)/g, '').trim() || 'gemini-pro';
 
