@@ -37,6 +37,15 @@ export const geminiExecutor: NodeExecutor<GeminiData> = async ({ data, nodeId, c
     );
     throw new NonRetriableError("Gemini node: Variable name is missing");
   }
+  if (!data.credentialId) {
+    await publish(
+      geminiChannel().status({
+        nodeId,
+        status: "error",
+      }),
+    );
+    throw new NonRetriableError("Gemini node: Credentials is missing");
+  }
 
   if (!data.userPrompt) {
     await publish(
@@ -47,19 +56,9 @@ export const geminiExecutor: NodeExecutor<GeminiData> = async ({ data, nodeId, c
     );
     throw new NonRetriableError("Gemini node: User prompt is missing");
   }
-  const systemPrompt = data.systemPrompt ? Handlebars.compile(data.systemPrompt)(context) : "You are a helpful assistant";
-  const userPrompt = Handlebars.compile(data.userPrompt)(context);
 
-  const credentialValue = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
-  if (!credentialValue) {
-    await publish(
-      geminiChannel().status({
-        nodeId,
-        status: "error",
-      }),
-    );
-    throw new NonRetriableError("Gemini node: Credential Id is missing");
-  }
+
+
   // TODO: throw if credentials is missing
   const systemPrompt = data.systemPrompt ? Handlebars.compile(data.systemPrompt)(context) : "You are a helpful assistant";
   const userPrompt = Handlebars.compile(data.userPrompt)(context);
