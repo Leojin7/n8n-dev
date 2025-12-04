@@ -247,7 +247,9 @@ exports.NodeType = exports.$Enums.NodeType = {
   STRIPE_TRIGGER: 'STRIPE_TRIGGER',
   ANTHROPIC: 'ANTHROPIC',
   GEMINI: 'GEMINI',
-  OPENAI: 'OPENAI'
+  OPENAI: 'OPENAI',
+  DISCORD: 'DISCORD',
+  SLACK: 'SLACK'
 };
 
 exports.Prisma.ModelName = {

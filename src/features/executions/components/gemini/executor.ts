@@ -20,7 +20,7 @@ type GeminiData = {
   userPrompt?: string,
 };
 
-export const geminiExecutor: NodeExecutor<GeminiData> = async ({ data, nodeId, context, step, publish }) => {
+export const geminiExecutor: NodeExecutor<GeminiData> = async ({ data, nodeId, context, userId,step, publish }) => {
   await publish(
     geminiChannel().status({
       nodeId,
@@ -47,19 +47,7 @@ export const geminiExecutor: NodeExecutor<GeminiData> = async ({ data, nodeId, c
     );
     throw new NonRetriableError("Gemini node: User prompt is missing");
   }
-  const systemPrompt = data.systemPrompt ? Handlebars.compile(data.systemPrompt)(context) : "You are a helpful assistant";
-  const userPrompt = Handlebars.compile(data.userPrompt)(context);
 
-  const credentialValue = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
-  if (!credentialValue) {
-    await publish(
-      geminiChannel().status({
-        nodeId,
-        status: "error",
-      }),
-    );
-    throw new NonRetriableError("Gemini node: Credential Id is missing");
-  }
   // TODO: throw if credentials is missing
   const systemPrompt = data.systemPrompt ? Handlebars.compile(data.systemPrompt)(context) : "You are a helpful assistant";
   const userPrompt = Handlebars.compile(data.userPrompt)(context);
@@ -67,12 +55,19 @@ export const geminiExecutor: NodeExecutor<GeminiData> = async ({ data, nodeId, c
     return Prismadb.credential.findUnique({
       where: {
 
-        id: data.credentialId,
+        id: data.credentialId, // this can be injected
+      userId,
       }
     })
   })
 
   if (!credential) {
+    await publish(
+      geminiChannel().status({
+        nodeId,
+        status: "error",
+      })
+    );
     throw new NonRetriableError("Gemini node:Credential not found");
   }
 

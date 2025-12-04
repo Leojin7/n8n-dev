@@ -19,7 +19,7 @@ type OpenAIData = {
   userPrompt?: string;
 };
 
-export const openaiExecutor: NodeExecutor<OpenAIData> = async ({ data, nodeId, context, step, publish }) => {
+export const openaiExecutor: NodeExecutor<OpenAIData> = async ({ data, nodeId, context, step,userId, publish }) => {
   // Publish loading status
   await publish(
     openaiChannel().status({
@@ -72,11 +72,18 @@ export const openaiExecutor: NodeExecutor<OpenAIData> = async ({ data, nodeId, c
       where: {
 
         id: data.credentialId,
+        userId,
       }
     })
   })
 
   if (!credential) {
+    await publish(
+      openaiChannel().status({
+        nodeId,
+        status: "error",
+      })
+    );
     throw new NonRetriableError("OpenAI node:Credential not found");
   }
 
