@@ -5,7 +5,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -113,6 +112,8 @@ enum NodeType {
   ANTHROPIC
   GEMINI
   OPENAI
+  DISCORD
+  SLACK
 }
 
 model Node {

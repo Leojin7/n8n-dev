@@ -9,6 +9,8 @@ import { GeminiNode } from "@/features/executions/components/gemini/node"
 import { OpenAINode } from "@/features/executions/components/openai/node"
 import Anthropic from "@anthropic-ai/sdk";
 import { AnthropicNode } from "@/features/executions/components/anthropic/node";
+import { DiscordNode } from "@/features/executions/components/discord/node";
+import { SlackNode } from "@/features/executions/components/slack/node";
 export const nodeComponents = {
   [PrismaNodeTypes.INITIAL]: InitialNode,
   [PrismaNodeTypes.HTTP_REQUEST]: HttpsRequestNode,
@@ -18,6 +20,8 @@ export const nodeComponents = {
   [PrismaNodeTypes.GEMINI]: GeminiNode,
   [PrismaNodeTypes.OPENAI]: OpenAINode,
   [PrismaNodeTypes.ANTHROPIC]: AnthropicNode,
+  [PrismaNodeTypes.DISCORD]: DiscordNode,
+  [PrismaNodeTypes.SLACK]: SlackNode,
 } as const satisfies NodeTypes;
 
 

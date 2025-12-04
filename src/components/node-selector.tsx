@@ -74,6 +74,18 @@ const triggerNodes: NodeTypeOption[] = [
     description: "Runs the flow when an Anthropic model is used to generate text on clicking a button.",
     icon: "/logos/anthropic.svg"
   },
+  {
+    type: NodeType.DISCORD,
+    label: "Discord Event :",
+    description: "Send a message to Discord",
+    icon: "/logos/discord.svg"
+  },
+  {
+    type: NodeType.SLACK,
+    label: "Slack Event :",
+    description: "Send a message to Slack",
+    icon: "/logos/slack.svg"
+  },
 ];
 
 const executionNodes: NodeTypeOption[] = [

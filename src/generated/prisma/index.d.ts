@@ -68,7 +68,6 @@ export type CredentialType = (typeof CredentialType)[keyof typeof CredentialType
 
 
 export const NodeType: {
-  export const NodeType: {
   INITIAL: 'INITIAL',
   MANUAL_TRIGGER: 'MANUAL_TRIGGER',
   HTTP_REQUEST: 'HTTP_REQUEST',
@@ -76,7 +75,9 @@ export const NodeType: {
   STRIPE_TRIGGER: 'STRIPE_TRIGGER',
   ANTHROPIC: 'ANTHROPIC',
   GEMINI: 'GEMINI',
-  OPENAI: 'OPENAI'
+  OPENAI: 'OPENAI',
+  DISCORD: 'DISCORD',
+  SLACK: 'SLACK'
 };
 
 export type NodeType = (typeof NodeType)[keyof typeof NodeType]
@@ -5710,12 +5711,6 @@ export namespace Prisma {
         ? number
         : GetScalarType<T[P], AggregateCredential[P]>
       : GetScalarType<T[P], AggregateCredential[P]>
-  export type GetWorkflowAggregateType<T extends WorkflowAggregateArgs> = {
-        [P in keyof T & keyof AggregateWorkflow]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateWorkflow[P]>
-      : GetScalarType<T[P], AggregateWorkflow[P]>
   }
 
 

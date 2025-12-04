@@ -18,7 +18,7 @@ type AnthropicData = {
   userPrompt?: string,
 };
 
-export const anthropicExecutor: NodeExecutor<AnthropicData> = async ({ data, nodeId, context, step, publish }) => {
+export const anthropicExecutor: NodeExecutor<AnthropicData> = async ({ data, nodeId, context, step,userId, publish }) => {
   await publish(
     anthropicChannel().status({
 
@@ -65,11 +65,18 @@ export const anthropicExecutor: NodeExecutor<AnthropicData> = async ({ data, nod
       where: {
 
         id: data.credentialId,
+        userId,
       }
     })
   })
 
   if (!credential) {
+    await publish(
+      anthropicChannel().status({
+        nodeId,
+        status: "error",
+      })
+    );
     throw new NonRetriableError("Anthropic node:Credential not found");
   }
 

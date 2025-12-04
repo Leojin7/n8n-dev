@@ -14,6 +14,8 @@ import { geminiChannel } from "@/inngest/channels/gemini"
 import { anthropic } from "inngest";
 import { openaiExecutor } from "../openai/executor";
 import { anthropicExecutor } from "../anthropic/executor";
+import { discordExecutor } from "../discord/executor";
+import { slackExecutor } from "../slack/executor";
 
 export const executorRegistry: Record<NodeType, NodeExecutor<any>> = {
 
@@ -27,6 +29,8 @@ export const executorRegistry: Record<NodeType, NodeExecutor<any>> = {
 
   [NodeType.ANTHROPIC]: anthropicExecutor,
   [NodeType.OPENAI]: openaiExecutor,
+  [NodeType.DISCORD]: discordExecutor,
+  [NodeType.SLACK]: slackExecutor,
 };
 
 
