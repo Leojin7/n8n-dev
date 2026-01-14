@@ -3,7 +3,7 @@ import toposort from "toposort";
 import { Node } from "@xyflow/react";
 import { BlockList } from "net";
 import { inngest } from "./client";
-
+import { createId } from "@paralleldrive/cuid2";
 
 export const topologicalSort = (nodes: Node[], connections: Connection[],): Node[] => {
   if (connections.length === 0) {
@@ -57,9 +57,7 @@ export const sendWorkflowExecution = async (data: {
   return inngest.send({
 
     name: "workflows/execute.workflow",
-    data: {
-      workflowId: data.workflowId,
-      initialData: data.initialData || {} // Include any additional data
-    }
+    data,
+    id: createId(),
   });
 };
