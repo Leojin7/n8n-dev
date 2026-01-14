@@ -21,15 +21,22 @@ export const executeWorkflow = inngest.createFunction(
     id: "execute-workflow",
     retries: 0,
     onFailure: async ({ event, step }) => {
-      return Prismadb.execution.update({
+      const inngestEventId = event.data.event.id || `unknown-${Date.now()}`;
+      return Prismadb.execution.upsert({
         where: {
-          inngestEventId: event.data.event.id
+          inngestEventId
         },
-        data: {
+        update: {
           status: ExecutionStatus.FAILED,
           error: event.data.error.message,
           errorStack: event.data.error.stack,
-
+        },
+        create: {
+          inngestEventId,
+          status: ExecutionStatus.FAILED,
+          error: event.data.error.message,
+          errorStack: event.data.error.stack,
+          startedAt: new Date(),
         },
       });
     }

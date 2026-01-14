@@ -38,9 +38,7 @@ export const executionsRouter = createTRPCRouter({
         take: pageSize,
         where: {
           workflow: { userID: ctx.auth.user.id },
-          ...({
 
-          }),
         },
         orderBy: {
           startedAt: 'desc',
