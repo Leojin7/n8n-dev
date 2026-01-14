@@ -15,13 +15,15 @@ import { stripeTriggerChannel } from "./channels/stripe-trigger";
 import { geminiChannel } from "./channels/gemini";
 import { anthropicChannel } from "./channels/anthropic";
 import { openaiChannel } from "./channels/openai"
-import prisma from "../../prisma.config";
+
 export const executeWorkflow = inngest.createFunction(
   {
     id: "execute-workflow",
     retries: 0,
     onFailure: async ({ event, step }) => {
       const inngestEventId = event.data.event.id || `unknown-${Date.now()}`;
+      const workflowId = event.data.event.data?.workflowId || null;
+
       return Prismadb.execution.upsert({
         where: {
           inngestEventId
@@ -30,9 +32,11 @@ export const executeWorkflow = inngest.createFunction(
           status: ExecutionStatus.FAILED,
           error: event.data.error.message,
           errorStack: event.data.error.stack,
+          ...(workflowId ? { workflowId } : {}),
         },
         create: {
           inngestEventId,
+          ...(workflowId ? { workflowId } : {}),
           status: ExecutionStatus.FAILED,
           error: event.data.error.message,
           errorStack: event.data.error.stack,
@@ -66,7 +70,8 @@ export const executeWorkflow = inngest.createFunction(
         data: {
           workflowId,
           inngestEventId,
-
+          status: ExecutionStatus.RUNNING,
+          startedAt: new Date(),
         },
       });
     });

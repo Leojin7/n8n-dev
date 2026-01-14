@@ -18,10 +18,10 @@ const Page = async ({ params }: PageProps) => {
 
   const queryClient = new QueryClient();
   await prefetchExecution(queryClient, executionId);
+
   return (
     <div className="p-4 md:px-10 md:py-6 h-[calc(100vh-64px)] flex flex-col">
       <div className="mx-auto max-w-screen-xl w-full h-full flex flex-col">
-
         <HydrateClient>
           <ErrorBoundary fallback={<ExecutionsError />}>
             <Suspense fallback={<ExecutionsLoading />}>

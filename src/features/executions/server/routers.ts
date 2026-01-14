@@ -24,11 +24,11 @@ export const executionsRouter = createTRPCRouter({
     })
   }),
   getMany: protectedProcedure.input(z.object({
-    page: z.number().default(PAGINATION.DEFAULT_PAGE), pageSize:
-      z.number()
-        .min(PAGINATION.MIN_PAGE_SIZE)
-        .max(PAGINATION.MAX_PAGE_SIZE)
-        .default(PAGINATION.DEFAULT_PAGE_SIZE)
+    page: z.number().min(1, 'Page must be at least 1').default(PAGINATION.DEFAULT_PAGE),
+    pageSize: z.number()
+      .min(PAGINATION.MIN_PAGE_SIZE)
+      .max(PAGINATION.MAX_PAGE_SIZE)
+      .default(PAGINATION.DEFAULT_PAGE_SIZE)
   })).query(async ({ ctx, input }) => {
 
     const { page, pageSize } = input;

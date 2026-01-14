@@ -40,8 +40,12 @@ export const ExecutionView = ({ executionId }: { executionId: string }) => {
   const { data: execution } = useSuspenseExecution(executionId);
   const [showStackTrace, setShowStackTrace] = useState(false);
 
-  const duration = execution.completedAt
-    ? Math.round((execution.completedAt.getTime() - new Date(execution.startedAt).getTime()) / 1000)
+  const duration = execution?.startedAt && execution?.completedAt
+    ? (() => {
+      const started = new Date(execution.startedAt);
+      const completed = new Date(execution.completedAt);
+      return Math.round((completed.getTime() - started.getTime()) / 1000);
+    })()
     : null;
 
   return (
@@ -61,11 +65,11 @@ export const ExecutionView = ({ executionId }: { executionId: string }) => {
       <CardContent className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <p>
-              Workflow:{execution.workflow?.name}
+            <p className="text-sm font-medium text-muted-foreground">
+              Workflow
             </p>
             <Link href={`/workflows/${execution.workflow?.id}`} prefetch className="text-sm hover:underline text-primary">
-              {execution.workflow?.name}
+              {execution.workflow?.name || 'N/A'}
             </Link>
           </div>
           <div>
