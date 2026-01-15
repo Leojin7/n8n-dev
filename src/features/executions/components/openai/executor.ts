@@ -5,6 +5,7 @@ import OpenAI from "openai";
 import Handlebars from "handlebars";
 import { generateText } from "ai";
 import Prismadb from "@/lib/db";
+import { decrypt } from "@/lib/encryption";
 Handlebars.registerHelper("json", (context) => {
   const jsonString = JSON.stringify(context, null, 2);
   const safeString = new Handlebars.SafeString(jsonString);
@@ -19,7 +20,7 @@ type OpenAIData = {
   userPrompt?: string;
 };
 
-export const openaiExecutor: NodeExecutor<OpenAIData> = async ({ data, nodeId, context, step,userId, publish }) => {
+export const openaiExecutor: NodeExecutor<OpenAIData> = async ({ data, nodeId, context, step, userId, publish }) => {
   // Publish loading status
   await publish(
     openaiChannel().status({
@@ -88,7 +89,7 @@ export const openaiExecutor: NodeExecutor<OpenAIData> = async ({ data, nodeId, c
   }
 
   const openai = new OpenAI({
-    apiKey: credential.value,
+    apiKey: decrypt(credential.value),
   });
 
   try {
