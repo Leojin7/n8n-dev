@@ -56,7 +56,6 @@ export const anthropicExecutor: NodeExecutor<AnthropicData> = async ({ data, nod
     throw new NonRetriableError("Anthropic node: User prompt is missing");
   }
 
-  // TODO: throw if credentials is missing
   const systemPrompt = data.systemPrompt ? Handlebars.compile(data.systemPrompt)(context) : "You are a helpful assistant";
 
 
@@ -100,7 +99,6 @@ export const anthropicExecutor: NodeExecutor<AnthropicData> = async ({ data, nod
       ]
     });
 
-    // Get the first text content from the response
     const text = response.content.find(block => 'text' in block)?.text || '';
 
     await publish(

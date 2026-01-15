@@ -45,6 +45,41 @@ export function LoginForm() {
     },
   });
 
+
+  const signInGithub = async () => {
+    await authClient.signIn.social({
+      provider: 'github',
+      fetchOptions: {
+        searchParams: {
+          prompt: 'select_account'
+        }
+      }
+    }, {
+      onSuccess: () => {
+        toast.success('Login successful');
+        router.push('/')
+      },
+      onError: () => {
+        toast.error("Something went wrong")
+      }
+    });
+  }
+  const signInGoogle = async () => {
+    await authClient.signIn.social({
+      provider: 'google',
+
+    }, {
+      onSuccess: () => {
+        toast.success('Login successful');
+        router.push('/')
+      },
+      onError: () => {
+        toast.error("Something went wrong")
+      }
+    })
+
+
+  }
   const onSubmit = async (values: LoginFormValues) => {
     await authClient.signIn.email({
       email: values.email,
@@ -84,25 +119,29 @@ export function LoginForm() {
               <div className='grid gap-6'>
                 <div className='flex flex-col gap-4'>
 
-                  <Button variant='outline' className='w-full' disabled={isPending} type='button'>
+                  <Button
+                    onClick={signInGoogle}
+                    variant='outline' className='w-full' disabled={isPending} type='button'>
                     <div className='w-6 h-6 relative'>
-                      <Image 
-                        src='/logos/google.svg' 
-                        alt='google' 
-                        fill 
-                        className='object-contain' 
+                      <Image
+                        src='/logos/google.svg'
+                        alt='google'
+                        fill
+                        className='object-contain'
                         sizes='24px'
                       />
                     </div>
                     <span className='ml-2'>Continue with Google</span>
                   </Button>
-                  <Button variant='outline' className='w-full' disabled={isPending} type='button'>
+                  <Button
+                    onClick={signInGithub}
+                    variant='outline' className='w-full' disabled={isPending} type='button'>
                     <div className='w-6 h-6 relative'>
-                      <Image 
-                        src='/logos/github.svg' 
-                        alt='github' 
-                        fill 
-                        className='object-contain' 
+                      <Image
+                        src='/logos/github.svg'
+                        alt='github'
+                        fill
+                        className='object-contain'
                         sizes='24px'
                       />
                     </div>
