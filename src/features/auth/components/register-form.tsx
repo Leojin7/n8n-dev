@@ -48,6 +48,40 @@ export function RegisterForm() {
     },
   });
 
+  const signInGithub = async () => {
+    await authClient.signIn.social({
+      provider: 'github',
+      fetchOptions: {
+        searchParams: {
+          prompt: 'select_account'
+        }
+      }
+    }, {
+      onSuccess: () => {
+        toast.success('Login successful');
+        router.push('/')
+      },
+      onError: () => {
+        toast.error("Something went wrong")
+      }
+    });
+  }
+  const signInGoogle = async () => {
+    await authClient.signIn.social({
+      provider: 'google',
+
+    }, {
+      onSuccess: () => {
+        toast.success('Login successful');
+        router.push('/')
+      },
+      onError: () => {
+        toast.error("Something went wrong")
+      }
+    })
+
+
+  }
   const onSubmit = async (values: RegisterFormValues) => {
 
     await authClient.signUp.email(
@@ -92,11 +126,15 @@ export function RegisterForm() {
               <div className='grid gap-6'>
                 <div className='flex flex-col gap-4'>
 
-                  <Button variant='outline' className='w-full' disabled={isPending} type='button'>
+                  <Button
+                    onClick={signInGoogle}
+                    variant='outline' className='w-full' disabled={isPending} type='button'>
                     <Image src='logos/google.svg' alt='google' width={24} height={24} />
                     Continue with Google
                   </Button>
-                  <Button variant='outline' className='w-full' disabled={isPending} type='button'>
+                  <Button
+                    onClick={signInGithub}
+                    variant='outline' className='w-full' disabled={isPending} type='button'>
                     <Image src='logos/github.svg' alt='github' width={24} height={24} />
                     Continue with Github
                   </Button>
