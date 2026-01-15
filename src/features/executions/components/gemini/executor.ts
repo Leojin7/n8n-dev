@@ -5,6 +5,7 @@ import { createGoogleGenerativeAI, google } from "@ai-sdk/google";
 import Handlebars from "handlebars";
 import { generateText } from "ai";
 import Prismadb from "@/lib/db";
+import { decrypt } from "@/lib/encryption";
 
 Handlebars.registerHelper("json", (context) => {
   const jsonString = JSON.stringify(context, null, 2);
@@ -20,7 +21,7 @@ type GeminiData = {
   userPrompt?: string,
 };
 
-export const geminiExecutor: NodeExecutor<GeminiData> = async ({ data, nodeId, context, userId,step, publish }) => {
+export const geminiExecutor: NodeExecutor<GeminiData> = async ({ data, nodeId, context, userId, step, publish }) => {
   await publish(
     geminiChannel().status({
       nodeId,
@@ -56,7 +57,7 @@ export const geminiExecutor: NodeExecutor<GeminiData> = async ({ data, nodeId, c
       where: {
 
         id: data.credentialId, // this can be injected
-      userId,
+        userId,
       }
     })
   })
@@ -72,7 +73,7 @@ export const geminiExecutor: NodeExecutor<GeminiData> = async ({ data, nodeId, c
   }
 
   const google = createGoogleGenerativeAI({
-    apiKey: credential?.value,
+    apiKey: decrypt(credential?.value),
   })
   // Clean up the model name by removing any (recommended) tag
   const cleanModelName = data.model?.replace(/\(recommended\)/g, '').trim() || 'gemini-pro';
