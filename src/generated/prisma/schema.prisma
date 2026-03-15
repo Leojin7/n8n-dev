@@ -88,6 +88,8 @@ enum CredentialType {
   OPENAI
   ANTHROPIC
   GEMINI
+  GITLAB
+  SLACK_WEBHOOK
 }
 
 model Workflow {
@@ -97,6 +99,7 @@ model Workflow {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  executions  Execution[]
   node        Node[]
   connections Connection[]
   userID      String
@@ -107,12 +110,20 @@ model Workflow {
 enum NodeType {
   INITIAL
   MANUAL_TRIGGER
-  HTTP_REQUEST
   GOOGLE_FORM_TRIGGER
   STRIPE_TRIGGER
-  ANTHROPIC
-  GEMINI
+  HTTP_REQUEST
   OPENAI
+  GEMINI
+  ANTHROPIC
+  DISCORD
+  SLACK
+  SCM_JAVA_PARSER
+  SCM_API_FETCHER
+  SCM_CLAUDE_MATCHER
+  SCM_REPORT_GENERATOR
+  SCM_STORAGE
+  SCM_NOTIFIER
 }
 
 model Node {
@@ -153,4 +164,60 @@ model Connection {
   updatedAt DateTime @updatedAt
 
   @@unique([fromNodeId, toNodeId, fromOutput, toInput])
+}
+
+enum ExecutionStatus {
+  RUNNING
+  SUCCESS
+  FAILED
+}
+
+model Execution {
+  id             String    @id @default(cuid())
+  startedAt      DateTime  @default(now())
+  completedAt    DateTime?
+  inngestEventId String    @unique
+
+  output     Json?
+  workflow   Workflow? @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  workflowId String?
+
+  status     ExecutionStatus @default(RUNNING)
+  error      String?         @db.Text
+  errorStack String?         @db.Text
+}
+
+model SCMMapperResult {
+  id          String  @id @default(cuid())
+  workflowId  String
+  runId       String
+  executionId String?
+
+  // Extracted Java parameters
+  javaParams      Json
+  javaParamsCount Int
+
+  // Official API specs
+  apiSpecs    Json
+  apiVersions String[]
+
+  // Mappings and statistics
+  mappings   Json
+  statistics Json // {exact, semantic, partial, noMatch, total, avgConfidence}
+
+  // Generated reports
+  reportMarkdown String
+  reportJson     Json
+  reportHtml     String
+
+  // Metadata
+  confidenceScores Json
+  status           String // "success" | "error" | "running"
+  errorMessage     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([workflowId])
+  @@index([createdAt])
 }

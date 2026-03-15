@@ -31,6 +31,11 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: true,
   },
+  trustedOrigins: [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "http://localhost:3002"
+  ],
   socialProviders: {
     google: {
       enabled: true,

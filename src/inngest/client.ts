@@ -3,6 +3,7 @@ import { realtimeMiddleware } from "@inngest/realtime/middleware"
 
 export const inngest = new Inngest({
   id: "my-app",
+  eventKey: process.env.INNGEST_EVENT_KEY || "local",
   middleware: [realtimeMiddleware()],
 });
 

@@ -8,7 +8,7 @@ import {
   FolderOpenIcon,
   HistoryIcon,
   LogOutIcon,
-  // BrickWallIcon,    // previously used for Billing Portal
+  LayoutDashboardIcon,
 } from 'lucide-react';
 // import Image from 'next/image'; // Not used
 import Link from 'next/link';
@@ -37,17 +37,27 @@ const menuItems = [
       {
         title: "Workflows",
         icon: FolderOpenIcon,
-        url: "/workflows", // Use href here
+        url: "/workflows",
       },
       {
         title: "Credentials",
         icon: KeyIcon,
-        url: "/credentials", // Use href here
+        url: "/credentials",
       },
       {
         title: "Executions",
         icon: HistoryIcon,
-        url: "/executions", // Use href here
+        url: "/executions",
+      },
+    ],
+  },
+  {
+    title: "SCM Mapper",
+    items: [
+      {
+        title: "Dashboard",
+        icon: LayoutDashboardIcon,
+        url: "/scm-mapper",
       },
     ],
   },

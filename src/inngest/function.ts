@@ -16,6 +16,8 @@ import { geminiChannel } from "./channels/gemini";
 import { anthropicChannel } from "./channels/anthropic";
 import { openaiChannel } from "./channels/openai"
 
+import { scmChannel } from "./channels/scm";
+
 export const executeWorkflow = inngest.createFunction(
   {
     id: "execute-workflow",
@@ -55,6 +57,7 @@ export const executeWorkflow = inngest.createFunction(
       geminiChannel(),
       anthropicChannel(),
       openaiChannel(),
+      scmChannel(),
     ]
   },
   async ({ event, step, publish }) => {
@@ -135,19 +138,36 @@ export const executeWorkflow = inngest.createFunction(
 
     for (const node of sortedNodes) {
       const executor = getExecutor(node.type as NodeType);
-      context = await executor({
-        data: node.data as Record<string, unknown>,
-        nodeId: node.id,
-        context,
-        userId,
-        step,
-        publish,
-      });
 
+      try {
+        context = await executor({
+          data: node.data as Record<string, unknown>,
+          nodeId: node.id,
+          context,
+          userId,
+          step,
+          publish,
+        });
+        console.log(`[Execute Workflow] Node ${node.id} (${node.type}) completed successfully`);
+      } catch (error) {
+        console.error(`[Execute Workflow] Node ${node.id} (${node.type}) failed:`, error);
+
+        // Don't fail the entire workflow, just log the error and continue
+        await publish(
+          scmChannel().status({
+            nodeId: node.id,
+            status: "error",
+            message: `Node ${node.id} failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+            error: error instanceof Error ? error.stack : undefined
+          })
+        );
+
+        // Continue with the current context, don't let one failure stop the whole workflow
+        continue;
+      }
     }
 
     await step.run("update-execution", async () => {
-
       return Prismadb.execution.update({
         where: {
           inngestEventId,
@@ -158,12 +178,11 @@ export const executeWorkflow = inngest.createFunction(
           output: context as unknown as object,
         },
       });
+    });
 
-    })
     return {
-
       workflowId,
       result: context,
-    }
-
-  });
+    };
+  }
+);

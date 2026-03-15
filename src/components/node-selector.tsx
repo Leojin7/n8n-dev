@@ -8,6 +8,11 @@ import {
   GlobeIcon,
   Icon,
   MousePointerIcon,
+  CodeIcon,
+  BotIcon,
+  FileTextIcon,
+  DatabaseIcon,
+  BellIcon,
 } from "lucide-react";
 
 import { useCallback } from "react";
@@ -96,7 +101,42 @@ const executionNodes: NodeTypeOption[] = [
     description: "Makes an HTTP Request",
     icon: GlobeIcon,
   },
-
+  {
+    type: NodeType.SCM_JAVA_PARSER,
+    label: "SCM Java Parser",
+    description: "Extract parameters from Java codebases",
+    icon: CodeIcon,
+  },
+  {
+    type: NodeType.SCM_API_FETCHER,
+    label: "SCM API Fetcher",
+    description: "Fetch official API specifications",
+    icon: GlobeIcon,
+  },
+  {
+    type: NodeType.SCM_CLAUDE_MATCHER,
+    label: "SCM Claude Matcher",
+    description: "AI-powered parameter matching",
+    icon: BotIcon,
+  },
+  {
+    type: NodeType.SCM_REPORT_GENERATOR,
+    label: "SCM Report Generator",
+    description: "Generate mapping reports",
+    icon: FileTextIcon,
+  },
+  {
+    type: NodeType.SCM_STORAGE,
+    label: "SCM Storage",
+    description: "Store mapping results",
+    icon: DatabaseIcon,
+  },
+  {
+    type: NodeType.SCM_NOTIFIER,
+    label: "SCM Notifier",
+    description: "Send results notification",
+    icon: BellIcon,
+  },
 ];
 
 interface NodeSelectorProps {

@@ -221,6 +221,27 @@ exports.Prisma.ExecutionScalarFieldEnum = {
   errorStack: 'errorStack'
 };
 
+exports.Prisma.SCMMapperResultScalarFieldEnum = {
+  id: 'id',
+  workflowId: 'workflowId',
+  runId: 'runId',
+  executionId: 'executionId',
+  javaParams: 'javaParams',
+  javaParamsCount: 'javaParamsCount',
+  apiSpecs: 'apiSpecs',
+  apiVersions: 'apiVersions',
+  mappings: 'mappings',
+  statistics: 'statistics',
+  reportMarkdown: 'reportMarkdown',
+  reportJson: 'reportJson',
+  reportHtml: 'reportHtml',
+  confidenceScores: 'confidenceScores',
+  status: 'status',
+  errorMessage: 'errorMessage',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -253,20 +274,28 @@ exports.Prisma.JsonNullValueFilter = {
 exports.CredentialType = exports.$Enums.CredentialType = {
   OPENAI: 'OPENAI',
   ANTHROPIC: 'ANTHROPIC',
-  GEMINI: 'GEMINI'
+  GEMINI: 'GEMINI',
+  GITLAB: 'GITLAB',
+  SLACK_WEBHOOK: 'SLACK_WEBHOOK'
 };
 
 exports.NodeType = exports.$Enums.NodeType = {
   INITIAL: 'INITIAL',
   MANUAL_TRIGGER: 'MANUAL_TRIGGER',
-  HTTP_REQUEST: 'HTTP_REQUEST',
   GOOGLE_FORM_TRIGGER: 'GOOGLE_FORM_TRIGGER',
   STRIPE_TRIGGER: 'STRIPE_TRIGGER',
-  ANTHROPIC: 'ANTHROPIC',
-  GEMINI: 'GEMINI',
+  HTTP_REQUEST: 'HTTP_REQUEST',
   OPENAI: 'OPENAI',
+  GEMINI: 'GEMINI',
+  ANTHROPIC: 'ANTHROPIC',
   DISCORD: 'DISCORD',
-  SLACK: 'SLACK'
+  SLACK: 'SLACK',
+  SCM_JAVA_PARSER: 'SCM_JAVA_PARSER',
+  SCM_API_FETCHER: 'SCM_API_FETCHER',
+  SCM_CLAUDE_MATCHER: 'SCM_CLAUDE_MATCHER',
+  SCM_REPORT_GENERATOR: 'SCM_REPORT_GENERATOR',
+  SCM_STORAGE: 'SCM_STORAGE',
+  SCM_NOTIFIER: 'SCM_NOTIFIER'
 };
 
 exports.ExecutionStatus = exports.$Enums.ExecutionStatus = {
@@ -284,7 +313,8 @@ exports.Prisma.ModelName = {
   Workflow: 'Workflow',
   Node: 'Node',
   Connection: 'Connection',
-  Execution: 'Execution'
+  Execution: 'Execution',
+  SCMMapperResult: 'SCMMapperResult'
 };
 
 /**

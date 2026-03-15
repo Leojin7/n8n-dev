@@ -1,6 +1,10 @@
 import Cryptr from "cryptr";
 
-const cryptr = new Cryptr(process.env.ENCRYPTION_KEY!);
+// Generate a default key if ENCRYPTION_KEY is not set
+const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY ||
+  'default-encryption-key-for-development-please-set-ENCRYPTION_KEY-in-production';
+
+const cryptr = new Cryptr(ENCRYPTION_KEY);
 
 
 export const encrypt = (text: string) => {

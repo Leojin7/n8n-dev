@@ -58,6 +58,11 @@ export type Connection = $Result.DefaultSelection<Prisma.$ConnectionPayload>
  * 
  */
 export type Execution = $Result.DefaultSelection<Prisma.$ExecutionPayload>
+/**
+ * Model SCMMapperResult
+ * 
+ */
+export type SCMMapperResult = $Result.DefaultSelection<Prisma.$SCMMapperResultPayload>
 
 /**
  * Enums
@@ -66,7 +71,9 @@ export namespace $Enums {
   export const CredentialType: {
   OPENAI: 'OPENAI',
   ANTHROPIC: 'ANTHROPIC',
-  GEMINI: 'GEMINI'
+  GEMINI: 'GEMINI',
+  GITLAB: 'GITLAB',
+  SLACK_WEBHOOK: 'SLACK_WEBHOOK'
 };
 
 export type CredentialType = (typeof CredentialType)[keyof typeof CredentialType]
@@ -75,14 +82,20 @@ export type CredentialType = (typeof CredentialType)[keyof typeof CredentialType
 export const NodeType: {
   INITIAL: 'INITIAL',
   MANUAL_TRIGGER: 'MANUAL_TRIGGER',
-  HTTP_REQUEST: 'HTTP_REQUEST',
   GOOGLE_FORM_TRIGGER: 'GOOGLE_FORM_TRIGGER',
   STRIPE_TRIGGER: 'STRIPE_TRIGGER',
-  ANTHROPIC: 'ANTHROPIC',
-  GEMINI: 'GEMINI',
+  HTTP_REQUEST: 'HTTP_REQUEST',
   OPENAI: 'OPENAI',
+  GEMINI: 'GEMINI',
+  ANTHROPIC: 'ANTHROPIC',
   DISCORD: 'DISCORD',
-  SLACK: 'SLACK'
+  SLACK: 'SLACK',
+  SCM_JAVA_PARSER: 'SCM_JAVA_PARSER',
+  SCM_API_FETCHER: 'SCM_API_FETCHER',
+  SCM_CLAUDE_MATCHER: 'SCM_CLAUDE_MATCHER',
+  SCM_REPORT_GENERATOR: 'SCM_REPORT_GENERATOR',
+  SCM_STORAGE: 'SCM_STORAGE',
+  SCM_NOTIFIER: 'SCM_NOTIFIER'
 };
 
 export type NodeType = (typeof NodeType)[keyof typeof NodeType]
@@ -322,6 +335,16 @@ export class PrismaClient<
     * ```
     */
   get execution(): Prisma.ExecutionDelegate<ExtArgs>;
+
+  /**
+   * `prisma.sCMMapperResult`: Exposes CRUD operations for the **SCMMapperResult** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SCMMapperResults
+    * const sCMMapperResults = await prisma.sCMMapperResult.findMany()
+    * ```
+    */
+  get sCMMapperResult(): Prisma.SCMMapperResultDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -771,7 +794,8 @@ export namespace Prisma {
     Workflow: 'Workflow',
     Node: 'Node',
     Connection: 'Connection',
-    Execution: 'Execution'
+    Execution: 'Execution',
+    SCMMapperResult: 'SCMMapperResult'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -787,7 +811,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "credential" | "workflow" | "node" | "connection" | "execution"
+      modelProps: "user" | "session" | "account" | "verification" | "credential" | "workflow" | "node" | "connection" | "execution" | "sCMMapperResult"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1418,6 +1442,76 @@ export namespace Prisma {
           count: {
             args: Prisma.ExecutionCountArgs<ExtArgs>
             result: $Utils.Optional<ExecutionCountAggregateOutputType> | number
+          }
+        }
+      }
+      SCMMapperResult: {
+        payload: Prisma.$SCMMapperResultPayload<ExtArgs>
+        fields: Prisma.SCMMapperResultFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SCMMapperResultFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SCMMapperResultPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SCMMapperResultFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SCMMapperResultPayload>
+          }
+          findFirst: {
+            args: Prisma.SCMMapperResultFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SCMMapperResultPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SCMMapperResultFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SCMMapperResultPayload>
+          }
+          findMany: {
+            args: Prisma.SCMMapperResultFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SCMMapperResultPayload>[]
+          }
+          create: {
+            args: Prisma.SCMMapperResultCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SCMMapperResultPayload>
+          }
+          createMany: {
+            args: Prisma.SCMMapperResultCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SCMMapperResultCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SCMMapperResultPayload>[]
+          }
+          delete: {
+            args: Prisma.SCMMapperResultDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SCMMapperResultPayload>
+          }
+          update: {
+            args: Prisma.SCMMapperResultUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SCMMapperResultPayload>
+          }
+          deleteMany: {
+            args: Prisma.SCMMapperResultDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SCMMapperResultUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.SCMMapperResultUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SCMMapperResultPayload>
+          }
+          aggregate: {
+            args: Prisma.SCMMapperResultAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSCMMapperResult>
+          }
+          groupBy: {
+            args: Prisma.SCMMapperResultGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SCMMapperResultGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SCMMapperResultCountArgs<ExtArgs>
+            result: $Utils.Optional<SCMMapperResultCountAggregateOutputType> | number
           }
         }
       }
@@ -10699,6 +10793,1046 @@ export namespace Prisma {
 
 
   /**
+   * Model SCMMapperResult
+   */
+
+  export type AggregateSCMMapperResult = {
+    _count: SCMMapperResultCountAggregateOutputType | null
+    _avg: SCMMapperResultAvgAggregateOutputType | null
+    _sum: SCMMapperResultSumAggregateOutputType | null
+    _min: SCMMapperResultMinAggregateOutputType | null
+    _max: SCMMapperResultMaxAggregateOutputType | null
+  }
+
+  export type SCMMapperResultAvgAggregateOutputType = {
+    javaParamsCount: number | null
+  }
+
+  export type SCMMapperResultSumAggregateOutputType = {
+    javaParamsCount: number | null
+  }
+
+  export type SCMMapperResultMinAggregateOutputType = {
+    id: string | null
+    workflowId: string | null
+    runId: string | null
+    executionId: string | null
+    javaParamsCount: number | null
+    reportMarkdown: string | null
+    reportHtml: string | null
+    status: string | null
+    errorMessage: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SCMMapperResultMaxAggregateOutputType = {
+    id: string | null
+    workflowId: string | null
+    runId: string | null
+    executionId: string | null
+    javaParamsCount: number | null
+    reportMarkdown: string | null
+    reportHtml: string | null
+    status: string | null
+    errorMessage: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SCMMapperResultCountAggregateOutputType = {
+    id: number
+    workflowId: number
+    runId: number
+    executionId: number
+    javaParams: number
+    javaParamsCount: number
+    apiSpecs: number
+    apiVersions: number
+    mappings: number
+    statistics: number
+    reportMarkdown: number
+    reportJson: number
+    reportHtml: number
+    confidenceScores: number
+    status: number
+    errorMessage: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type SCMMapperResultAvgAggregateInputType = {
+    javaParamsCount?: true
+  }
+
+  export type SCMMapperResultSumAggregateInputType = {
+    javaParamsCount?: true
+  }
+
+  export type SCMMapperResultMinAggregateInputType = {
+    id?: true
+    workflowId?: true
+    runId?: true
+    executionId?: true
+    javaParamsCount?: true
+    reportMarkdown?: true
+    reportHtml?: true
+    status?: true
+    errorMessage?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SCMMapperResultMaxAggregateInputType = {
+    id?: true
+    workflowId?: true
+    runId?: true
+    executionId?: true
+    javaParamsCount?: true
+    reportMarkdown?: true
+    reportHtml?: true
+    status?: true
+    errorMessage?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SCMMapperResultCountAggregateInputType = {
+    id?: true
+    workflowId?: true
+    runId?: true
+    executionId?: true
+    javaParams?: true
+    javaParamsCount?: true
+    apiSpecs?: true
+    apiVersions?: true
+    mappings?: true
+    statistics?: true
+    reportMarkdown?: true
+    reportJson?: true
+    reportHtml?: true
+    confidenceScores?: true
+    status?: true
+    errorMessage?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type SCMMapperResultAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SCMMapperResult to aggregate.
+     */
+    where?: SCMMapperResultWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SCMMapperResults to fetch.
+     */
+    orderBy?: SCMMapperResultOrderByWithRelationInput | SCMMapperResultOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SCMMapperResultWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SCMMapperResults from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SCMMapperResults.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SCMMapperResults
+    **/
+    _count?: true | SCMMapperResultCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SCMMapperResultAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SCMMapperResultSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SCMMapperResultMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SCMMapperResultMaxAggregateInputType
+  }
+
+  export type GetSCMMapperResultAggregateType<T extends SCMMapperResultAggregateArgs> = {
+        [P in keyof T & keyof AggregateSCMMapperResult]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSCMMapperResult[P]>
+      : GetScalarType<T[P], AggregateSCMMapperResult[P]>
+  }
+
+
+
+
+  export type SCMMapperResultGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SCMMapperResultWhereInput
+    orderBy?: SCMMapperResultOrderByWithAggregationInput | SCMMapperResultOrderByWithAggregationInput[]
+    by: SCMMapperResultScalarFieldEnum[] | SCMMapperResultScalarFieldEnum
+    having?: SCMMapperResultScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SCMMapperResultCountAggregateInputType | true
+    _avg?: SCMMapperResultAvgAggregateInputType
+    _sum?: SCMMapperResultSumAggregateInputType
+    _min?: SCMMapperResultMinAggregateInputType
+    _max?: SCMMapperResultMaxAggregateInputType
+  }
+
+  export type SCMMapperResultGroupByOutputType = {
+    id: string
+    workflowId: string
+    runId: string
+    executionId: string | null
+    javaParams: JsonValue
+    javaParamsCount: number
+    apiSpecs: JsonValue
+    apiVersions: string[]
+    mappings: JsonValue
+    statistics: JsonValue
+    reportMarkdown: string
+    reportJson: JsonValue
+    reportHtml: string
+    confidenceScores: JsonValue
+    status: string
+    errorMessage: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: SCMMapperResultCountAggregateOutputType | null
+    _avg: SCMMapperResultAvgAggregateOutputType | null
+    _sum: SCMMapperResultSumAggregateOutputType | null
+    _min: SCMMapperResultMinAggregateOutputType | null
+    _max: SCMMapperResultMaxAggregateOutputType | null
+  }
+
+  type GetSCMMapperResultGroupByPayload<T extends SCMMapperResultGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SCMMapperResultGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SCMMapperResultGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SCMMapperResultGroupByOutputType[P]>
+            : GetScalarType<T[P], SCMMapperResultGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SCMMapperResultSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    workflowId?: boolean
+    runId?: boolean
+    executionId?: boolean
+    javaParams?: boolean
+    javaParamsCount?: boolean
+    apiSpecs?: boolean
+    apiVersions?: boolean
+    mappings?: boolean
+    statistics?: boolean
+    reportMarkdown?: boolean
+    reportJson?: boolean
+    reportHtml?: boolean
+    confidenceScores?: boolean
+    status?: boolean
+    errorMessage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["sCMMapperResult"]>
+
+  export type SCMMapperResultSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    workflowId?: boolean
+    runId?: boolean
+    executionId?: boolean
+    javaParams?: boolean
+    javaParamsCount?: boolean
+    apiSpecs?: boolean
+    apiVersions?: boolean
+    mappings?: boolean
+    statistics?: boolean
+    reportMarkdown?: boolean
+    reportJson?: boolean
+    reportHtml?: boolean
+    confidenceScores?: boolean
+    status?: boolean
+    errorMessage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["sCMMapperResult"]>
+
+  export type SCMMapperResultSelectScalar = {
+    id?: boolean
+    workflowId?: boolean
+    runId?: boolean
+    executionId?: boolean
+    javaParams?: boolean
+    javaParamsCount?: boolean
+    apiSpecs?: boolean
+    apiVersions?: boolean
+    mappings?: boolean
+    statistics?: boolean
+    reportMarkdown?: boolean
+    reportJson?: boolean
+    reportHtml?: boolean
+    confidenceScores?: boolean
+    status?: boolean
+    errorMessage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+
+  export type $SCMMapperResultPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SCMMapperResult"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      workflowId: string
+      runId: string
+      executionId: string | null
+      javaParams: Prisma.JsonValue
+      javaParamsCount: number
+      apiSpecs: Prisma.JsonValue
+      apiVersions: string[]
+      mappings: Prisma.JsonValue
+      statistics: Prisma.JsonValue
+      reportMarkdown: string
+      reportJson: Prisma.JsonValue
+      reportHtml: string
+      confidenceScores: Prisma.JsonValue
+      status: string
+      errorMessage: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["sCMMapperResult"]>
+    composites: {}
+  }
+
+  type SCMMapperResultGetPayload<S extends boolean | null | undefined | SCMMapperResultDefaultArgs> = $Result.GetResult<Prisma.$SCMMapperResultPayload, S>
+
+  type SCMMapperResultCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<SCMMapperResultFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: SCMMapperResultCountAggregateInputType | true
+    }
+
+  export interface SCMMapperResultDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SCMMapperResult'], meta: { name: 'SCMMapperResult' } }
+    /**
+     * Find zero or one SCMMapperResult that matches the filter.
+     * @param {SCMMapperResultFindUniqueArgs} args - Arguments to find a SCMMapperResult
+     * @example
+     * // Get one SCMMapperResult
+     * const sCMMapperResult = await prisma.sCMMapperResult.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SCMMapperResultFindUniqueArgs>(args: SelectSubset<T, SCMMapperResultFindUniqueArgs<ExtArgs>>): Prisma__SCMMapperResultClient<$Result.GetResult<Prisma.$SCMMapperResultPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one SCMMapperResult that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {SCMMapperResultFindUniqueOrThrowArgs} args - Arguments to find a SCMMapperResult
+     * @example
+     * // Get one SCMMapperResult
+     * const sCMMapperResult = await prisma.sCMMapperResult.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SCMMapperResultFindUniqueOrThrowArgs>(args: SelectSubset<T, SCMMapperResultFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SCMMapperResultClient<$Result.GetResult<Prisma.$SCMMapperResultPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first SCMMapperResult that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SCMMapperResultFindFirstArgs} args - Arguments to find a SCMMapperResult
+     * @example
+     * // Get one SCMMapperResult
+     * const sCMMapperResult = await prisma.sCMMapperResult.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SCMMapperResultFindFirstArgs>(args?: SelectSubset<T, SCMMapperResultFindFirstArgs<ExtArgs>>): Prisma__SCMMapperResultClient<$Result.GetResult<Prisma.$SCMMapperResultPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first SCMMapperResult that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SCMMapperResultFindFirstOrThrowArgs} args - Arguments to find a SCMMapperResult
+     * @example
+     * // Get one SCMMapperResult
+     * const sCMMapperResult = await prisma.sCMMapperResult.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SCMMapperResultFindFirstOrThrowArgs>(args?: SelectSubset<T, SCMMapperResultFindFirstOrThrowArgs<ExtArgs>>): Prisma__SCMMapperResultClient<$Result.GetResult<Prisma.$SCMMapperResultPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more SCMMapperResults that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SCMMapperResultFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SCMMapperResults
+     * const sCMMapperResults = await prisma.sCMMapperResult.findMany()
+     * 
+     * // Get first 10 SCMMapperResults
+     * const sCMMapperResults = await prisma.sCMMapperResult.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const sCMMapperResultWithIdOnly = await prisma.sCMMapperResult.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SCMMapperResultFindManyArgs>(args?: SelectSubset<T, SCMMapperResultFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SCMMapperResultPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a SCMMapperResult.
+     * @param {SCMMapperResultCreateArgs} args - Arguments to create a SCMMapperResult.
+     * @example
+     * // Create one SCMMapperResult
+     * const SCMMapperResult = await prisma.sCMMapperResult.create({
+     *   data: {
+     *     // ... data to create a SCMMapperResult
+     *   }
+     * })
+     * 
+     */
+    create<T extends SCMMapperResultCreateArgs>(args: SelectSubset<T, SCMMapperResultCreateArgs<ExtArgs>>): Prisma__SCMMapperResultClient<$Result.GetResult<Prisma.$SCMMapperResultPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many SCMMapperResults.
+     * @param {SCMMapperResultCreateManyArgs} args - Arguments to create many SCMMapperResults.
+     * @example
+     * // Create many SCMMapperResults
+     * const sCMMapperResult = await prisma.sCMMapperResult.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SCMMapperResultCreateManyArgs>(args?: SelectSubset<T, SCMMapperResultCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SCMMapperResults and returns the data saved in the database.
+     * @param {SCMMapperResultCreateManyAndReturnArgs} args - Arguments to create many SCMMapperResults.
+     * @example
+     * // Create many SCMMapperResults
+     * const sCMMapperResult = await prisma.sCMMapperResult.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SCMMapperResults and only return the `id`
+     * const sCMMapperResultWithIdOnly = await prisma.sCMMapperResult.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SCMMapperResultCreateManyAndReturnArgs>(args?: SelectSubset<T, SCMMapperResultCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SCMMapperResultPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a SCMMapperResult.
+     * @param {SCMMapperResultDeleteArgs} args - Arguments to delete one SCMMapperResult.
+     * @example
+     * // Delete one SCMMapperResult
+     * const SCMMapperResult = await prisma.sCMMapperResult.delete({
+     *   where: {
+     *     // ... filter to delete one SCMMapperResult
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SCMMapperResultDeleteArgs>(args: SelectSubset<T, SCMMapperResultDeleteArgs<ExtArgs>>): Prisma__SCMMapperResultClient<$Result.GetResult<Prisma.$SCMMapperResultPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one SCMMapperResult.
+     * @param {SCMMapperResultUpdateArgs} args - Arguments to update one SCMMapperResult.
+     * @example
+     * // Update one SCMMapperResult
+     * const sCMMapperResult = await prisma.sCMMapperResult.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SCMMapperResultUpdateArgs>(args: SelectSubset<T, SCMMapperResultUpdateArgs<ExtArgs>>): Prisma__SCMMapperResultClient<$Result.GetResult<Prisma.$SCMMapperResultPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more SCMMapperResults.
+     * @param {SCMMapperResultDeleteManyArgs} args - Arguments to filter SCMMapperResults to delete.
+     * @example
+     * // Delete a few SCMMapperResults
+     * const { count } = await prisma.sCMMapperResult.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SCMMapperResultDeleteManyArgs>(args?: SelectSubset<T, SCMMapperResultDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SCMMapperResults.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SCMMapperResultUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SCMMapperResults
+     * const sCMMapperResult = await prisma.sCMMapperResult.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SCMMapperResultUpdateManyArgs>(args: SelectSubset<T, SCMMapperResultUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one SCMMapperResult.
+     * @param {SCMMapperResultUpsertArgs} args - Arguments to update or create a SCMMapperResult.
+     * @example
+     * // Update or create a SCMMapperResult
+     * const sCMMapperResult = await prisma.sCMMapperResult.upsert({
+     *   create: {
+     *     // ... data to create a SCMMapperResult
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SCMMapperResult we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SCMMapperResultUpsertArgs>(args: SelectSubset<T, SCMMapperResultUpsertArgs<ExtArgs>>): Prisma__SCMMapperResultClient<$Result.GetResult<Prisma.$SCMMapperResultPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of SCMMapperResults.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SCMMapperResultCountArgs} args - Arguments to filter SCMMapperResults to count.
+     * @example
+     * // Count the number of SCMMapperResults
+     * const count = await prisma.sCMMapperResult.count({
+     *   where: {
+     *     // ... the filter for the SCMMapperResults we want to count
+     *   }
+     * })
+    **/
+    count<T extends SCMMapperResultCountArgs>(
+      args?: Subset<T, SCMMapperResultCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SCMMapperResultCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SCMMapperResult.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SCMMapperResultAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SCMMapperResultAggregateArgs>(args: Subset<T, SCMMapperResultAggregateArgs>): Prisma.PrismaPromise<GetSCMMapperResultAggregateType<T>>
+
+    /**
+     * Group by SCMMapperResult.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SCMMapperResultGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SCMMapperResultGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SCMMapperResultGroupByArgs['orderBy'] }
+        : { orderBy?: SCMMapperResultGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SCMMapperResultGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSCMMapperResultGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SCMMapperResult model
+   */
+  readonly fields: SCMMapperResultFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SCMMapperResult.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SCMMapperResultClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SCMMapperResult model
+   */ 
+  interface SCMMapperResultFieldRefs {
+    readonly id: FieldRef<"SCMMapperResult", 'String'>
+    readonly workflowId: FieldRef<"SCMMapperResult", 'String'>
+    readonly runId: FieldRef<"SCMMapperResult", 'String'>
+    readonly executionId: FieldRef<"SCMMapperResult", 'String'>
+    readonly javaParams: FieldRef<"SCMMapperResult", 'Json'>
+    readonly javaParamsCount: FieldRef<"SCMMapperResult", 'Int'>
+    readonly apiSpecs: FieldRef<"SCMMapperResult", 'Json'>
+    readonly apiVersions: FieldRef<"SCMMapperResult", 'String[]'>
+    readonly mappings: FieldRef<"SCMMapperResult", 'Json'>
+    readonly statistics: FieldRef<"SCMMapperResult", 'Json'>
+    readonly reportMarkdown: FieldRef<"SCMMapperResult", 'String'>
+    readonly reportJson: FieldRef<"SCMMapperResult", 'Json'>
+    readonly reportHtml: FieldRef<"SCMMapperResult", 'String'>
+    readonly confidenceScores: FieldRef<"SCMMapperResult", 'Json'>
+    readonly status: FieldRef<"SCMMapperResult", 'String'>
+    readonly errorMessage: FieldRef<"SCMMapperResult", 'String'>
+    readonly createdAt: FieldRef<"SCMMapperResult", 'DateTime'>
+    readonly updatedAt: FieldRef<"SCMMapperResult", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SCMMapperResult findUnique
+   */
+  export type SCMMapperResultFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SCMMapperResult
+     */
+    select?: SCMMapperResultSelect<ExtArgs> | null
+    /**
+     * Filter, which SCMMapperResult to fetch.
+     */
+    where: SCMMapperResultWhereUniqueInput
+  }
+
+  /**
+   * SCMMapperResult findUniqueOrThrow
+   */
+  export type SCMMapperResultFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SCMMapperResult
+     */
+    select?: SCMMapperResultSelect<ExtArgs> | null
+    /**
+     * Filter, which SCMMapperResult to fetch.
+     */
+    where: SCMMapperResultWhereUniqueInput
+  }
+
+  /**
+   * SCMMapperResult findFirst
+   */
+  export type SCMMapperResultFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SCMMapperResult
+     */
+    select?: SCMMapperResultSelect<ExtArgs> | null
+    /**
+     * Filter, which SCMMapperResult to fetch.
+     */
+    where?: SCMMapperResultWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SCMMapperResults to fetch.
+     */
+    orderBy?: SCMMapperResultOrderByWithRelationInput | SCMMapperResultOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SCMMapperResults.
+     */
+    cursor?: SCMMapperResultWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SCMMapperResults from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SCMMapperResults.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SCMMapperResults.
+     */
+    distinct?: SCMMapperResultScalarFieldEnum | SCMMapperResultScalarFieldEnum[]
+  }
+
+  /**
+   * SCMMapperResult findFirstOrThrow
+   */
+  export type SCMMapperResultFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SCMMapperResult
+     */
+    select?: SCMMapperResultSelect<ExtArgs> | null
+    /**
+     * Filter, which SCMMapperResult to fetch.
+     */
+    where?: SCMMapperResultWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SCMMapperResults to fetch.
+     */
+    orderBy?: SCMMapperResultOrderByWithRelationInput | SCMMapperResultOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SCMMapperResults.
+     */
+    cursor?: SCMMapperResultWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SCMMapperResults from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SCMMapperResults.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SCMMapperResults.
+     */
+    distinct?: SCMMapperResultScalarFieldEnum | SCMMapperResultScalarFieldEnum[]
+  }
+
+  /**
+   * SCMMapperResult findMany
+   */
+  export type SCMMapperResultFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SCMMapperResult
+     */
+    select?: SCMMapperResultSelect<ExtArgs> | null
+    /**
+     * Filter, which SCMMapperResults to fetch.
+     */
+    where?: SCMMapperResultWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SCMMapperResults to fetch.
+     */
+    orderBy?: SCMMapperResultOrderByWithRelationInput | SCMMapperResultOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SCMMapperResults.
+     */
+    cursor?: SCMMapperResultWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SCMMapperResults from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SCMMapperResults.
+     */
+    skip?: number
+    distinct?: SCMMapperResultScalarFieldEnum | SCMMapperResultScalarFieldEnum[]
+  }
+
+  /**
+   * SCMMapperResult create
+   */
+  export type SCMMapperResultCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SCMMapperResult
+     */
+    select?: SCMMapperResultSelect<ExtArgs> | null
+    /**
+     * The data needed to create a SCMMapperResult.
+     */
+    data: XOR<SCMMapperResultCreateInput, SCMMapperResultUncheckedCreateInput>
+  }
+
+  /**
+   * SCMMapperResult createMany
+   */
+  export type SCMMapperResultCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SCMMapperResults.
+     */
+    data: SCMMapperResultCreateManyInput | SCMMapperResultCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SCMMapperResult createManyAndReturn
+   */
+  export type SCMMapperResultCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SCMMapperResult
+     */
+    select?: SCMMapperResultSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many SCMMapperResults.
+     */
+    data: SCMMapperResultCreateManyInput | SCMMapperResultCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SCMMapperResult update
+   */
+  export type SCMMapperResultUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SCMMapperResult
+     */
+    select?: SCMMapperResultSelect<ExtArgs> | null
+    /**
+     * The data needed to update a SCMMapperResult.
+     */
+    data: XOR<SCMMapperResultUpdateInput, SCMMapperResultUncheckedUpdateInput>
+    /**
+     * Choose, which SCMMapperResult to update.
+     */
+    where: SCMMapperResultWhereUniqueInput
+  }
+
+  /**
+   * SCMMapperResult updateMany
+   */
+  export type SCMMapperResultUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SCMMapperResults.
+     */
+    data: XOR<SCMMapperResultUpdateManyMutationInput, SCMMapperResultUncheckedUpdateManyInput>
+    /**
+     * Filter which SCMMapperResults to update
+     */
+    where?: SCMMapperResultWhereInput
+  }
+
+  /**
+   * SCMMapperResult upsert
+   */
+  export type SCMMapperResultUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SCMMapperResult
+     */
+    select?: SCMMapperResultSelect<ExtArgs> | null
+    /**
+     * The filter to search for the SCMMapperResult to update in case it exists.
+     */
+    where: SCMMapperResultWhereUniqueInput
+    /**
+     * In case the SCMMapperResult found by the `where` argument doesn't exist, create a new SCMMapperResult with this data.
+     */
+    create: XOR<SCMMapperResultCreateInput, SCMMapperResultUncheckedCreateInput>
+    /**
+     * In case the SCMMapperResult was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SCMMapperResultUpdateInput, SCMMapperResultUncheckedUpdateInput>
+  }
+
+  /**
+   * SCMMapperResult delete
+   */
+  export type SCMMapperResultDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SCMMapperResult
+     */
+    select?: SCMMapperResultSelect<ExtArgs> | null
+    /**
+     * Filter which SCMMapperResult to delete.
+     */
+    where: SCMMapperResultWhereUniqueInput
+  }
+
+  /**
+   * SCMMapperResult deleteMany
+   */
+  export type SCMMapperResultDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SCMMapperResults to delete
+     */
+    where?: SCMMapperResultWhereInput
+  }
+
+  /**
+   * SCMMapperResult without action
+   */
+  export type SCMMapperResultDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SCMMapperResult
+     */
+    select?: SCMMapperResultSelect<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -10836,6 +11970,30 @@ export namespace Prisma {
   };
 
   export type ExecutionScalarFieldEnum = (typeof ExecutionScalarFieldEnum)[keyof typeof ExecutionScalarFieldEnum]
+
+
+  export const SCMMapperResultScalarFieldEnum: {
+    id: 'id',
+    workflowId: 'workflowId',
+    runId: 'runId',
+    executionId: 'executionId',
+    javaParams: 'javaParams',
+    javaParamsCount: 'javaParamsCount',
+    apiSpecs: 'apiSpecs',
+    apiVersions: 'apiVersions',
+    mappings: 'mappings',
+    statistics: 'statistics',
+    reportMarkdown: 'reportMarkdown',
+    reportJson: 'reportJson',
+    reportHtml: 'reportHtml',
+    confidenceScores: 'confidenceScores',
+    status: 'status',
+    errorMessage: 'errorMessage',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type SCMMapperResultScalarFieldEnum = (typeof SCMMapperResultScalarFieldEnum)[keyof typeof SCMMapperResultScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -10986,6 +12144,20 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
   /**
    * Deep Input Types
@@ -11654,6 +12826,125 @@ export namespace Prisma {
     status?: EnumExecutionStatusWithAggregatesFilter<"Execution"> | $Enums.ExecutionStatus
     error?: StringNullableWithAggregatesFilter<"Execution"> | string | null
     errorStack?: StringNullableWithAggregatesFilter<"Execution"> | string | null
+  }
+
+  export type SCMMapperResultWhereInput = {
+    AND?: SCMMapperResultWhereInput | SCMMapperResultWhereInput[]
+    OR?: SCMMapperResultWhereInput[]
+    NOT?: SCMMapperResultWhereInput | SCMMapperResultWhereInput[]
+    id?: StringFilter<"SCMMapperResult"> | string
+    workflowId?: StringFilter<"SCMMapperResult"> | string
+    runId?: StringFilter<"SCMMapperResult"> | string
+    executionId?: StringNullableFilter<"SCMMapperResult"> | string | null
+    javaParams?: JsonFilter<"SCMMapperResult">
+    javaParamsCount?: IntFilter<"SCMMapperResult"> | number
+    apiSpecs?: JsonFilter<"SCMMapperResult">
+    apiVersions?: StringNullableListFilter<"SCMMapperResult">
+    mappings?: JsonFilter<"SCMMapperResult">
+    statistics?: JsonFilter<"SCMMapperResult">
+    reportMarkdown?: StringFilter<"SCMMapperResult"> | string
+    reportJson?: JsonFilter<"SCMMapperResult">
+    reportHtml?: StringFilter<"SCMMapperResult"> | string
+    confidenceScores?: JsonFilter<"SCMMapperResult">
+    status?: StringFilter<"SCMMapperResult"> | string
+    errorMessage?: StringNullableFilter<"SCMMapperResult"> | string | null
+    createdAt?: DateTimeFilter<"SCMMapperResult"> | Date | string
+    updatedAt?: DateTimeFilter<"SCMMapperResult"> | Date | string
+  }
+
+  export type SCMMapperResultOrderByWithRelationInput = {
+    id?: SortOrder
+    workflowId?: SortOrder
+    runId?: SortOrder
+    executionId?: SortOrderInput | SortOrder
+    javaParams?: SortOrder
+    javaParamsCount?: SortOrder
+    apiSpecs?: SortOrder
+    apiVersions?: SortOrder
+    mappings?: SortOrder
+    statistics?: SortOrder
+    reportMarkdown?: SortOrder
+    reportJson?: SortOrder
+    reportHtml?: SortOrder
+    confidenceScores?: SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SCMMapperResultWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SCMMapperResultWhereInput | SCMMapperResultWhereInput[]
+    OR?: SCMMapperResultWhereInput[]
+    NOT?: SCMMapperResultWhereInput | SCMMapperResultWhereInput[]
+    workflowId?: StringFilter<"SCMMapperResult"> | string
+    runId?: StringFilter<"SCMMapperResult"> | string
+    executionId?: StringNullableFilter<"SCMMapperResult"> | string | null
+    javaParams?: JsonFilter<"SCMMapperResult">
+    javaParamsCount?: IntFilter<"SCMMapperResult"> | number
+    apiSpecs?: JsonFilter<"SCMMapperResult">
+    apiVersions?: StringNullableListFilter<"SCMMapperResult">
+    mappings?: JsonFilter<"SCMMapperResult">
+    statistics?: JsonFilter<"SCMMapperResult">
+    reportMarkdown?: StringFilter<"SCMMapperResult"> | string
+    reportJson?: JsonFilter<"SCMMapperResult">
+    reportHtml?: StringFilter<"SCMMapperResult"> | string
+    confidenceScores?: JsonFilter<"SCMMapperResult">
+    status?: StringFilter<"SCMMapperResult"> | string
+    errorMessage?: StringNullableFilter<"SCMMapperResult"> | string | null
+    createdAt?: DateTimeFilter<"SCMMapperResult"> | Date | string
+    updatedAt?: DateTimeFilter<"SCMMapperResult"> | Date | string
+  }, "id">
+
+  export type SCMMapperResultOrderByWithAggregationInput = {
+    id?: SortOrder
+    workflowId?: SortOrder
+    runId?: SortOrder
+    executionId?: SortOrderInput | SortOrder
+    javaParams?: SortOrder
+    javaParamsCount?: SortOrder
+    apiSpecs?: SortOrder
+    apiVersions?: SortOrder
+    mappings?: SortOrder
+    statistics?: SortOrder
+    reportMarkdown?: SortOrder
+    reportJson?: SortOrder
+    reportHtml?: SortOrder
+    confidenceScores?: SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: SCMMapperResultCountOrderByAggregateInput
+    _avg?: SCMMapperResultAvgOrderByAggregateInput
+    _max?: SCMMapperResultMaxOrderByAggregateInput
+    _min?: SCMMapperResultMinOrderByAggregateInput
+    _sum?: SCMMapperResultSumOrderByAggregateInput
+  }
+
+  export type SCMMapperResultScalarWhereWithAggregatesInput = {
+    AND?: SCMMapperResultScalarWhereWithAggregatesInput | SCMMapperResultScalarWhereWithAggregatesInput[]
+    OR?: SCMMapperResultScalarWhereWithAggregatesInput[]
+    NOT?: SCMMapperResultScalarWhereWithAggregatesInput | SCMMapperResultScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SCMMapperResult"> | string
+    workflowId?: StringWithAggregatesFilter<"SCMMapperResult"> | string
+    runId?: StringWithAggregatesFilter<"SCMMapperResult"> | string
+    executionId?: StringNullableWithAggregatesFilter<"SCMMapperResult"> | string | null
+    javaParams?: JsonWithAggregatesFilter<"SCMMapperResult">
+    javaParamsCount?: IntWithAggregatesFilter<"SCMMapperResult"> | number
+    apiSpecs?: JsonWithAggregatesFilter<"SCMMapperResult">
+    apiVersions?: StringNullableListFilter<"SCMMapperResult">
+    mappings?: JsonWithAggregatesFilter<"SCMMapperResult">
+    statistics?: JsonWithAggregatesFilter<"SCMMapperResult">
+    reportMarkdown?: StringWithAggregatesFilter<"SCMMapperResult"> | string
+    reportJson?: JsonWithAggregatesFilter<"SCMMapperResult">
+    reportHtml?: StringWithAggregatesFilter<"SCMMapperResult"> | string
+    confidenceScores?: JsonWithAggregatesFilter<"SCMMapperResult">
+    status?: StringWithAggregatesFilter<"SCMMapperResult"> | string
+    errorMessage?: StringNullableWithAggregatesFilter<"SCMMapperResult"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"SCMMapperResult"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"SCMMapperResult"> | Date | string
   }
 
   export type UserCreateInput = {
@@ -12379,6 +13670,153 @@ export namespace Prisma {
     errorStack?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type SCMMapperResultCreateInput = {
+    id?: string
+    workflowId: string
+    runId: string
+    executionId?: string | null
+    javaParams: JsonNullValueInput | InputJsonValue
+    javaParamsCount: number
+    apiSpecs: JsonNullValueInput | InputJsonValue
+    apiVersions?: SCMMapperResultCreateapiVersionsInput | string[]
+    mappings: JsonNullValueInput | InputJsonValue
+    statistics: JsonNullValueInput | InputJsonValue
+    reportMarkdown: string
+    reportJson: JsonNullValueInput | InputJsonValue
+    reportHtml: string
+    confidenceScores: JsonNullValueInput | InputJsonValue
+    status: string
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SCMMapperResultUncheckedCreateInput = {
+    id?: string
+    workflowId: string
+    runId: string
+    executionId?: string | null
+    javaParams: JsonNullValueInput | InputJsonValue
+    javaParamsCount: number
+    apiSpecs: JsonNullValueInput | InputJsonValue
+    apiVersions?: SCMMapperResultCreateapiVersionsInput | string[]
+    mappings: JsonNullValueInput | InputJsonValue
+    statistics: JsonNullValueInput | InputJsonValue
+    reportMarkdown: string
+    reportJson: JsonNullValueInput | InputJsonValue
+    reportHtml: string
+    confidenceScores: JsonNullValueInput | InputJsonValue
+    status: string
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SCMMapperResultUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workflowId?: StringFieldUpdateOperationsInput | string
+    runId?: StringFieldUpdateOperationsInput | string
+    executionId?: NullableStringFieldUpdateOperationsInput | string | null
+    javaParams?: JsonNullValueInput | InputJsonValue
+    javaParamsCount?: IntFieldUpdateOperationsInput | number
+    apiSpecs?: JsonNullValueInput | InputJsonValue
+    apiVersions?: SCMMapperResultUpdateapiVersionsInput | string[]
+    mappings?: JsonNullValueInput | InputJsonValue
+    statistics?: JsonNullValueInput | InputJsonValue
+    reportMarkdown?: StringFieldUpdateOperationsInput | string
+    reportJson?: JsonNullValueInput | InputJsonValue
+    reportHtml?: StringFieldUpdateOperationsInput | string
+    confidenceScores?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SCMMapperResultUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workflowId?: StringFieldUpdateOperationsInput | string
+    runId?: StringFieldUpdateOperationsInput | string
+    executionId?: NullableStringFieldUpdateOperationsInput | string | null
+    javaParams?: JsonNullValueInput | InputJsonValue
+    javaParamsCount?: IntFieldUpdateOperationsInput | number
+    apiSpecs?: JsonNullValueInput | InputJsonValue
+    apiVersions?: SCMMapperResultUpdateapiVersionsInput | string[]
+    mappings?: JsonNullValueInput | InputJsonValue
+    statistics?: JsonNullValueInput | InputJsonValue
+    reportMarkdown?: StringFieldUpdateOperationsInput | string
+    reportJson?: JsonNullValueInput | InputJsonValue
+    reportHtml?: StringFieldUpdateOperationsInput | string
+    confidenceScores?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SCMMapperResultCreateManyInput = {
+    id?: string
+    workflowId: string
+    runId: string
+    executionId?: string | null
+    javaParams: JsonNullValueInput | InputJsonValue
+    javaParamsCount: number
+    apiSpecs: JsonNullValueInput | InputJsonValue
+    apiVersions?: SCMMapperResultCreateapiVersionsInput | string[]
+    mappings: JsonNullValueInput | InputJsonValue
+    statistics: JsonNullValueInput | InputJsonValue
+    reportMarkdown: string
+    reportJson: JsonNullValueInput | InputJsonValue
+    reportHtml: string
+    confidenceScores: JsonNullValueInput | InputJsonValue
+    status: string
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SCMMapperResultUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workflowId?: StringFieldUpdateOperationsInput | string
+    runId?: StringFieldUpdateOperationsInput | string
+    executionId?: NullableStringFieldUpdateOperationsInput | string | null
+    javaParams?: JsonNullValueInput | InputJsonValue
+    javaParamsCount?: IntFieldUpdateOperationsInput | number
+    apiSpecs?: JsonNullValueInput | InputJsonValue
+    apiVersions?: SCMMapperResultUpdateapiVersionsInput | string[]
+    mappings?: JsonNullValueInput | InputJsonValue
+    statistics?: JsonNullValueInput | InputJsonValue
+    reportMarkdown?: StringFieldUpdateOperationsInput | string
+    reportJson?: JsonNullValueInput | InputJsonValue
+    reportHtml?: StringFieldUpdateOperationsInput | string
+    confidenceScores?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SCMMapperResultUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workflowId?: StringFieldUpdateOperationsInput | string
+    runId?: StringFieldUpdateOperationsInput | string
+    executionId?: NullableStringFieldUpdateOperationsInput | string | null
+    javaParams?: JsonNullValueInput | InputJsonValue
+    javaParamsCount?: IntFieldUpdateOperationsInput | number
+    apiSpecs?: JsonNullValueInput | InputJsonValue
+    apiVersions?: SCMMapperResultUpdateapiVersionsInput | string[]
+    mappings?: JsonNullValueInput | InputJsonValue
+    statistics?: JsonNullValueInput | InputJsonValue
+    reportMarkdown?: StringFieldUpdateOperationsInput | string
+    reportJson?: JsonNullValueInput | InputJsonValue
+    reportHtml?: StringFieldUpdateOperationsInput | string
+    confidenceScores?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -13051,6 +14489,98 @@ export namespace Prisma {
     _max?: NestedEnumExecutionStatusFilter<$PrismaModel>
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
+  export type SCMMapperResultCountOrderByAggregateInput = {
+    id?: SortOrder
+    workflowId?: SortOrder
+    runId?: SortOrder
+    executionId?: SortOrder
+    javaParams?: SortOrder
+    javaParamsCount?: SortOrder
+    apiSpecs?: SortOrder
+    apiVersions?: SortOrder
+    mappings?: SortOrder
+    statistics?: SortOrder
+    reportMarkdown?: SortOrder
+    reportJson?: SortOrder
+    reportHtml?: SortOrder
+    confidenceScores?: SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SCMMapperResultAvgOrderByAggregateInput = {
+    javaParamsCount?: SortOrder
+  }
+
+  export type SCMMapperResultMaxOrderByAggregateInput = {
+    id?: SortOrder
+    workflowId?: SortOrder
+    runId?: SortOrder
+    executionId?: SortOrder
+    javaParamsCount?: SortOrder
+    reportMarkdown?: SortOrder
+    reportHtml?: SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SCMMapperResultMinOrderByAggregateInput = {
+    id?: SortOrder
+    workflowId?: SortOrder
+    runId?: SortOrder
+    executionId?: SortOrder
+    javaParamsCount?: SortOrder
+    reportMarkdown?: SortOrder
+    reportHtml?: SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SCMMapperResultSumOrderByAggregateInput = {
+    javaParamsCount?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
   export type SessionCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -13647,6 +15177,23 @@ export namespace Prisma {
     update?: XOR<XOR<WorkflowUpdateToOneWithWhereWithoutExecutionsInput, WorkflowUpdateWithoutExecutionsInput>, WorkflowUncheckedUpdateWithoutExecutionsInput>
   }
 
+  export type SCMMapperResultCreateapiVersionsInput = {
+    set: string[]
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type SCMMapperResultUpdateapiVersionsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -13887,6 +15434,33 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumExecutionStatusFilter<$PrismaModel>
     _max?: NestedEnumExecutionStatusFilter<$PrismaModel>
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
   export type SessionCreateWithoutUserInput = {
@@ -15595,6 +17169,10 @@ export namespace Prisma {
      * @deprecated Use ExecutionDefaultArgs instead
      */
     export type ExecutionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ExecutionDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use SCMMapperResultDefaultArgs instead
+     */
+    export type SCMMapperResultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = SCMMapperResultDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany
